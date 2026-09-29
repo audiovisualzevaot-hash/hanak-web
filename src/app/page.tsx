@@ -16,9 +16,11 @@ export default function InicioPage() {
       <PriorizamosSelva />
 
       {/* LLEGAR A HANAK — una sola foto continua de fondo (grupo llegando a
-          Hanak), con el lockup + título arriba y el botón de ir a
-          "Cómo llegar" abajo a la derecha, tal como en el export: no es un
-          texto + una tarjeta de foto aparte, todo va sobre la misma foto. */}
+          Hanak). Abajo a la izquierda va la silueta del distrito + el
+          lockup HANAK (tal como en el export — ahí es donde vive el logo
+          en esta sección, no como una línea de marca aparte arriba), el
+          título arriba a la derecha y el botón de ir a "Cómo llegar"
+          abajo a la derecha. Todo sobre la misma foto. */}
       <Link
         href="/como-llegar"
         className="group relative flex min-h-[85vh] sm:min-h-[95vh] flex-col overflow-hidden bg-forest"
@@ -30,25 +32,63 @@ export default function InicioPage() {
           className="absolute inset-0 h-full w-full object-cover"
         />
 
-        <div className="relative z-10 flex flex-1 items-start justify-between gap-6 px-5 pt-16 sm:px-10 sm:pt-20">
-          <div className="flex items-start gap-3">
-            <svg viewBox="0 0 60 60" className="mt-0.5 h-8 w-8 sm:h-10 sm:w-10 shrink-0">
-              <path
-                d="M14 6c8-4 18-3 24 3 6 6 4 16 10 20 5 4 4 12-2 16-6 5-15 3-21 7-6 4-14 2-17-4-3-6 1-11-1-18-2-7-2-16 7-24Z"
-                fill="var(--color-forest-dark)"
-              />
-            </svg>
-            <div className="text-forest-dark">
-              <p className="font-display text-lg sm:text-2xl leading-none">HANAK</p>
-              <p className="text-[9px] sm:text-[11px] uppercase tracking-[0.18em] text-forest-dark/70">
-                Sky Resort &amp; Villas Club
-              </p>
-            </div>
-          </div>
-
+        <div className="relative z-10 flex justify-end px-5 pt-16 sm:px-10 sm:pt-20">
           <div className="text-right text-forest-dark">
             <h2 className="font-display text-3xl sm:text-5xl leading-tight">Llegar a HANAK</h2>
             <p className="mt-1 text-lg sm:text-2xl text-forest-dark/70">es muy sencillo</p>
+          </div>
+        </div>
+
+        {/* Silueta del distrito de Hanak + lockup — referencia aproximada
+            mientras Bryan nos pasa el gráfico exportado de Illustrator con
+            fondo transparente (la forma real es el límite del distrito,
+            no una mancha genérica: pixel-perfect solo sale de un vector
+            limpio, no de recortar la foto del export). */}
+        <div className="relative z-10 mt-auto flex items-end gap-4 sm:gap-6 px-5 pb-10 sm:px-10 sm:pb-16">
+          <svg viewBox="0 0 200 220" className="h-24 w-auto sm:h-36 shrink-0 drop-shadow-sm">
+            <path
+              d="M78 8
+                 C 84 18, 74 26, 82 34
+                 C 92 44, 108 40, 120 50
+                 C 134 61, 132 76, 144 86
+                 C 156 96, 172 92, 178 106
+                 C 184 120, 172 132, 156 134
+                 C 140 136, 132 126, 116 130
+                 C 102 133, 96 146, 82 148
+                 C 68 150, 58 142, 48 146
+                 C 38 150, 34 160, 24 156
+                 C 14 152, 12 140, 18 130
+                 C 24 120, 36 120, 38 108
+                 C 40 96, 30 88, 34 76
+                 C 38 64, 52 62, 54 50
+                 C 56 38, 46 30, 54 20
+                 C 61 11, 72 4, 78 8 Z"
+              fill="var(--color-forest-dark)"
+            />
+            <circle cx="96" cy="66" r="4" fill="var(--color-cloud)" />
+            <path
+              d="M28 148 C 40 156, 46 172, 42 190 C 38 206, 26 214, 30 220"
+              fill="none"
+              stroke="var(--color-cloud)"
+              strokeWidth="2"
+              opacity="0.85"
+            />
+            <path
+              d="M70 150 C 80 162, 78 180, 88 194 C 96 206, 96 214, 92 220"
+              fill="none"
+              stroke="var(--color-cloud)"
+              strokeWidth="2"
+              opacity="0.85"
+            />
+          </svg>
+
+          <div className="text-forest-dark pb-1">
+            <p className="font-display text-2xl sm:text-4xl leading-none">HANAK</p>
+            <div className="mt-2 border-t border-forest-dark/50 pt-1.5 w-fit">
+              <p className="text-[9px] sm:text-[11px] uppercase tracking-[0.2em] text-forest-dark/75">
+                Sky Resort &amp; Villas Club
+              </p>
+            </div>
           </div>
         </div>
 
