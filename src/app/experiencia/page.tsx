@@ -60,10 +60,13 @@ export default function ExperienciaPage() {
           resort, no solo su lote.
         </p>
 
-        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-14">
-          <MediaPlaceholder label="Piscina infinita" />
-          <MediaPlaceholder label="Club House / Restaurante" />
-          <MediaPlaceholder label="Spa y bienestar" />
+        <div className="grid grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 mb-14">
+          <MediaPlaceholder label="Alameda y pérgolas de Hanak" aspect="aspect-[4/3]" src="/images/experiencia/amenidades-de-hanak.webp" />
+          <MediaPlaceholder label="Campanario de Hanak" aspect="aspect-[4/3]" src="/images/experiencia/campanario.webp" />
+          <MediaPlaceholder label="Columpios en la pérgola" aspect="aspect-[4/3]" src="/images/experiencia/columpios.webp" />
+          <MediaPlaceholder label="Maloca — recepción" aspect="aspect-[4/3]" src="/images/experiencia/maloca1.webp" />
+          <MediaPlaceholder label="Maloca al atardecer" aspect="aspect-[4/3]" src="/images/experiencia/maloca2.webp" />
+          <MediaPlaceholder label="Parque central" aspect="aspect-[4/3]" src="/images/experiencia/parque-central.webp" />
         </div>
 
         <div className="grid sm:grid-cols-2 lg:grid-cols-5 gap-6">
