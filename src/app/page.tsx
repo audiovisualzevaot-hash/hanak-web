@@ -2,32 +2,16 @@ import Link from "next/link";
 import MediaPlaceholder from "@/components/MediaPlaceholder";
 import HeroSequence from "@/components/HeroSequence";
 import PriorizamosSelva from "@/components/PriorizamosSelva";
-import PeruMiniMap from "@/components/PeruMiniMap";
 import SociosFundadores from "@/components/SociosFundadores";
 import { newsCalendario } from "@/lib/content";
 
 export default function InicioPage() {
   return (
     <>
-      {/* HERO — atardecer → mar de nubes que sube y revela el bloque siguiente */}
+      {/* HERO — atardecer → mar de nubes que sube, panea hacia el valle y
+          revela "El primer Sky Resort de Latinoamérica" + el mapa, todo
+          sobre la misma foto (ver HeroSequence) */}
       <HeroSequence />
-
-      {/* INTRO — El primer Sky Resort de Latinoamérica + ubicación */}
-      <section className="max-w-5xl mx-auto px-5 sm:px-8 py-20 sm:py-28 text-center">
-        <h2 className="font-display text-3xl sm:text-5xl text-forest leading-tight">
-          El primer Sky Resort
-          <br className="hidden sm:block" /> de Latinoamérica
-        </h2>
-        <p className="mt-5 max-w-xl mx-auto text-charcoal/70 leading-relaxed">
-          Sobre las nubes de la Amazonía peruana nace un nuevo concepto de
-          vivir: un resort donde cada casa te pertenece y cada amanecer es un
-          privilegio. HANAK no es un condominio — es una forma distinta de
-          estar en el mundo.
-        </p>
-        <div className="mt-12">
-          <PeruMiniMap />
-        </div>
-      </section>
 
       <PriorizamosSelva />
 

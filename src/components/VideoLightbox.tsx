@@ -1,7 +1,18 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useSyncExternalStore } from "react";
 import { createPortal } from "react-dom";
+
+const noopSubscribe = () => () => {};
+/** true solo tras hidratar en el cliente — evita el mismatch de SSR sin
+ *  llamar a setState dentro de un efecto. */
+function useMounted() {
+  return useSyncExternalStore(
+    noopSubscribe,
+    () => true,
+    () => false
+  );
+}
 
 /**
  * Botón de "play" superpuesto a una foto de fondo (poster) que, al hacer
@@ -30,9 +41,7 @@ export default function VideoLightbox({
   className?: string;
 }) {
   const [open, setOpen] = useState(false);
-  const [mounted, setMounted] = useState(false);
-
-  useEffect(() => setMounted(true), []);
+  const mounted = useMounted();
 
   useEffect(() => {
     if (!open) return;
@@ -93,7 +102,6 @@ export default function VideoLightbox({
               onClick={(e) => e.stopPropagation()}
             >
               {videoSrc ? (
-                // eslint-disable-next-line jsx-a11y/media-has-caption
                 <video
                   src={videoSrc}
                   poster={poster}

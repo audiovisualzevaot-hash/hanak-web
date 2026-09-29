@@ -3,26 +3,30 @@
 import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import SunArc from "./SunArc";
+import PeruMiniMap from "./PeruMiniMap";
 
 const clamp01 = (v: number) => Math.min(Math.max(v, 0), 1);
+const mix = (a: number, b: number, t: number) => a + (b - a) * clamp01(t);
+// progreso local dentro de un tramo [from, to] del progreso global
+const local = (p: number, from: number, to: number) => clamp01((p - from) / (to - from));
 
 /**
- * Secuencia de apertura de Inicio, en dos fotos reales de Bryan:
+ * Secuencia de apertura de Inicio, fiel al export de Illustrator:
  *
- * 1. Atardecer sobre los cerros de Tarapoto (header.webp) — queda fija,
- *    de fondo, sin zoom ni movimiento de cámara.
- * 2. Mar de nubes (nubes.webp) — es una segunda "hoja" larga, del tamaño
- *    completo de la pantalla, que se desliza desde abajo hacia arriba y
- *    cubre por completo a la primera. No hay corte, no hay disolución de
- *    opacidad, no hay zoom: es puro deslizamiento vertical, como una
- *    cortina o una hoja larga que sube y tapa el fotograma anterior.
+ * 1. Atardecer sobre los cerros de Tarapoto (header.webp) — fija en cuadro,
+ *    pero recorriendo la foto hacia abajo a medida que se hace scroll (un
+ *    paneo, nunca un zoom): por eso Bryan envió una foto tan alta.
+ * 2. Mar de nubes (nubes.webp) — una segunda "hoja" del tamaño completo de
+ *    la pantalla que se desliza desde abajo y tapa la anterior. Una vez
+ *    que cubre la pantalla, sigue paneando hacia abajo (de las nubes al
+ *    valle) mientras, encima, aparece "El primer Sky Resort de
+ *    Latinoamérica" y el mapa de ubicación — exactamente como en el
+ *    export, donde ambos textos y el mapa van sobre la misma foto de
+ *    fondo, nunca sobre un bloque de color sólido.
  *
- * Corrección pedida por Bryan tras ver ayana.com: "todo es fluido, sin
- * cortes, sin zooms, es deslizar y como si fuesen hojas pero largas."
- * Se elimina cualquier scale()/Ken Burns y cualquier crossfade de
- * opacidad entre las dos fotos — el único movimiento es el translateY
- * de la hoja de nubes deslizándose sobre la hoja de atardecer, que
- * permanece perfectamente quieta.
+ * Referencia pedida por Bryan (ayana.com): sin cortes, sin zooms, todo es
+ * deslizar y paneo — el único zoom prohibido es el scale(); el paneo
+ * vertical de la propia foto (object-position) sí es parte del lenguaje.
  */
 export default function HeroSequence() {
   const trackRef = useRef<HTMLDivElement>(null);
@@ -50,20 +54,29 @@ export default function HeroSequence() {
     };
   }, []);
 
-  // Texto central — se desvanece apenas empieza a subir la hoja de nubes,
-  // para que no quede atrapado bajo ella. Un leve translateY, sin escalas.
-  const textOpacity = 1 - clamp01(progress / 0.28);
-  const textY = -progress * 50;
+  // --- Capa 1 — atardecer: paneo puro (sin escala) mientras está en cuadro
+  const heroPanY = mix(28, 58, local(progress, 0, 0.32));
 
-  // La "hoja" de nubes: entra completa desde abajo (100% fuera de cuadro)
-  // y se desliza a 0% (cubriendo toda la pantalla). Deslizamiento puro,
-  // sin escala y sin fundido — el propio movimiento es la transición.
-  const sheetSlide = 100 - clamp01(progress / 0.72) * 100;
+  // Texto "Presentando a HANAK" — se desvanece apenas arranca el scroll
+  const textOpacity = 1 - local(progress, 0, 0.14);
+  const textY = -local(progress, 0, 0.14) * 50;
+
+  // --- Capa 2 — mar de nubes: se desliza como una hoja larga y tapa la 1
+  const sheetSlide = 100 - local(progress, 0.14, 0.46) * 100;
+  // panea de las nubes hacia el valle mientras se desliza, y se asienta
+  // (deja de paneear) apenas empieza el capítulo de texto + mapa, para que
+  // el fondo quede quieto y legible detrás de ellos
+  const cloudsPanY = mix(14, 52, local(progress, 0.14, 0.6));
+
+  // --- Capítulo "El primer Sky Resort de Latinoamérica" + mapa, sobre la
+  // misma foto de nubes/valle — nunca sobre un fondo de color sólido.
+  const introOpacity = local(progress, 0.5, 0.66);
+  const introY = (1 - local(progress, 0.5, 0.7)) * 36;
 
   return (
-    <section ref={trackRef} className="relative h-[220vh] bg-forest-dark">
+    <section ref={trackRef} className="relative h-[440vh] bg-forest-dark">
       <div className="sticky top-0 h-screen overflow-hidden">
-        {/* Hoja 1 — atardecer, fija, sin zoom ni movimiento */}
+        {/* Hoja 1 — atardecer, paneo vertical sin escala */}
         <div className="absolute inset-0">
           <Image
             src="/images/inicio/header.webp"
@@ -72,11 +85,12 @@ export default function HeroSequence() {
             priority
             sizes="100vw"
             className="object-cover"
+            style={{ objectPosition: `50% ${heroPanY}%` }}
           />
           <div className="absolute inset-0 bg-gradient-to-b from-black/20 via-black/5 to-black/30" />
         </div>
 
-        {/* Texto central — sobre la hoja de atardecer */}
+        {/* Texto central de apertura — sobre la hoja de atardecer */}
         <div
           className="absolute inset-0 z-10 flex flex-col items-center justify-center text-center text-white px-5"
           style={{ opacity: textOpacity, transform: `translateY(${textY}px)` }}
@@ -95,25 +109,55 @@ export default function HeroSequence() {
           <SunArc className="mt-8 sm:mt-10" color="#fff" />
         </div>
 
-        {/* Hoja 2 — mar de nubes, se desliza completa desde abajo y tapa la hoja 1 */}
+        {/* Hoja 2 — mar de nubes / valle. Se desliza y luego sigue paneando;
+            sobre ella va el segundo capítulo (título + mapa), tal como en
+            el export: todo sobre la misma foto, nunca sobre color sólido. */}
         <div
           className="absolute inset-0"
-          style={{
-            transform: `translateY(${sheetSlide}%)`,
-            willChange: "transform",
-          }}
+          style={{ transform: `translateY(${sheetSlide}%)`, willChange: "transform" }}
         >
           <Image
             src="/images/inicio/nubes.webp"
-            alt="Mar de nubes cubriendo el valle de Tarapoto"
+            alt="Mar de nubes descendiendo hacia el valle de Tarapoto"
             fill
             sizes="100vw"
             className="object-cover"
+            style={{ objectPosition: `50% ${cloudsPanY}%` }}
           />
-          {/* Puente hacia el crema del siguiente bloque, siempre presente
-              en el borde inferior de la hoja para que el empalme con la
-              sección "El primer Sky Resort de Latinoamérica" sea limpio */}
-          <div className="absolute inset-x-0 bottom-0 h-1/4 bg-gradient-to-b from-transparent to-cloud" />
+          <div className="absolute inset-0 bg-gradient-to-b from-black/10 via-transparent to-black/15" />
+
+          {/* Capítulo 2 — título + mapa, siempre sobre la foto */}
+          <div
+            className="absolute inset-0 z-10 flex flex-col items-center justify-center text-center px-5 pt-12 sm:pt-0"
+            style={{ opacity: introOpacity, transform: `translateY(${introY}px)` }}
+          >
+            <h2 className="font-display text-2xl sm:text-5xl text-forest leading-tight drop-shadow-sm">
+              El primer Sky Resort
+              <br className="hidden sm:block" /> de Latinoamérica
+            </h2>
+            <p className="mt-2 sm:mt-4 max-w-md text-xs sm:text-base text-forest/80 leading-snug sm:leading-relaxed">
+              Sobre las nubes de la Amazonía peruana nace un nuevo concepto de
+              vivir:
+              <span className="hidden sm:inline">
+                {" "}
+                un resort donde cada momento del día es un privilegio.
+              </span>
+            </p>
+
+            <div className="mt-2 sm:mt-8 flex items-start gap-2 sm:gap-3 max-w-[240px] sm:max-w-sm text-left">
+              <span className="mt-1 h-6 sm:h-10 w-px bg-charcoal/25 shrink-0" />
+              <p className="text-[11px] sm:text-sm leading-snug">
+                <span className="text-charcoal font-medium">
+                  HANAK no es un condominio,
+                </span>{" "}
+                <span className="text-charcoal/60">
+                  es una forma distinta de estar en el mundo.
+                </span>
+              </p>
+            </div>
+
+            <PeruMiniMap className="mt-2 sm:mt-6" />
+          </div>
         </div>
       </div>
     </section>

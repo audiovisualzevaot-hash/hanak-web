@@ -2,15 +2,18 @@
 
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
+import LogoMark from "./LogoMark";
 
 /**
  * Sección "Priorizamos la experiencia de la selva peruana" — Inicio.
  *
- * Dos fotos (elemento-izquierda = Sobre las nubes / elemento-derecha =
- * Dentro de la selva) arrancan unidas en el centro, cubriendo el titular.
- * A medida que se hace scroll, cada una se separa hacia su lado —como
- * cartas que se abren— revelando el texto central. Referencia dada por
- * Bryan: efecto de scroll con las dos tarjetas separándose.
+ * Fondo crema plano (no una foto), tal como el export de Illustrator: el
+ * isotipo + "DESCUBRE HANAK" arriba, título y subtítulo centrados, botón
+ * debajo. Dos fotos (elemento-izquierda = Sobre las nubes / elemento-
+ * derecha = Dentro de la selva) arrancan unidas en el centro, cubriendo el
+ * titular, y al hacer scroll se separan hacia su lado —como cartas que se
+ * abren— revelando el texto. Sin marco/borde crema alrededor de las fotos
+ * (pedido explícito de Bryan).
  *
  * Las dos tarjetas y el CTA central son el conector de esta sección hacia
  * /experiencia (pedido explícito de Bryan: cada slide de Inicio debe
@@ -55,29 +58,21 @@ export default function PriorizamosSelva() {
   const ctaOpacity = Math.max(0, (progress - 0.6) / 0.35);
 
   return (
-    <section ref={trackRef} className="relative h-[220vh]">
+    <section ref={trackRef} className="relative h-[220vh] bg-cloud">
       <div className="sticky top-0 h-screen overflow-hidden flex items-center justify-center">
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img
-          src="/images/masterplan/dentro-de-la-selva.webp"
-          alt=""
-          aria-hidden
-          className="absolute inset-0 w-full h-full object-cover"
-        />
-        <div className="absolute inset-0 bg-forest-dark/55" />
-
-        {/* Titular central */}
+        {/* Titular central — fondo crema plano, como en el export */}
         <div
           className="relative z-10 text-center px-6 max-w-2xl pointer-events-none flex flex-col items-center"
           style={{ opacity: textOpacity, transform: `scale(${textScale})` }}
         >
-          <p className="uppercase tracking-[0.2em] text-xs sm:text-sm text-cloud/70 mb-4">
-            Dos formas de vivir Hanak
+          <LogoMark size={22} tone="forest" className="mb-3 opacity-80" />
+          <p className="uppercase tracking-[0.2em] text-xs sm:text-sm text-olive mb-4">
+            Descubre Hanak
           </p>
-          <h2 className="font-display text-3xl sm:text-5xl lg:text-6xl text-white leading-tight">
+          <h2 className="font-display text-3xl sm:text-5xl lg:text-6xl text-forest leading-tight">
             Priorizamos la experiencia de la selva peruana
           </h2>
-          <p className="mt-3 text-xs sm:text-sm uppercase tracking-[0.2em] text-cloud/60">
+          <p className="mt-3 text-xs sm:text-sm uppercase tracking-[0.2em] text-charcoal/50">
             Desde las alturas
           </p>
           <Link
@@ -85,7 +80,7 @@ export default function PriorizamosSelva() {
             className="mt-8 pointer-events-auto inline-flex items-center gap-1.5 bg-forest-dark text-white text-xs uppercase tracking-[0.12em] rounded-full px-6 py-3 transition-opacity"
             style={{ opacity: ctaOpacity, transitionDuration: "300ms" }}
           >
-            Conoce la experiencia
+            Explora la experiencia
             <span aria-hidden>↗</span>
           </Link>
         </div>
@@ -93,7 +88,7 @@ export default function PriorizamosSelva() {
         {/* Tarjeta izquierda — Sobre las nubes (link a Experiencia) */}
         <Link
           href="/experiencia"
-          className="absolute top-1/2 left-1/2 z-20 aspect-[3/4] rounded-xl overflow-hidden shadow-2xl ring-4 ring-white/90"
+          className="absolute top-1/2 left-1/2 z-20 aspect-[3/4] rounded-xl overflow-hidden shadow-xl"
           style={{
             width: cardWidth,
             transform: `translate(calc(-100% + ${leftX}vw), -50%) rotate(${leftTilt}deg)`,
@@ -116,7 +111,7 @@ export default function PriorizamosSelva() {
         {/* Tarjeta derecha — Dentro de la selva (link a Experiencia) */}
         <Link
           href="/experiencia"
-          className="absolute top-1/2 left-1/2 z-20 aspect-[3/4] rounded-xl overflow-hidden shadow-2xl ring-4 ring-white/90"
+          className="absolute top-1/2 left-1/2 z-20 aspect-[3/4] rounded-xl overflow-hidden shadow-xl"
           style={{
             width: cardWidth,
             transform: `translate(${rightX}vw, -50%) rotate(${rightTilt}deg)`,
