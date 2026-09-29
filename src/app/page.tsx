@@ -1,42 +1,16 @@
 import Link from "next/link";
-import Image from "next/image";
 import MediaPlaceholder from "@/components/MediaPlaceholder";
+import HeroSequence from "@/components/HeroSequence";
 import PriorizamosSelva from "@/components/PriorizamosSelva";
 import PeruMiniMap from "@/components/PeruMiniMap";
 import SociosFundadores from "@/components/SociosFundadores";
-import SunArc from "@/components/SunArc";
 import { newsCalendario } from "@/lib/content";
 
 export default function InicioPage() {
   return (
     <>
-      {/* HERO — imagen gigante de fondo, logo centrado, transición a nubes */}
-      <section className="relative min-h-[105vh] flex flex-col items-center justify-center overflow-hidden bg-forest">
-        <MediaPlaceholder
-          label="Hero — tomas aéreas en distintos horarios, degradado de nubes en loop"
-          kind="video"
-          aspect="aspect-auto"
-          className="absolute inset-0 !rounded-none"
-          src="/images/inicio/header.webp"
-          priority
-        />
-        <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-black/10 to-cloud" />
-
-        <div className="relative z-10 flex flex-col items-center text-center text-white px-5 pt-24">
-          <p className="uppercase tracking-[0.25em] text-[11px] sm:text-xs text-cloud/80 mb-6">
-            Presentando a
-          </p>
-          <Image
-            src="/images/brand/lockup-cream.png"
-            alt="HANAK — Sky Resort & Villas Club"
-            width={280}
-            height={176}
-            priority
-            className="w-44 sm:w-56 lg:w-64 h-auto"
-          />
-          <SunArc className="mt-8 sm:mt-10" color="#fff" />
-        </div>
-      </section>
+      {/* HERO — atardecer → mar de nubes que sube y revela el bloque siguiente */}
+      <HeroSequence />
 
       {/* INTRO — El primer Sky Resort de Latinoamérica + ubicación */}
       <section className="max-w-5xl mx-auto px-5 sm:px-8 py-20 sm:py-28 text-center">
