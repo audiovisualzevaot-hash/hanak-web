@@ -1,48 +1,104 @@
 import Link from "next/link";
+import Image from "next/image";
 import { nav, site } from "@/lib/content";
+import Marquee from "./Marquee";
+import {
+  InstagramIcon,
+  FacebookIcon,
+  YoutubeIcon,
+  TiktokIcon,
+  PinterestIcon,
+  WhatsappIcon,
+} from "./SocialIcons";
+
+const languages = ["English", "Español", "Français", "Italiano", "Português"];
 
 export default function Footer() {
+  const [first, ...rest] = nav;
+  const last = rest.pop()!;
+
   return (
-    <footer className="bg-forest text-cloud/90 mt-auto">
-      <div className="max-w-7xl mx-auto px-5 sm:px-8 py-14 grid grid-cols-1 sm:grid-cols-3 gap-10 text-sm">
-        <div>
-          <p className="font-display text-xl text-white mb-3">{site.name}</p>
-          <p className="text-cloud/70 leading-relaxed">
-            Desarrollado por {site.developer}, con {site.developerYears} de
-            trayectoria en el sector inmobiliario. Registrados ante SUNARP.
-            Miembros de la Cámara de Comercio de Lima.
-          </p>
-        </div>
+    <footer className="mt-auto">
+      <Marquee />
 
-        <div>
-          <p className="text-cloud/50 uppercase tracking-wider text-xs mb-3">Navegación</p>
-          <ul className="space-y-2">
-            {nav.map((item) => (
-              <li key={item.href}>
-                <Link href={item.href} className="hover:text-white transition">
-                  {item.label}
-                </Link>
-              </li>
-            ))}
-          </ul>
-        </div>
+      <div className="bg-forest text-cloud">
+        <div className="max-w-7xl mx-auto px-5 sm:px-8 pt-12 sm:pt-16 flex flex-col sm:flex-row sm:items-start justify-between gap-8">
+          <div>
+            <p className="font-display italic text-lg sm:text-xl text-cloud/90 mb-4">
+              Descubre Hanak Sky Resort
+            </p>
+            <div className="flex items-center gap-4 text-cloud/80">
+              <a href={site.social.instagram} target="_blank" aria-label="Instagram" className="hover:text-white transition">
+                <InstagramIcon />
+              </a>
+              <a href={site.social.facebook} target="_blank" aria-label="Facebook" className="hover:text-white transition">
+                <FacebookIcon />
+              </a>
+              <span aria-hidden className="opacity-50">
+                <YoutubeIcon />
+              </span>
+              <a href={site.social.tiktok} target="_blank" aria-label="TikTok" className="hover:text-white transition">
+                <TiktokIcon />
+              </a>
+              <span aria-hidden className="opacity-50">
+                <PinterestIcon />
+              </span>
+              <a href={`https://wa.me/51${site.whatsapp}`} target="_blank" aria-label="WhatsApp" className="hover:text-white transition">
+                <WhatsappIcon />
+              </a>
+            </div>
+          </div>
 
-        <div>
-          <p className="text-cloud/50 uppercase tracking-wider text-xs mb-3">Contacto</p>
-          <ul className="space-y-2 text-cloud/80">
-            <li>{site.phone}</li>
-            <li>{site.email}</li>
-            <li>{site.address}</li>
-          </ul>
-          <div className="flex gap-4 mt-4">
-            <a href={site.social.instagram} target="_blank" className="hover:text-white transition">Instagram</a>
-            <a href={site.social.tiktok} target="_blank" className="hover:text-white transition">TikTok</a>
-            <a href={site.social.facebook} target="_blank" className="hover:text-white transition">Facebook</a>
+          <div className="text-right">
+            <p className="font-display italic text-lg sm:text-xl text-cloud/90 mb-4">Lenguaje</p>
+            <div className="flex flex-wrap justify-end gap-x-3 gap-y-1 text-sm">
+              {languages.map((lang) => (
+                <span
+                  key={lang}
+                  className={lang === "Español" ? "text-white" : "text-cloud/50"}
+                >
+                  {lang}
+                </span>
+              ))}
+            </div>
           </div>
         </div>
-      </div>
-      <div className="border-t border-cloud/10 py-4 text-center text-xs text-cloud/50">
-        © {new Date().getFullYear()} {site.fullName}
+
+        {/* Marca centrada — lockup real (isotipo + wordmark), tono crema para fondo oscuro */}
+        <div className="flex flex-col items-center text-center pt-10 sm:pt-14 pb-8">
+          <Image
+            src="/images/brand/lockup-cream.png"
+            alt={`${site.name} — Sky Resort & Villas Club`}
+            width={280}
+            height={176}
+            className="w-40 sm:w-52 h-auto"
+          />
+        </div>
+
+        <div className="max-w-7xl mx-auto px-5 sm:px-8">
+          <div className="border-t border-cloud/15" />
+          <nav className="flex flex-wrap items-center justify-center sm:justify-between gap-x-6 gap-y-3 py-6 text-xs uppercase tracking-[0.12em]">
+            <Link href={first.href} className="italic text-cloud/70 hover:text-white transition">
+              {first.label}
+            </Link>
+            <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-cloud/80">
+              {rest.map((item) => (
+                <Link key={item.href} href={item.href} className="hover:text-white transition">
+                  {item.label}
+                </Link>
+              ))}
+            </div>
+            <Link href={last.href} className="italic text-cloud/70 hover:text-white transition">
+              {last.label}
+            </Link>
+          </nav>
+          <div className="border-t border-cloud/15" />
+          <p className="text-center text-[11px] sm:text-xs text-cloud/50 py-5">
+            © HANAK · Prototipo digital. Datos comerciales, legales,
+            ambientales, tiempos y disponibilidades deben validarse antes de
+            publicación.
+          </p>
+        </div>
       </div>
     </footer>
   );

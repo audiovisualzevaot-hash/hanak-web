@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { useReserve } from "./ReserveContext";
 
 /**
  * Sección "Priorizamos la experiencia de la selva peruana" — Inicio.
@@ -14,6 +15,7 @@ import { useEffect, useRef, useState } from "react";
 export default function PriorizamosSelva() {
   const trackRef = useRef<HTMLDivElement>(null);
   const [progress, setProgress] = useState(0);
+  const { open } = useReserve();
 
   useEffect(() => {
     const onScroll = () => {
@@ -44,14 +46,26 @@ export default function PriorizamosSelva() {
   const textScale = 0.94 + progress * 0.06;
   const labelOpacity = Math.max(0, (progress - 0.35) / 0.5);
 
-  const cardWidth = "clamp(150px, 30vw, 380px)";
+  const cardWidth = "clamp(140px, 26vw, 320px)";
+  const leftTilt = -8 + progress * 2;
+  const rightTilt = 8 - progress * 2;
+  const ctaOpacity = Math.max(0, (progress - 0.6) / 0.35);
 
   return (
     <section ref={trackRef} className="relative h-[220vh]">
-      <div className="sticky top-0 h-screen overflow-hidden bg-forest flex items-center justify-center">
+      <div className="sticky top-0 h-screen overflow-hidden flex items-center justify-center">
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src="/images/masterplan/dentro-de-la-selva.webp"
+          alt=""
+          aria-hidden
+          className="absolute inset-0 w-full h-full object-cover"
+        />
+        <div className="absolute inset-0 bg-forest-dark/55" />
+
         {/* Titular central */}
         <div
-          className="relative z-10 text-center px-6 max-w-2xl pointer-events-none"
+          className="relative z-10 text-center px-6 max-w-2xl pointer-events-none flex flex-col items-center"
           style={{ opacity: textOpacity, transform: `scale(${textScale})` }}
         >
           <p className="uppercase tracking-[0.2em] text-xs sm:text-sm text-cloud/70 mb-4">
@@ -60,14 +74,25 @@ export default function PriorizamosSelva() {
           <h2 className="font-display text-3xl sm:text-5xl lg:text-6xl text-white leading-tight">
             Priorizamos la experiencia de la selva peruana
           </h2>
+          <p className="mt-3 text-xs sm:text-sm uppercase tracking-[0.2em] text-cloud/60">
+            Desde las alturas
+          </p>
+          <button
+            onClick={open}
+            className="mt-8 pointer-events-auto inline-flex items-center gap-1.5 bg-forest-dark text-white text-xs uppercase tracking-[0.12em] rounded-full px-6 py-3 transition-opacity"
+            style={{ opacity: ctaOpacity, transitionDuration: "300ms" }}
+          >
+            Conoce la experiencia
+            <span aria-hidden>↗</span>
+          </button>
         </div>
 
         {/* Tarjeta izquierda — Sobre las nubes */}
         <div
-          className="absolute top-1/2 left-1/2 z-20 aspect-[3/4] rounded-2xl overflow-hidden shadow-2xl"
+          className="absolute top-1/2 left-1/2 z-20 aspect-[3/4] rounded-xl overflow-hidden shadow-2xl ring-4 ring-white/90"
           style={{
             width: cardWidth,
-            transform: `translate(calc(-100% + ${leftX}vw), -50%)`,
+            transform: `translate(calc(-100% + ${leftX}vw), -50%) rotate(${leftTilt}deg)`,
           }}
         >
           {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -77,19 +102,19 @@ export default function PriorizamosSelva() {
             className="w-full h-full object-cover"
           />
           <div
-            className="absolute inset-x-0 bottom-0 p-4 sm:p-6 bg-gradient-to-t from-black/70 to-transparent transition-opacity duration-300"
+            className="absolute inset-x-0 bottom-0 p-3 sm:p-4 bg-gradient-to-t from-black/70 to-transparent transition-opacity duration-300"
             style={{ opacity: labelOpacity }}
           >
-            <p className="text-white font-display text-base sm:text-xl">Sobre las nubes</p>
+            <p className="text-white font-display text-sm sm:text-lg">Sobre las nubes</p>
           </div>
         </div>
 
         {/* Tarjeta derecha — Dentro de la selva */}
         <div
-          className="absolute top-1/2 left-1/2 z-20 aspect-[3/4] rounded-2xl overflow-hidden shadow-2xl"
+          className="absolute top-1/2 left-1/2 z-20 aspect-[3/4] rounded-xl overflow-hidden shadow-2xl ring-4 ring-white/90"
           style={{
             width: cardWidth,
-            transform: `translate(${rightX}vw, -50%)`,
+            transform: `translate(${rightX}vw, -50%) rotate(${rightTilt}deg)`,
           }}
         >
           {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -99,10 +124,10 @@ export default function PriorizamosSelva() {
             className="w-full h-full object-cover"
           />
           <div
-            className="absolute inset-x-0 bottom-0 p-4 sm:p-6 bg-gradient-to-t from-black/70 to-transparent transition-opacity duration-300"
+            className="absolute inset-x-0 bottom-0 p-3 sm:p-4 bg-gradient-to-t from-black/70 to-transparent transition-opacity duration-300"
             style={{ opacity: labelOpacity }}
           >
-            <p className="text-white font-display text-base sm:text-xl">Dentro de la selva</p>
+            <p className="text-white font-display text-sm sm:text-lg">Dentro de la selva</p>
           </div>
         </div>
       </div>

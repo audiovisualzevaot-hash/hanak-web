@@ -19,7 +19,6 @@ const gealova = localFont({
 });
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
-import FloatingCapsule from "@/components/FloatingCapsule";
 import ReservePanel from "@/components/ReservePanel";
 import { ReserveProvider } from "@/components/ReserveContext";
 import { site } from "@/lib/content";
@@ -38,7 +37,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <Header />
           <main className="flex-1">{children}</main>
           <Footer />
-          <FloatingCapsule />
           <ReservePanel />
         </ReserveProvider>
       </body>

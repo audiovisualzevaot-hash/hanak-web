@@ -24,9 +24,19 @@ export default function MediaPlaceholder({
   src,
   priority = false,
 }: Props) {
+  // Tailwind genera las utilidades de "position" en el orden en que las
+  // encuentra al escanear el código — no en el orden en que aparecen en el
+  // string de className. Si esta base siempre incluyera "relative", en
+  // ciertos builds esa regla podía terminar ganando sobre el "absolute" que
+  // pasan los heros de página completa, colapsando la imagen a 0x0. Por eso
+  // el positioning es condicional: solo agregamos "relative" cuando el
+  // caller no trae su propio position utility.
+  const hasOwnPosition = /\b(absolute|fixed|sticky|static)\b/.test(className);
+  const position = hasOwnPosition ? "" : "relative";
+
   if (src) {
     return (
-      <div className={`${aspect} ${className} relative overflow-hidden rounded-xl`}>
+      <div className={`${aspect} ${position} ${className} overflow-hidden rounded-xl`}>
         <Image
           src={src}
           alt={label}
@@ -35,18 +45,13 @@ export default function MediaPlaceholder({
           sizes="100vw"
           className="object-cover"
         />
-        {kind === "video" && (
-          <span className="absolute bottom-3 right-3 z-10 text-[10px] uppercase tracking-wider bg-charcoal/70 text-white rounded-full px-2.5 py-1">
-            ▶ video pendiente
-          </span>
-        )}
       </div>
     );
   }
 
   return (
     <div
-      className={`${aspect} ${className} relative overflow-hidden rounded-xl bg-gradient-to-br from-forest/20 via-cloud-soft to-sky/20 flex items-end`}
+      className={`${aspect} ${position} ${className} overflow-hidden rounded-xl bg-gradient-to-br from-forest/20 via-cloud-soft to-sky/20 flex items-end`}
     >
       <div className="absolute inset-0 opacity-30 [background-image:repeating-linear-gradient(45deg,var(--hanak-charcoal)_0,var(--hanak-charcoal)_1px,transparent_1px,transparent_10px)]" />
       <span className="relative z-10 m-3 text-[10px] uppercase tracking-wider bg-charcoal/70 text-white rounded-full px-2.5 py-1">

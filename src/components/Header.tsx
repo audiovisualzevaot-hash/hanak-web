@@ -5,29 +5,13 @@ import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import { nav, site } from "@/lib/content";
 import { useReserve } from "./ReserveContext";
+import LogoMark from "./LogoMark";
 
 // Páginas cuya sección superior es una foto/video a pantalla completa: en
 // estas el header nace transparente con texto claro y se convierte en un
 // fondo sólido al hacer scroll (igual que en ayana.com). El resto (Masterplan,
 // News) no tiene hero fotográfico arriba, así que el header nace ya sólido.
 const HERO_PAGES = ["/", "/tarapoto", "/hanak", "/vistas", "/experiencia", "/como-llegar"];
-
-// Marca de HANAK — PLACEHOLDER geométrico mientras llega el archivo vectorial
-// real del isotipo (el mandala de 4 pétalos que se ve en las mesas de
-// Illustrator). Usa currentColor para heredar el color claro/oscuro del header.
-function LogoMark() {
-  return (
-    <svg width="28" height="28" viewBox="0 0 40 40" fill="none" className="shrink-0">
-      <circle cx="20" cy="20" r="18.5" stroke="currentColor" strokeWidth="1" opacity="0.6" />
-      <g stroke="currentColor" strokeWidth="1.3" fill="none">
-        <path d="M20 10c3.5 3 3.5 7 0 10-3.5-3-3.5-7 0-10Z" />
-        <path d="M30 20c-3 3.5-7 3.5-10 0 3-3.5 7-3.5 10 0Z" />
-        <path d="M20 30c-3.5-3-3.5-7 0-10 3.5 3 3.5 7 0 10Z" />
-        <path d="M10 20c3-3.5 7-3.5 10 0-3 3.5-7 3.5-10 0Z" />
-      </g>
-    </svg>
-  );
-}
 
 export default function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -68,25 +52,47 @@ export default function Header() {
         } ${transparent ? "text-white" : "text-charcoal"}`}
       >
         <Link href="/" className="flex items-center gap-2.5 font-display text-lg sm:text-xl tracking-wide">
-          <LogoMark />
+          <LogoMark size={30} tone={transparent ? "cream" : "forest"} />
           <span>{site.name}</span>
         </Link>
 
-        <nav className="hidden lg:flex items-center gap-7 text-xs uppercase tracking-[0.12em]">
-          {nav.map((item) => {
-            const active = pathname === item.href;
+        <nav className="hidden lg:flex items-center gap-8 text-xs uppercase tracking-[0.12em]">
+          {(() => {
+            const [first, ...rest] = nav;
+            const last = rest.pop()!;
             return (
-              <Link
-                key={item.href}
-                href={item.href}
-                className={`transition-colors hover:opacity-100 ${
-                  active ? "italic underline underline-offset-4 opacity-100" : "opacity-80"
-                }`}
-              >
-                {item.label}
-              </Link>
+              <>
+                <Link
+                  href={first.href}
+                  className="italic opacity-70 hover:opacity-100 transition-opacity"
+                >
+                  {first.label}
+                </Link>
+                <div className="flex items-center gap-7">
+                  {rest.map((item) => {
+                    const active = pathname === item.href;
+                    return (
+                      <Link
+                        key={item.href}
+                        href={item.href}
+                        className={`transition-colors hover:opacity-100 ${
+                          active ? "underline underline-offset-4 opacity-100" : "opacity-80"
+                        }`}
+                      >
+                        {item.label}
+                      </Link>
+                    );
+                  })}
+                </div>
+                <Link
+                  href={last.href}
+                  className="italic opacity-70 hover:opacity-100 transition-opacity"
+                >
+                  {last.label}
+                </Link>
+              </>
             );
-          })}
+          })()}
         </nav>
 
         <div className="flex items-center gap-3">

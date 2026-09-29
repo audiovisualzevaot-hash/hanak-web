@@ -1,113 +1,171 @@
 import Link from "next/link";
+import Image from "next/image";
 import MediaPlaceholder from "@/components/MediaPlaceholder";
 import PriorizamosSelva from "@/components/PriorizamosSelva";
-import { testimonios, newsCalendario, nav } from "@/lib/content";
+import PeruMiniMap from "@/components/PeruMiniMap";
+import SociosFundadores from "@/components/SociosFundadores";
+import SunArc from "@/components/SunArc";
+import { newsCalendario } from "@/lib/content";
 
 export default function InicioPage() {
   return (
     <>
-      {/* HERO */}
-      <section className="relative min-h-[92vh] flex items-end sm:items-center overflow-hidden bg-forest">
+      {/* HERO — imagen gigante de fondo, logo centrado, transición a nubes */}
+      <section className="relative min-h-[105vh] flex flex-col items-center justify-center overflow-hidden bg-forest">
         <MediaPlaceholder
           label="Hero — tomas aéreas en distintos horarios, degradado de nubes en loop"
           kind="video"
           aspect="aspect-auto"
-          className="absolute inset-0 !rounded-none opacity-60"
+          className="absolute inset-0 !rounded-none"
           src="/images/inicio/header.webp"
           priority
         />
-        <div className="relative z-10 max-w-7xl mx-auto px-5 sm:px-8 pb-16 sm:pb-0 text-white">
-          <p className="uppercase tracking-[0.2em] text-xs sm:text-sm text-cloud/80 mb-4">
-            Proyecto en pre-lanzamiento
+        <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-black/10 to-cloud" />
+
+        <div className="relative z-10 flex flex-col items-center text-center text-white px-5 pt-24">
+          <p className="uppercase tracking-[0.25em] text-[11px] sm:text-xs text-cloud/80 mb-6">
+            Presentando a
           </p>
-          <h1 className="font-display text-4xl sm:text-6xl lg:text-7xl leading-[1.05] max-w-3xl">
-            El primer Sky Resort de Latinoamérica
-          </h1>
-          <p className="mt-6 max-w-xl text-base sm:text-lg text-cloud/85 leading-relaxed">
-            Sobre las nubes de la Amazonía peruana nace un nuevo concepto de
-            vivir: un resort donde cada casa te pertenece y cada amanecer es
-            un privilegio. HANAK no es un condominio — es una forma distinta
-            de estar en el mundo.
-          </p>
+          <Image
+            src="/images/brand/lockup-cream.png"
+            alt="HANAK — Sky Resort & Villas Club"
+            width={280}
+            height={176}
+            priority
+            className="w-44 sm:w-56 lg:w-64 h-auto"
+          />
+          <SunArc className="mt-8 sm:mt-10" color="#fff" />
+        </div>
+      </section>
+
+      {/* INTRO — El primer Sky Resort de Latinoamérica + ubicación */}
+      <section className="max-w-5xl mx-auto px-5 sm:px-8 py-20 sm:py-28 text-center">
+        <h2 className="font-display text-3xl sm:text-5xl text-forest leading-tight">
+          El primer Sky Resort
+          <br className="hidden sm:block" /> de Latinoamérica
+        </h2>
+        <p className="mt-5 max-w-xl mx-auto text-charcoal/70 leading-relaxed">
+          Sobre las nubes de la Amazonía peruana nace un nuevo concepto de
+          vivir: un resort donde cada casa te pertenece y cada amanecer es un
+          privilegio. HANAK no es un condominio — es una forma distinta de
+          estar en el mundo.
+        </p>
+        <div className="mt-12">
+          <PeruMiniMap />
         </div>
       </section>
 
       <PriorizamosSelva />
 
-      {/* ACCESO RAPIDO */}
-      <section className="max-w-7xl mx-auto px-5 sm:px-8 py-14 sm:py-20">
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 sm:gap-6">
-          {nav.slice(0, 4).map((item) => (
-            <Link
-              key={item.href}
-              href={item.href}
-              className="group border border-charcoal/10 rounded-xl p-5 hover:border-forest hover:bg-forest hover:text-white transition"
-            >
-              <p className="font-display text-lg">{item.label}</p>
-              <p className="text-xs mt-1 text-charcoal/50 group-hover:text-cloud/80">
-                Explorar →
-              </p>
-            </Link>
-          ))}
-        </div>
-      </section>
+      {/* LLEGAR A HANAK — teaser */}
+      <section className="relative min-h-[80vh] flex items-center overflow-hidden bg-forest">
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src="/images/inicio/2da-foto.webp"
+          alt="Vista aérea camino a Hanak"
+          className="absolute inset-0 w-full h-full object-cover opacity-70"
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-black/10 to-transparent" />
 
-      {/* TESTIMONIOS */}
-      <section className="bg-cloud-soft py-16 sm:py-24">
-        <div className="max-w-7xl mx-auto px-5 sm:px-8">
-          <h2 className="font-display text-3xl sm:text-4xl text-forest mb-2">
-            Quienes ya eligieron Hanak lo cuentan mejor que nosotros
-          </h2>
-          <p className="text-charcoal/60 mb-10 max-w-2xl">
-            Testimonios reales de propietarios que ya adquirieron su lote en
-            HANAK.
-          </p>
-
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {testimonios.map((t) => (
-              <div key={t.nombre} className="bg-white rounded-xl overflow-hidden border border-charcoal/10">
-                <MediaPlaceholder
-                  label={`Video testimonio — ${t.nombre}`}
-                  kind="video"
-                  aspect="aspect-[4/5]"
-                  className="!rounded-none"
-                />
-                <div className="p-5">
-                  <p className="font-display text-base text-forest leading-snug mb-3">
-                    “{t.cita}”
-                  </p>
-                  <p className="text-sm text-charcoal/80">
-                    {t.nombre} — Propietario, Lote {t.lote}
-                  </p>
-                  <p className="text-xs text-charcoal/50 mt-1">{t.contexto}</p>
-                </div>
-              </div>
-            ))}
+        <div className="relative z-10 max-w-7xl mx-auto px-5 sm:px-8 w-full grid lg:grid-cols-2 gap-10 items-center">
+          <div className="text-white">
+            <p className="uppercase tracking-[0.2em] text-xs text-cloud/80 mb-3">Ubicación</p>
+            <h2 className="font-display text-3xl sm:text-5xl leading-tight">
+              Llegar a HANAK es muy sencillo
+            </h2>
           </div>
-        </div>
-      </section>
 
-      {/* NEWS PREVIEW */}
-      <section className="max-w-7xl mx-auto px-5 sm:px-8 py-16 sm:py-24">
-        <div className="flex items-end justify-between mb-8">
-          <h2 className="font-display text-3xl sm:text-4xl text-forest">News</h2>
-          <Link href="/news" className="text-sm text-forest hover:underline">
-            Ver todo →
+          <Link
+            href="/como-llegar"
+            className="group relative block aspect-[4/3] max-w-sm ml-auto w-full rounded-2xl overflow-hidden shadow-2xl"
+          >
+            <MediaPlaceholder
+              label="Camino a Hanak — grupo llegando entre la neblina"
+              aspect="aspect-[4/3]"
+              className="!rounded-none h-full"
+              src="/images/hanak/2da-foto-suelta.webp"
+            />
+            <span className="absolute bottom-4 right-4 w-11 h-11 rounded-full bg-white/90 flex items-center justify-center text-forest group-hover:bg-white transition">
+              ↗
+            </span>
           </Link>
         </div>
-        <p className="text-charcoal/60 mb-8 max-w-2xl">
-          Próximamente: historias, novedades y guías para quienes ya son
-          parte de Hanak.
-        </p>
-        <div className="grid sm:grid-cols-3 gap-6">
-          {newsCalendario.slice(0, 3).map((title) => (
-            <div key={title} className="border border-charcoal/10 rounded-xl p-5 hover:border-forest transition">
-              <p className="text-xs uppercase tracking-wider text-charcoal/40 mb-2">
-                Próximamente
+      </section>
+
+      {/* DENTRO DE HANAK — teaser masterplan */}
+      <section className="max-w-7xl mx-auto px-5 sm:px-8 py-20 sm:py-28 grid lg:grid-cols-2 gap-10 items-center">
+        <Link href="/masterplan" className="group block order-2 lg:order-1">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src="/images/inicio/mapa.webp"
+            alt="Masterplan de Hanak"
+            className="w-full rounded-2xl -rotate-2 group-hover:rotate-0 transition-transform duration-500 shadow-xl"
+          />
+        </Link>
+        <div className="order-1 lg:order-2">
+          <p className="uppercase tracking-[0.2em] text-xs text-charcoal/50 mb-3">
+            Explora el proyecto
+          </p>
+          <h2 className="font-display text-3xl sm:text-5xl text-forest leading-tight mb-4">
+            Dentro de HANAK
+          </h2>
+          <p className="text-charcoal/70 leading-relaxed max-w-md">
+            Veinte manzanas, cada una con su propia relación con el paisaje.
+            Recorre el masterplan y encuentra la tuya.
+          </p>
+          <Link
+            href="/masterplan"
+            className="inline-flex items-center gap-1.5 mt-6 text-sm text-forest hover:underline"
+          >
+            Ver el masterplan <span aria-hidden>→</span>
+          </Link>
+        </div>
+      </section>
+
+      {/* SOCIOS FUNDADORES */}
+      <section className="bg-cloud-soft py-20 sm:py-28">
+        <div className="max-w-6xl mx-auto px-5 sm:px-8">
+          <p className="uppercase tracking-[0.2em] text-xs text-charcoal/50 mb-3 text-center lg:text-left">
+            Experiencias de
+          </p>
+          <h2 className="font-display text-3xl sm:text-5xl text-forest mb-12 text-center lg:text-left">
+            Socios Fundadores
+          </h2>
+          <SociosFundadores />
+        </div>
+      </section>
+
+      {/* HISTORIAS, NOVEDADES — teaser oscuro */}
+      <section className="bg-forest-dark text-cloud py-16 sm:py-24">
+        <div className="max-w-7xl mx-auto px-5 sm:px-8">
+          <div className="flex items-end justify-between mb-10">
+            <div>
+              <h2 className="font-display text-3xl sm:text-4xl">Historias, novedades</h2>
+              <p className="italic text-cloud/60 mt-1">
+                y todo lo que va sucediendo en HANAK
               </p>
-              <p className="font-display text-lg text-charcoal leading-snug">{title}</p>
             </div>
-          ))}
+            <Link href="/news" className="text-sm text-cloud/80 hover:text-white hidden sm:block">
+              Ver todo →
+            </Link>
+          </div>
+          <div className="grid sm:grid-cols-3 gap-6">
+            {newsCalendario.slice(0, 3).map((title) => (
+              <Link
+                key={title}
+                href="/news"
+                className="group block rounded-xl overflow-hidden border border-cloud/15 hover:border-cloud/40 transition"
+              >
+                <MediaPlaceholder label={title} aspect="aspect-[4/3]" className="!rounded-none" />
+                <div className="p-4">
+                  <p className="text-[11px] uppercase tracking-wider text-cloud/50 mb-1">
+                    Próximamente
+                  </p>
+                  <p className="font-display text-base leading-snug">{title}</p>
+                </div>
+              </Link>
+            ))}
+          </div>
         </div>
       </section>
     </>
