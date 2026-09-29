@@ -4,11 +4,20 @@
 // Tarapoto, y una ruta punteada hacia el aeropuerto. No son fronteras
 // reales — es una ilustración esquemática, en el mismo lenguaje visual
 // que RutaAnimada.
-export default function PeruMiniMap({ className = "" }: { className?: string }) {
+export default function PeruMiniMap({
+  className = "",
+  maxWidthClassName = "max-w-[230px] sm:max-w-[460px]",
+}: {
+  className?: string;
+  /** Ancho máximo del mapa — se pasa aparte para no chocar con la clase
+   *  base w-full/mx-auto (dos utilidades max-w-* en el mismo elemento
+   *  compiten de forma impredecible en Tailwind). */
+  maxWidthClassName?: string;
+}) {
   return (
     <svg
       viewBox="0 0 420 300"
-      className={`w-full max-w-[190px] sm:max-w-sm mx-auto ${className}`}
+      className={`w-full mx-auto ${maxWidthClassName} ${className}`}
       role="img"
       aria-label="Ubicación de Hanak, entre Lamas, Tarapoto y el aeropuerto"
     >
@@ -54,12 +63,20 @@ export default function PeruMiniMap({ className = "" }: { className?: string }) 
       </g>
 
       {/* Pin pequeño — referencia cercana (El Resort de Tarapoto) */}
-      <g transform="translate(168,108)">
+      <g transform="translate(168,102)">
         <path
           d="M0 -20 C 11 -20 19 -12 19 -1 C 19 12 0 28 0 28 C 0 28 -19 12 -19 -1 C -19 -12 -11 -20 0 -20 Z"
           fill="var(--color-olive)"
         />
         <circle cx="0" cy="-2" r="6" fill="var(--hanak-cloud)" opacity="0.9" />
+        <text
+          x="0"
+          y="-32"
+          textAnchor="middle"
+          className="fill-forest font-display text-[9px]"
+        >
+          El Resort de Tarapoto
+        </text>
       </g>
 
       {/* Pin HANAK */}

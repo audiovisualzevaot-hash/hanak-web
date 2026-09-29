@@ -15,46 +15,47 @@ export default function InicioPage() {
 
       <PriorizamosSelva />
 
-      {/* LLEGAR A HANAK — teaser */}
-      <section className="relative min-h-[80vh] flex items-center overflow-hidden bg-forest">
+      {/* LLEGAR A HANAK — una sola foto continua de fondo (grupo llegando a
+          Hanak), con el lockup + título arriba y el botón de ir a
+          "Cómo llegar" abajo a la derecha, tal como en el export: no es un
+          texto + una tarjeta de foto aparte, todo va sobre la misma foto. */}
+      <Link
+        href="/como-llegar"
+        className="group relative flex min-h-[85vh] sm:min-h-[95vh] flex-col overflow-hidden bg-forest"
+      >
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
-          src="/images/inicio/2da-foto.webp"
-          alt="Vista aérea camino a Hanak"
-          className="absolute inset-0 w-full h-full object-cover opacity-70"
+          src="/images/inicio/llegar-a-hanak.webp"
+          alt="Grupo llegando a Hanak entre las nubes"
+          className="absolute inset-0 h-full w-full object-cover"
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-black/10 to-transparent" />
 
-        <div className="relative z-10 max-w-7xl mx-auto px-5 sm:px-8 w-full grid lg:grid-cols-2 gap-10 items-center">
-          <div className="text-white">
-            <p className="uppercase tracking-[0.2em] text-xs text-cloud/80 mb-3">Ubicación</p>
-            <h2 className="font-display text-3xl sm:text-5xl leading-tight mb-4">
-              Llegar a HANAK es muy sencillo
-            </h2>
-            <Link
-              href="/como-llegar"
-              className="inline-flex items-center gap-1.5 text-sm text-cloud hover:text-white hover:underline"
-            >
-              Ver cómo llegar <span aria-hidden>→</span>
-            </Link>
+        <div className="relative z-10 flex flex-1 items-start justify-between gap-6 px-5 pt-16 sm:px-10 sm:pt-20">
+          <div className="flex items-start gap-3">
+            <svg viewBox="0 0 60 60" className="mt-0.5 h-8 w-8 sm:h-10 sm:w-10 shrink-0">
+              <path
+                d="M14 6c8-4 18-3 24 3 6 6 4 16 10 20 5 4 4 12-2 16-6 5-15 3-21 7-6 4-14 2-17-4-3-6 1-11-1-18-2-7-2-16 7-24Z"
+                fill="var(--color-forest-dark)"
+              />
+            </svg>
+            <div className="text-forest-dark">
+              <p className="font-display text-lg sm:text-2xl leading-none">HANAK</p>
+              <p className="text-[9px] sm:text-[11px] uppercase tracking-[0.18em] text-forest-dark/70">
+                Sky Resort &amp; Villas Club
+              </p>
+            </div>
           </div>
 
-          <Link
-            href="/como-llegar"
-            className="group relative block aspect-[4/3] max-w-sm ml-auto w-full rounded-2xl overflow-hidden shadow-2xl"
-          >
-            <MediaPlaceholder
-              label="Camino a Hanak — grupo llegando entre la neblina"
-              aspect="aspect-[4/3]"
-              className="!rounded-none h-full"
-              src="/images/hanak/2da-foto-suelta.webp"
-            />
-            <span className="absolute bottom-4 right-4 w-11 h-11 rounded-full bg-white/90 flex items-center justify-center text-forest group-hover:bg-white transition">
-              ↗
-            </span>
-          </Link>
+          <div className="text-right text-forest-dark">
+            <h2 className="font-display text-3xl sm:text-5xl leading-tight">Llegar a HANAK</h2>
+            <p className="mt-1 text-lg sm:text-2xl text-forest-dark/70">es muy sencillo</p>
+          </div>
         </div>
-      </section>
+
+        <span className="absolute bottom-6 right-5 sm:bottom-10 sm:right-10 z-10 flex h-11 w-11 sm:h-14 sm:w-14 items-center justify-center rounded-full bg-white/90 text-forest transition group-hover:bg-white">
+          ↗
+        </span>
+      </Link>
 
       {/* DENTRO DE HANAK — teaser masterplan */}
       <section className="max-w-7xl mx-auto px-5 sm:px-8 py-20 sm:py-28 grid lg:grid-cols-2 gap-10 items-center">

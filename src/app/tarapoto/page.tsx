@@ -2,21 +2,41 @@ import MediaPlaceholder from "@/components/MediaPlaceholder";
 import SunArc from "@/components/SunArc";
 import LogoMark from "@/components/LogoMark";
 import VideoLightbox from "@/components/VideoLightbox";
+import ScrollingGallery from "@/components/ScrollingGallery";
 import { tarapotoStats } from "@/lib/content";
 
 export const metadata = { title: "Tarapoto — HANAK" };
 
-const culturaFotos: [string, string][] = [
-  ["/images/tarapoto/lista1.webp", "Cacao de San Martín"],
-  ["/images/tarapoto/lista2.webp", "Juane, plato típico amazónico"],
-  ["/images/tarapoto/lista3.webp", "Danza típica sanmartinense"],
-  ["/images/tarapoto/lista4.webp", "Catarata de Ahuashiyacu"],
+// Bryan: cada foto que envía trae, al inicio de su nombre original, la
+// pestaña a la que pertenece (p. ej. "TARAPOTO_LISTA1", "TARAPOTO_
+// SECUENCIA 1"...) — estos tres grupos respetan exactamente esos
+// conjuntos originales, completos (antes se usaban solo algunas fotos de
+// cada grupo, y una foto de "lista" se había colado en la galería final).
+
+// Tira de cultura y gastronomía — las 5 fotos "LISTA" completas
+const culturaFotos = [
+  { src: "/images/tarapoto/lista1.webp", alt: "Cacao de San Martín" },
+  { src: "/images/tarapoto/lista2.webp", alt: "Juane, plato típico amazónico" },
+  { src: "/images/tarapoto/lista3.webp", alt: "Danza típica sanmartinense" },
+  { src: "/images/tarapoto/lista4.webp", alt: "Catarata de Ahuashiyacu" },
+  { src: "/images/tarapoto/lista5.webp", alt: "Fauna de la Amazonía peruana" },
 ];
 
-const crecimientoFotos: [string, string][] = [
-  ["/images/tarapoto/secuencia-1.webp", "Lamas, mirador del castillo"],
-  ["/images/tarapoto/secuencia-2.webp", "Morales, corredor urbano en expansión"],
-  ["/images/tarapoto/secuencia-3.webp", "Vía de acceso entre cerros hacia Hanak"],
+// Galería "SECUENCIA" — las 5 fotos "SECUENCIA" completas
+const secuenciaFotos = [
+  { src: "/images/tarapoto/secuencia-1.webp", alt: "Lamas, pueblo colonial entre cerros" },
+  { src: "/images/tarapoto/secuencia-2.webp", alt: "Centro de Tarapoto en expansión" },
+  { src: "/images/tarapoto/secuencia-3.webp", alt: "Cerros y trocha hacia Hanak" },
+  { src: "/images/tarapoto/secuencia-4.webp", alt: "Valle de Tarapoto entre montañas y nubes" },
+  { src: "/images/tarapoto/secuencia-5.webp", alt: "Aves propias de la selva amazónica" },
+];
+
+// Galería "ÚLTIMA SECUENCIA" — las 4 fotos "ULTIMA SECUENCIA" completas
+const ultimaSecuenciaFotos = [
+  { src: "/images/tarapoto/ultima-secuencia-1.webp", alt: "Atardecer sobre los cerros de Tarapoto" },
+  { src: "/images/tarapoto/ultima-secuencia-2.webp", alt: "Parapente sobre la Cordillera Escalera" },
+  { src: "/images/tarapoto/ultima-secuencia-3.webp", alt: "Río serpenteando el valle amazónico" },
+  { src: "/images/tarapoto/ultima-secuencia-4.webp", alt: "Cacao recién cosechado" },
 ];
 
 export default function TarapotoPage() {
@@ -84,21 +104,11 @@ export default function TarapotoPage() {
         </div>
       </section>
 
-      {/* 4 fotos — cultura y gastronomía de San Martín */}
-      <div className="grid grid-cols-2 sm:grid-cols-4">
-        {culturaFotos.map(([src, label]) => (
-          <MediaPlaceholder
-            key={src}
-            label={label}
-            aspect="aspect-[3/4]"
-            className="!rounded-none"
-            src={src}
-          />
-        ))}
-      </div>
+      {/* Tira de cultura y gastronomía — 5 fotos, 4 visibles, deslizando sola */}
+      <ScrollingGallery images={culturaFotos} itemWidthClass="w-[50vw] sm:w-[25vw]" durationSeconds={30} />
 
-      {/* PLAZA DE ARMAS — full bleed con frase */}
-      <section className="relative min-h-[85vh] flex items-end overflow-hidden bg-forest">
+      {/* PLAZA DE ARMAS — full bleed, protagonista */}
+      <section className="relative min-h-[100vh] sm:min-h-[110vh] flex items-end overflow-hidden bg-forest">
         <MediaPlaceholder
           label="Plaza de Armas de Tarapoto, vista aérea"
           kind="video"
@@ -133,8 +143,8 @@ export default function TarapotoPage() {
         </div>
       </section>
 
-      {/* CRECIMIENTO */}
-      <section className="bg-cloud pt-14 pb-20 sm:pb-28 text-center">
+      {/* CRECIMIENTO — galería "SECUENCIA", deslizando sola */}
+      <section className="bg-cloud pt-14 pb-14 sm:pb-20 text-center">
         <div className="max-w-3xl mx-auto px-5 sm:px-8">
           <h2 className="font-display text-3xl sm:text-5xl text-forest leading-tight">
             El crecimiento de Tarapoto
@@ -150,46 +160,22 @@ export default function TarapotoPage() {
             firmes de la selva peruana.
           </p>
         </div>
-        <div className="grid grid-cols-3 max-w-5xl mx-auto mt-14 gap-1 px-5 sm:px-8">
-          {crecimientoFotos.map(([src, label]) => (
-            <MediaPlaceholder
-              key={src}
-              label={label}
-              aspect="aspect-[3/4]"
-              className="!rounded-none"
-              src={src}
-            />
-          ))}
-        </div>
       </section>
+      <ScrollingGallery images={secuenciaFotos} itemWidthClass="w-[50vw] sm:w-[33.333vw]" durationSeconds={34} />
 
-      {/* PAISAJES — puerta de entrada a la Amazonía */}
-      <section className="bg-cloud pb-8 text-center">
+      {/* PAISAJES — puerta de entrada a la Amazonía — galería "ÚLTIMA
+          SECUENCIA", deslizando sola */}
+      <section className="bg-cloud pt-20 pb-8 text-center">
         <h2 className="font-display text-2xl sm:text-4xl text-forest max-w-3xl mx-auto px-5 sm:px-8 leading-snug">
           Tarapoto es la puerta de entrada de los paisajes más impresionantes
           de la Amazonía:
         </h2>
       </section>
-      <div className="grid grid-cols-4 gap-1 max-w-6xl mx-auto px-5 sm:px-8">
-        <MediaPlaceholder
-          label="Catarata de Ahuashiyacu"
-          aspect="aspect-[3/4]"
-          className="!rounded-none col-span-1"
-          src="/images/tarapoto/lista4.webp"
-        />
-        <MediaPlaceholder
-          label="Mirador de la Cordillera Escalera"
-          aspect="aspect-[3/4]"
-          className="!rounded-none col-span-2"
-          src="/images/tarapoto/ultima-secuencia-2.webp"
-        />
-        <MediaPlaceholder
-          label="Laguna Azul"
-          aspect="aspect-[3/4]"
-          className="!rounded-none col-span-1"
-          src="/images/tarapoto/ultima-secuencia-3.webp"
-        />
-      </div>
+      <ScrollingGallery
+        images={ultimaSecuenciaFotos}
+        itemWidthClass="w-[50vw] sm:w-[25vw]"
+        durationSeconds={30}
+      />
       <section className="bg-cloud pt-10 pb-20 sm:pb-28 text-center">
         <div className="max-w-2xl mx-auto px-5 sm:px-8">
           <p className="font-display text-xl sm:text-2xl text-forest leading-snug">

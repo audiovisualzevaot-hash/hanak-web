@@ -33,10 +33,17 @@ export default function Header() {
 
   // Al entrar a una página sin hero (o cambiar de ruta), reiniciar el estado
   // de scroll para que la próxima página con hero vuelva a nacer transparente.
-  useEffect(() => {
+  // Ajustado durante el render (no en un efecto) siguiendo el patrón de React
+  // para "resetear estado cuando cambia una prop": evita el re-render en
+  // cascada de un setState síncrono dentro de useEffect. Es seguro en SSR
+  // porque `prevPathname` nace igual a `pathname`, así que la rama de abajo
+  // solo corre tras una navegación real del lado del cliente.
+  const [prevPathname, setPrevPathname] = useState(pathname);
+  if (pathname !== prevPathname) {
+    setPrevPathname(pathname);
     setMenuOpen(false);
-    setScrolled(window.scrollY > 60);
-  }, [pathname]);
+    setScrolled(typeof window !== "undefined" && window.scrollY > 60);
+  }
 
   return (
     <header

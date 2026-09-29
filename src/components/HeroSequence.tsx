@@ -131,27 +131,29 @@ export default function HeroSequence() {
             className="absolute inset-0 z-10 flex flex-col items-center justify-center text-center px-5 pt-12 sm:pt-0"
             style={{ opacity: introOpacity, transform: `translateY(${introY}px)` }}
           >
-            <h2 className="font-display text-2xl sm:text-5xl text-forest leading-tight drop-shadow-sm">
+            <h2 className="font-display uppercase text-xl sm:text-5xl text-forest leading-tight drop-shadow-sm">
               El primer Sky Resort
               <br className="hidden sm:block" /> de Latinoamérica
             </h2>
-            <p className="mt-2 sm:mt-4 max-w-md text-xs sm:text-base text-forest/80 leading-snug sm:leading-relaxed">
-              Sobre las nubes de la Amazonía peruana nace un nuevo concepto de
-              vivir:
-              <span className="hidden sm:inline">
-                {" "}
-                un resort donde cada momento del día es un privilegio.
-              </span>
-            </p>
 
-            <div className="mt-2 sm:mt-8 flex items-start gap-2 sm:gap-3 max-w-[240px] sm:max-w-sm text-left">
+            <div className="mt-2 sm:mt-4 max-w-md">
+              <p className="text-xs sm:text-base text-charcoal font-medium leading-snug">
+                Sobre las nubes de la Amazonía peruana nace un nuevo concepto
+                de vivir:
+              </p>
+              <p className="text-[11px] sm:text-base text-charcoal/55 leading-snug">
+                Un resort donde cada momento del día es un privilegio.
+              </p>
+            </div>
+
+            <div className="mt-2 sm:mt-6 flex items-start gap-2 sm:gap-3 max-w-[230px] sm:max-w-sm text-left">
               <span className="mt-1 h-6 sm:h-10 w-px bg-charcoal/25 shrink-0" />
               <p className="text-[11px] sm:text-sm leading-snug">
                 <span className="text-charcoal font-medium">
                   HANAK no es un condominio,
                 </span>{" "}
                 <span className="text-charcoal/60">
-                  es una forma distinta de estar en el mundo.
+                  Es una forma distinta de estar en el mundo.
                 </span>
               </p>
             </div>
