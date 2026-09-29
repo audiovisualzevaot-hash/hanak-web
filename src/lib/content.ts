@@ -78,38 +78,37 @@ export type Manzana = {
   vista: string;
   experiencia: "Sobre las nubes" | "Dentro de la selva" | "Mixta";
   cercania: string;
-  // Posición en % sobre la ilustración real del masterplan (llegó de Bryan:
-  // public/images/masterplan/mapa.webp). Son una ESTIMACIÓN VISUAL mía sobre
-  // los clusters de lotes que se ven en la acuarela — mantienen la topología
-  // relativa que ya describían las "cercanías" (entrada arriba-izquierda,
-  // cordillera arriba-derecha, parque 1 / tramo final abajo-derecha), pero no
-  // están confirmadas letra por letra contra el plano real. Pendiente que
-  // Bryan confirme o mande una versión con las manzanas ya rotuladas.
+  // Posición en % sobre public/images/masterplan/mapa.webp. Calculadas a
+  // partir de la captura de referencia que Bryan mandó con las manzanas ya
+  // rotuladas: se leyó el pixel de cada pin en esa captura y se transformó al
+  // encuadre de mapa.webp (que tiene más margen crema alrededor). Precisión
+  // alta pero no perfecta — es una lectura visual, no coordenadas exportadas
+  // del archivo fuente.
   x: number;
   y: number;
 };
 
 export const manzanas: Manzana[] = [
-  { id: "A", lotes: 4, vista: "Colchón de nubes y valle/ciudad", experiencia: "Sobre las nubes", cercania: "Ingreso del resort", x: 34, y: 27 },
-  { id: "B", lotes: 6, vista: "Colchón de nubes y valle/ciudad", experiencia: "Sobre las nubes", cercania: "Ingreso del resort", x: 40, y: 24 },
-  { id: "C", lotes: 7, vista: "Colchón de nubes, valle y cordillera (espalda)", experiencia: "Sobre las nubes", cercania: "Zonas deportivas y recepción", x: 46, y: 22 },
-  { id: "D", lotes: 6, vista: "Colchón de nubes, valle y cordillera (espalda)", experiencia: "Sobre las nubes", cercania: "Zona de talleres recreativos", x: 44, y: 30 },
-  { id: "E", lotes: 7, vista: "Colchón de nubes y valle/ciudad", experiencia: "Sobre las nubes", cercania: "Ingreso del resort", x: 36, y: 35 },
-  { id: "F", lotes: 6, vista: "Colchón de nubes y valle/ciudad", experiencia: "Sobre las nubes", cercania: "Ingreso y zona de degustación", x: 42, y: 38 },
-  { id: "G", lotes: 6, vista: "Cordillera", experiencia: "Dentro de la selva", cercania: "Sendero de jardines Hanak y zonas deportivas", x: 58, y: 30 },
-  { id: "H", lotes: 6, vista: "Inmersión total en flora y fauna", experiencia: "Dentro de la selva", cercania: "Sendero de jardines Hanak", x: 64, y: 35 },
-  { id: "I", lotes: 9, vista: "Cordillera y valle de Tarapoto", experiencia: "Dentro de la selva", cercania: "Inicio de la zona inmersiva", x: 72, y: 28 },
-  { id: "J", lotes: 4, vista: "Colchón de nubes y valle/ciudad", experiencia: "Sobre las nubes", cercania: "Pasaje Inti (con Manzana K), talleres y parque central", x: 48, y: 45 },
-  { id: "K", lotes: 4, vista: "Colchón de nubes y valle/ciudad", experiencia: "Sobre las nubes", cercania: "Pasaje Inti (con Manzana J), talleres y parque central", x: 54, y: 45 },
-  { id: "L", lotes: 4, vista: "Colchón de nubes y valle/ciudad", experiencia: "Sobre las nubes", cercania: "Pasaje Illari (con Manzana M), degustación y parque central", x: 46, y: 52 },
-  { id: "M", lotes: 4, vista: "Colchón de nubes y valle/ciudad", experiencia: "Sobre las nubes", cercania: "Club House, piscina infinita y degustación", x: 52, y: 55 },
-  { id: "N", lotes: 8, vista: "Mixta: colchón de nubes/valle y selva", experiencia: "Mixta", cercania: "Parque 1, tramo final del proyecto", x: 82, y: 60 },
-  { id: "O", lotes: 11, vista: "Cordillera, inmersa en selva", experiencia: "Dentro de la selva", cercania: "Parque 1", x: 74, y: 65 },
-  { id: "P", lotes: 4, vista: "Colchón de nubes y valle/ciudad", experiencia: "Sobre las nubes", cercania: "Parque 1 y parque central", x: 62, y: 60 },
-  { id: "Q", lotes: 4, vista: "Colchón de nubes y valle/ciudad", experiencia: "Sobre las nubes", cercania: "Parque central, parque 1, Club House y piscina infinita", x: 56, y: 65 },
-  { id: "R", lotes: 10, vista: "Colchón de nubes y valle/ciudad", experiencia: "Sobre las nubes", cercania: "Club House, piscina infinita y parque central", x: 50, y: 68 },
-  { id: "S", lotes: 3, vista: "Colchón de nubes y valle/ciudad", experiencia: "Sobre las nubes", cercania: "—", x: 44, y: 70 },
-  { id: "T", lotes: 7, vista: "Colchón de nubes y valle/ciudad", experiencia: "Sobre las nubes", cercania: "Club House y piscina infinita", x: 38, y: 66 },
+  { id: "A", lotes: 4, vista: "Colchón de nubes y valle/ciudad", experiencia: "Sobre las nubes", cercania: "Ingreso del resort", x: 32.3, y: 40.3 },
+  { id: "B", lotes: 6, vista: "Colchón de nubes y valle/ciudad", experiencia: "Sobre las nubes", cercania: "Ingreso del resort", x: 31.4, y: 44.6 },
+  { id: "C", lotes: 7, vista: "Colchón de nubes, valle y cordillera (espalda)", experiencia: "Sobre las nubes", cercania: "Zonas deportivas y recepción", x: 41.7, y: 34.4 },
+  { id: "D", lotes: 6, vista: "Colchón de nubes, valle y cordillera (espalda)", experiencia: "Sobre las nubes", cercania: "Zona de talleres recreativos", x: 45.6, y: 36.8 },
+  { id: "E", lotes: 7, vista: "Colchón de nubes y valle/ciudad", experiencia: "Sobre las nubes", cercania: "Ingreso del resort", x: 40.1, y: 46.0 },
+  { id: "F", lotes: 6, vista: "Colchón de nubes y valle/ciudad", experiencia: "Sobre las nubes", cercania: "Ingreso y zona de degustación", x: 45.7, y: 49.8 },
+  { id: "G", lotes: 6, vista: "Cordillera", experiencia: "Dentro de la selva", cercania: "Sendero de jardines Hanak y zonas deportivas", x: 55.4, y: 32.5 },
+  { id: "H", lotes: 6, vista: "Inmersión total en flora y fauna", experiencia: "Dentro de la selva", cercania: "Sendero de jardines Hanak", x: 65.3, y: 37.9 },
+  { id: "I", lotes: 9, vista: "Cordillera y valle de Tarapoto", experiencia: "Dentro de la selva", cercania: "Inicio de la zona inmersiva", x: 62.4, y: 40.3 },
+  { id: "J", lotes: 4, vista: "Colchón de nubes y valle/ciudad", experiencia: "Sobre las nubes", cercania: "Pasaje Inti (con Manzana K), talleres y parque central", x: 55.2, y: 40.5 },
+  { id: "K", lotes: 4, vista: "Colchón de nubes y valle/ciudad", experiencia: "Sobre las nubes", cercania: "Pasaje Inti (con Manzana J), talleres y parque central", x: 52.0, y: 41.4 },
+  { id: "L", lotes: 4, vista: "Colchón de nubes y valle/ciudad", experiencia: "Sobre las nubes", cercania: "Pasaje Illari (con Manzana M), degustación y parque central", x: 51.8, y: 48.6 },
+  { id: "M", lotes: 4, vista: "Colchón de nubes y valle/ciudad", experiencia: "Sobre las nubes", cercania: "Club House, piscina infinita y degustación", x: 55.3, y: 52.3 },
+  { id: "N", lotes: 8, vista: "Mixta: colchón de nubes/valle y selva", experiencia: "Mixta", cercania: "Parque 1, tramo final del proyecto", x: 80.7, y: 50.5 },
+  { id: "O", lotes: 11, vista: "Cordillera, inmersa en selva", experiencia: "Dentro de la selva", cercania: "Parque 1", x: 70.9, y: 47.0 },
+  { id: "P", lotes: 4, vista: "Colchón de nubes y valle/ciudad", experiencia: "Sobre las nubes", cercania: "Parque 1 y parque central", x: 68.5, y: 49.2 },
+  { id: "Q", lotes: 4, vista: "Colchón de nubes y valle/ciudad", experiencia: "Sobre las nubes", cercania: "Parque central, parque 1, Club House y piscina infinita", x: 67.8, y: 55.1 },
+  { id: "R", lotes: 10, vista: "Colchón de nubes y valle/ciudad", experiencia: "Sobre las nubes", cercania: "Club House, piscina infinita y parque central", x: 69.4, y: 60.2 },
+  { id: "S", lotes: 3, vista: "Colchón de nubes y valle/ciudad", experiencia: "Sobre las nubes", cercania: "—", x: 84.7, y: 65.1 },
+  { id: "T", lotes: 7, vista: "Colchón de nubes y valle/ciudad", experiencia: "Sobre las nubes", cercania: "Club House y piscina infinita", x: 79.6, y: 70.2 },
 ];
 
 export const skyClubAmenidades = [
