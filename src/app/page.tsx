@@ -1,5 +1,6 @@
 import Link from "next/link";
 import MediaPlaceholder from "@/components/MediaPlaceholder";
+import PriorizamosSelva from "@/components/PriorizamosSelva";
 import { testimonios, newsCalendario, nav } from "@/lib/content";
 
 export default function InicioPage() {
@@ -30,6 +31,8 @@ export default function InicioPage() {
           </p>
         </div>
       </section>
+
+      <PriorizamosSelva />
 
       {/* ACCESO RAPIDO */}
       <section className="max-w-7xl mx-auto px-5 sm:px-8 py-14 sm:py-20">

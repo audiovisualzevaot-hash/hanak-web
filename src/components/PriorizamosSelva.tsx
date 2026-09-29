@@ -1,0 +1,111 @@
+"use client";
+
+import { useEffect, useRef, useState } from "react";
+
+/**
+ * Sección "Priorizamos la experiencia de la selva peruana" — Inicio.
+ *
+ * Dos fotos (elemento-izquierda = Sobre las nubes / elemento-derecha =
+ * Dentro de la selva) arrancan unidas en el centro, cubriendo el titular.
+ * A medida que se hace scroll, cada una se separa hacia su lado —como
+ * cartas que se abren— revelando el texto central. Referencia dada por
+ * Bryan: efecto de scroll con las dos tarjetas separándose.
+ */
+export default function PriorizamosSelva() {
+  const trackRef = useRef<HTMLDivElement>(null);
+  const [progress, setProgress] = useState(0);
+
+  useEffect(() => {
+    const onScroll = () => {
+      const el = trackRef.current;
+      if (!el) return;
+      const rect = el.getBoundingClientRect();
+      const total = rect.height - window.innerHeight;
+      if (total <= 0) {
+        setProgress(rect.top <= 0 ? 1 : 0);
+        return;
+      }
+      const scrolled = Math.min(Math.max(-rect.top, 0), total);
+      setProgress(scrolled / total);
+    };
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onScroll);
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", onScroll);
+    };
+  }, []);
+
+  const travel = 30; // vw adicionales de separación en el punto máximo
+  const leftX = -progress * travel;
+  const rightX = progress * travel;
+  const textOpacity = 0.12 + progress * 0.88;
+  const textScale = 0.94 + progress * 0.06;
+  const labelOpacity = Math.max(0, (progress - 0.35) / 0.5);
+
+  const cardWidth = "clamp(150px, 30vw, 380px)";
+
+  return (
+    <section ref={trackRef} className="relative h-[220vh]">
+      <div className="sticky top-0 h-screen overflow-hidden bg-forest flex items-center justify-center">
+        {/* Titular central */}
+        <div
+          className="relative z-10 text-center px-6 max-w-2xl pointer-events-none"
+          style={{ opacity: textOpacity, transform: `scale(${textScale})` }}
+        >
+          <p className="uppercase tracking-[0.2em] text-xs sm:text-sm text-cloud/70 mb-4">
+            Dos formas de vivir Hanak
+          </p>
+          <h2 className="font-display text-3xl sm:text-5xl lg:text-6xl text-white leading-tight">
+            Priorizamos la experiencia de la selva peruana
+          </h2>
+        </div>
+
+        {/* Tarjeta izquierda — Sobre las nubes */}
+        <div
+          className="absolute top-1/2 left-1/2 z-20 aspect-[3/4] rounded-2xl overflow-hidden shadow-2xl"
+          style={{
+            width: cardWidth,
+            transform: `translate(calc(-100% + ${leftX}vw), -50%)`,
+          }}
+        >
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src="/images/inicio/elemento-izquierda.webp"
+            alt="Sobre las nubes"
+            className="w-full h-full object-cover"
+          />
+          <div
+            className="absolute inset-x-0 bottom-0 p-4 sm:p-6 bg-gradient-to-t from-black/70 to-transparent transition-opacity duration-300"
+            style={{ opacity: labelOpacity }}
+          >
+            <p className="text-white font-display text-base sm:text-xl">Sobre las nubes</p>
+          </div>
+        </div>
+
+        {/* Tarjeta derecha — Dentro de la selva */}
+        <div
+          className="absolute top-1/2 left-1/2 z-20 aspect-[3/4] rounded-2xl overflow-hidden shadow-2xl"
+          style={{
+            width: cardWidth,
+            transform: `translate(${rightX}vw, -50%)`,
+          }}
+        >
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src="/images/inicio/elemento-derecha.webp"
+            alt="Dentro de la selva"
+            className="w-full h-full object-cover"
+          />
+          <div
+            className="absolute inset-x-0 bottom-0 p-4 sm:p-6 bg-gradient-to-t from-black/70 to-transparent transition-opacity duration-300"
+            style={{ opacity: labelOpacity }}
+          >
+            <p className="text-white font-display text-base sm:text-xl">Dentro de la selva</p>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}

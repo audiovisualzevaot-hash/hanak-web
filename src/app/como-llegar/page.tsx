@@ -1,4 +1,5 @@
 import MediaPlaceholder from "@/components/MediaPlaceholder";
+import RutaAnimada from "@/components/RutaAnimada";
 import { site } from "@/lib/content";
 
 export const metadata = { title: "Cómo llegar — HANAK" };
@@ -23,6 +24,15 @@ export default function ComoLlegarPage() {
       </section>
 
       <section className="max-w-7xl mx-auto px-5 sm:px-8 py-16 sm:py-24 space-y-16">
+        <div>
+          <h2 className="font-display text-2xl text-forest mb-3">La ruta completa</h2>
+          <p className="text-charcoal/70 leading-relaxed text-lg mb-8 max-w-2xl">
+            Desde Lima hasta Hanak, en dos tramos: un vuelo directo a Tarapoto
+            y un breve trayecto por tierra hasta el resort.
+          </p>
+          <RutaAnimada />
+        </div>
+
         <div className="grid lg:grid-cols-2 gap-10 items-center">
           <div>
             <h2 className="font-display text-2xl text-forest mb-3">De Lima a Tarapoto</h2>
