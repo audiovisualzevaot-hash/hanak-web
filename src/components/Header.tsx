@@ -1,0 +1,160 @@
+"use client";
+
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { useEffect, useState } from "react";
+import { nav, site } from "@/lib/content";
+import { useReserve } from "./ReserveContext";
+
+// Páginas cuya sección superior es una foto/video a pantalla completa: en
+// estas el header nace transparente con texto claro y se convierte en un
+// fondo sólido al hacer scroll (igual que en ayana.com). El resto (Masterplan,
+// News) no tiene hero fotográfico arriba, así que el header nace ya sólido.
+const HERO_PAGES = ["/", "/tarapoto", "/hanak", "/vistas", "/experiencia", "/como-llegar"];
+
+// Marca de HANAK — PLACEHOLDER geométrico mientras llega el archivo vectorial
+// real del isotipo (el mandala de 4 pétalos que se ve en las mesas de
+// Illustrator). Usa currentColor para heredar el color claro/oscuro del header.
+function LogoMark() {
+  return (
+    <svg width="28" height="28" viewBox="0 0 40 40" fill="none" className="shrink-0">
+      <circle cx="20" cy="20" r="18.5" stroke="currentColor" strokeWidth="1" opacity="0.6" />
+      <g stroke="currentColor" strokeWidth="1.3" fill="none">
+        <path d="M20 10c3.5 3 3.5 7 0 10-3.5-3-3.5-7 0-10Z" />
+        <path d="M30 20c-3 3.5-7 3.5-10 0 3-3.5 7-3.5 10 0Z" />
+        <path d="M20 30c-3.5-3-3.5-7 0-10 3.5 3 3.5 7 0 10Z" />
+        <path d="M10 20c3-3.5 7-3.5 10 0-3 3.5-7 3.5-10 0Z" />
+      </g>
+    </svg>
+  );
+}
+
+export default function Header() {
+  const [menuOpen, setMenuOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+  const { open } = useReserve();
+  const pathname = usePathname();
+
+  const hasHero = HERO_PAGES.includes(pathname);
+  // Transparente solo si la página tiene hero Y todavía no se hizo scroll.
+  const transparent = hasHero && !scrolled;
+
+  useEffect(() => {
+    if (!hasHero) return;
+    const onScroll = () => setScrolled(window.scrollY > 60);
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, [hasHero]);
+
+  // Al entrar a una página sin hero (o cambiar de ruta), reiniciar el estado
+  // de scroll para que la próxima página con hero vuelva a nacer transparente.
+  useEffect(() => {
+    setMenuOpen(false);
+    setScrolled(window.scrollY > 60);
+  }, [pathname]);
+
+  return (
+    <header
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
+        transparent
+          ? "bg-transparent border-b border-transparent"
+          : "bg-cloud/95 backdrop-blur-md border-b border-charcoal/10 shadow-[0_1px_0_rgba(0,0,0,0.02)]"
+      }`}
+    >
+      <div
+        className={`max-w-7xl mx-auto px-5 sm:px-8 flex items-center justify-between transition-all duration-500 ${
+          transparent ? "h-20 sm:h-24" : "h-16 sm:h-20"
+        } ${transparent ? "text-white" : "text-charcoal"}`}
+      >
+        <Link href="/" className="flex items-center gap-2.5 font-display text-lg sm:text-xl tracking-wide">
+          <LogoMark />
+          <span>{site.name}</span>
+        </Link>
+
+        <nav className="hidden lg:flex items-center gap-7 text-xs uppercase tracking-[0.12em]">
+          {nav.map((item) => {
+            const active = pathname === item.href;
+            return (
+              <Link
+                key={item.href}
+                href={item.href}
+                className={`transition-colors hover:opacity-100 ${
+                  active ? "italic underline underline-offset-4 opacity-100" : "opacity-80"
+                }`}
+              >
+                {item.label}
+              </Link>
+            );
+          })}
+        </nav>
+
+        <div className="flex items-center gap-3">
+          <button
+            onClick={open}
+            className={`hidden sm:inline-flex items-center gap-1.5 text-xs uppercase tracking-[0.12em] rounded-full px-5 py-2.5 transition-colors ${
+              transparent
+                ? "bg-white/10 text-white border border-white/40 hover:bg-white/20"
+                : "bg-forest-dark text-white hover:bg-forest"
+            }`}
+          >
+            Agendar una cita
+            <span aria-hidden>↗</span>
+          </button>
+          <button
+            aria-label="Abrir menú"
+            className="lg:hidden"
+            onClick={() => setMenuOpen((v) => !v)}
+          >
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+              {menuOpen ? <path d="M6 6l12 12M6 18L18 6" /> : <path d="M3 6h18M3 12h18M3 18h18" />}
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      {/* Menú móvil — overlay a pantalla completa con transición suave */}
+      <div
+        className={`lg:hidden fixed inset-0 top-0 bg-cloud transition-all duration-300 ${
+          menuOpen ? "opacity-100 visible" : "opacity-0 invisible pointer-events-none"
+        }`}
+      >
+        <div className="flex items-center justify-between px-5 h-16 border-b border-charcoal/10">
+          <Link href="/" className="flex items-center gap-2.5 font-display text-lg text-forest" onClick={() => setMenuOpen(false)}>
+            <LogoMark />
+            {site.name}
+          </Link>
+          <button aria-label="Cerrar menú" onClick={() => setMenuOpen(false)} className="text-forest">
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+              <path d="M6 6l12 12M6 18L18 6" />
+            </svg>
+          </button>
+        </div>
+        <nav className="flex flex-col gap-6 px-8 pt-10 text-lg uppercase tracking-wide">
+          {nav.map((item, i) => (
+            <Link
+              key={item.href}
+              href={item.href}
+              onClick={() => setMenuOpen(false)}
+              style={{ transitionDelay: menuOpen ? `${i * 40}ms` : "0ms" }}
+              className={`text-charcoal/80 hover:text-forest transition-all duration-300 ${
+                menuOpen ? "translate-y-0 opacity-100" : "translate-y-2 opacity-0"
+              } ${pathname === item.href ? "italic text-forest" : ""}`}
+            >
+              {item.label}
+            </Link>
+          ))}
+          <button
+            onClick={() => {
+              setMenuOpen(false);
+              open();
+            }}
+            className="mt-4 bg-forest-dark text-white text-sm uppercase tracking-[0.12em] rounded-full px-6 py-3.5 inline-flex items-center justify-center gap-1.5 w-fit"
+          >
+            Agendar una cita <span aria-hidden>↗</span>
+          </button>
+        </nav>
+      </div>
+    </header>
+  );
+}

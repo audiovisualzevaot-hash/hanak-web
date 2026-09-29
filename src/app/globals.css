@@ -1,26 +1,47 @@
 @import "tailwindcss";
 
+/*
+  Paleta HANAK — PLACEHOLDER
+  Inspirada en la identidad de marca (selva, cielo, nubes) mientras llegan
+  los valores hex exactos extraídos de las capturas de Illustrator.
+  No confundir con la paleta final — se reemplaza en cuanto lleguen las capturas.
+*/
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --hanak-forest: #1f3a2e;
+  --hanak-forest-dark: #12231b;
+  --hanak-cloud: #f4f1e8;
+  --hanak-cloud-soft: #eae5d6;
+  --hanak-sky: #7c97a8;
+  --hanak-gold: #b08d57;
+  --hanak-charcoal: #23231f;
+  --hanak-white: #ffffff;
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-forest: var(--hanak-forest);
+  --color-forest-dark: var(--hanak-forest-dark);
+  --color-cloud: var(--hanak-cloud);
+  --color-cloud-soft: var(--hanak-cloud-soft);
+  --color-sky: var(--hanak-sky);
+  --color-gold: var(--hanak-gold);
+  --color-charcoal: var(--hanak-charcoal);
+  --font-sans: "Montserrat", ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-gealova), ui-serif, Georgia, serif;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+html {
+  scroll-behavior: smooth;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--hanak-cloud);
+  color: var(--hanak-charcoal);
+}
+
+/* Utilidad para el efecto de transición continua entre secciones (pendiente refinar con video/loop real) */
+.fade-edge-top {
+  mask-image: linear-gradient(to bottom, transparent, black 12%);
+}
+.fade-edge-bottom {
+  mask-image: linear-gradient(to top, transparent, black 12%);
 }
