@@ -1,6 +1,7 @@
 import MediaPlaceholder from "@/components/MediaPlaceholder";
 import SunArc from "@/components/SunArc";
 import LogoMark from "@/components/LogoMark";
+import VideoLightbox from "@/components/VideoLightbox";
 import { tarapotoStats } from "@/lib/content";
 
 export const metadata = { title: "Tarapoto — HANAK" };
@@ -49,6 +50,15 @@ export default function TarapotoPage() {
               premium es, con diferencia, el que mejor la captura.
             </p>
           </div>
+
+          {/* Video de Tarapoto — Bryan aclaró que el hero es un video, no
+              una foto fija: al hacer click se abre el reproductor. Queda
+              listo para recibir el .mp4 definitivo (ver VideoLightbox). */}
+          <VideoLightbox
+            overlay={false}
+            label="Reproducir video de Tarapoto"
+            className="mt-10"
+          />
         </div>
 
         <div className="relative z-10 mt-auto px-5 sm:px-8 pb-16 sm:pb-20 pt-14">

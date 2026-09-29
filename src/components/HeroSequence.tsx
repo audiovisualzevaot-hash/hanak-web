@@ -9,15 +9,20 @@ const clamp01 = (v: number) => Math.min(Math.max(v, 0), 1);
 /**
  * Secuencia de apertura de Inicio, en dos fotos reales de Bryan:
  *
- * 1. Atardecer sobre los cerros de Tarapoto (header.webp) — el hero, con el
- *    lockup y el logo.
- * 2. Mar de nubes (nubes.webp) — a medida que se hace scroll, las nubes
- *    "suben" desde abajo y cubren la pantalla, fundiéndose con el fondo
- *    crema del siguiente bloque ("El primer Sky Resort de Latinoamérica").
+ * 1. Atardecer sobre los cerros de Tarapoto (header.webp) — queda fija,
+ *    de fondo, sin zoom ni movimiento de cámara.
+ * 2. Mar de nubes (nubes.webp) — es una segunda "hoja" larga, del tamaño
+ *    completo de la pantalla, que se desliza desde abajo hacia arriba y
+ *    cubre por completo a la primera. No hay corte, no hay disolución de
+ *    opacidad, no hay zoom: es puro deslizamiento vertical, como una
+ *    cortina o una hoja larga que sube y tapa el fotograma anterior.
  *
- * Referencia pedida por Bryan: fluidez cinematográfica tipo ayana.com — la
- * transición del scroll son las propias nubes, no un corte duro entre
- * secciones.
+ * Corrección pedida por Bryan tras ver ayana.com: "todo es fluido, sin
+ * cortes, sin zooms, es deslizar y como si fuesen hojas pero largas."
+ * Se elimina cualquier scale()/Ken Burns y cualquier crossfade de
+ * opacidad entre las dos fotos — el único movimiento es el translateY
+ * de la hoja de nubes deslizándose sobre la hoja de atardecer, que
+ * permanece perfectamente quieta.
  */
 export default function HeroSequence() {
   const trackRef = useRef<HTMLDivElement>(null);
@@ -45,31 +50,21 @@ export default function HeroSequence() {
     };
   }, []);
 
-  // Capa 1 — foto de atardecer: se desvanece y hace un leve zoom (Ken Burns)
-  const heroOpacity = 1 - clamp01(progress / 0.45);
-  const heroScale = 1 + progress * 0.12;
+  // Texto central — se desvanece apenas empieza a subir la hoja de nubes,
+  // para que no quede atrapado bajo ella. Un leve translateY, sin escalas.
+  const textOpacity = 1 - clamp01(progress / 0.28);
+  const textY = -progress * 50;
 
-  // Texto central — se disuelve antes que la propia foto, para no
-  // amontonarse con el mar de nubes que entra detrás
-  const textOpacity = 1 - clamp01(progress / 0.22);
-  const textY = -progress * 60;
-
-  // Capa 2 — mar de nubes: entra desde abajo ("sube") y se asienta
-  const cloudsOpacity = clamp01((progress - 0.22) / 0.4);
-  const cloudsY = (1 - clamp01((progress - 0.2) / 0.65)) * 14;
-  const cloudsScale = 1.1 - progress * 0.08;
-
-  // Fundido final hacia el crema del siguiente bloque
-  const fadeToNext = clamp01((progress - 0.8) / 0.2);
+  // La "hoja" de nubes: entra completa desde abajo (100% fuera de cuadro)
+  // y se desliza a 0% (cubriendo toda la pantalla). Deslizamiento puro,
+  // sin escala y sin fundido — el propio movimiento es la transición.
+  const sheetSlide = 100 - clamp01(progress / 0.72) * 100;
 
   return (
-    <section ref={trackRef} className="relative h-[240vh] bg-forest-dark">
+    <section ref={trackRef} className="relative h-[220vh] bg-forest-dark">
       <div className="sticky top-0 h-screen overflow-hidden">
-        {/* Capa 1 — atardecer */}
-        <div
-          className="absolute inset-0"
-          style={{ opacity: heroOpacity, transform: `scale(${heroScale})`, willChange: "transform, opacity" }}
-        >
+        {/* Hoja 1 — atardecer, fija, sin zoom ni movimiento */}
+        <div className="absolute inset-0">
           <Image
             src="/images/inicio/header.webp"
             alt="Vista aérea de los cerros de Tarapoto al atardecer"
@@ -78,28 +73,10 @@ export default function HeroSequence() {
             sizes="100vw"
             className="object-cover"
           />
-          <div className="absolute inset-0 bg-gradient-to-b from-black/20 via-black/5 to-forest-dark/70" />
+          <div className="absolute inset-0 bg-gradient-to-b from-black/20 via-black/5 to-black/30" />
         </div>
 
-        {/* Capa 2 — mar de nubes, sube desde abajo */}
-        <div
-          className="absolute inset-0"
-          style={{
-            opacity: cloudsOpacity,
-            transform: `translateY(${cloudsY}%) scale(${cloudsScale})`,
-            willChange: "transform, opacity",
-          }}
-        >
-          <Image
-            src="/images/inicio/nubes.webp"
-            alt="Mar de nubes cubriendo el valle de Tarapoto"
-            fill
-            sizes="100vw"
-            className="object-cover"
-          />
-        </div>
-
-        {/* Texto central */}
+        {/* Texto central — sobre la hoja de atardecer */}
         <div
           className="absolute inset-0 z-10 flex flex-col items-center justify-center text-center text-white px-5"
           style={{ opacity: textOpacity, transform: `translateY(${textY}px)` }}
@@ -118,11 +95,26 @@ export default function HeroSequence() {
           <SunArc className="mt-8 sm:mt-10" color="#fff" />
         </div>
 
-        {/* Fundido hacia el crema del siguiente bloque */}
+        {/* Hoja 2 — mar de nubes, se desliza completa desde abajo y tapa la hoja 1 */}
         <div
-          className="absolute inset-0 bg-cloud pointer-events-none"
-          style={{ opacity: fadeToNext }}
-        />
+          className="absolute inset-0"
+          style={{
+            transform: `translateY(${sheetSlide}%)`,
+            willChange: "transform",
+          }}
+        >
+          <Image
+            src="/images/inicio/nubes.webp"
+            alt="Mar de nubes cubriendo el valle de Tarapoto"
+            fill
+            sizes="100vw"
+            className="object-cover"
+          />
+          {/* Puente hacia el crema del siguiente bloque, siempre presente
+              en el borde inferior de la hoja para que el empalme con la
+              sección "El primer Sky Resort de Latinoamérica" sea limpio */}
+          <div className="absolute inset-x-0 bottom-0 h-1/4 bg-gradient-to-b from-transparent to-cloud" />
+        </div>
       </div>
     </section>
   );
