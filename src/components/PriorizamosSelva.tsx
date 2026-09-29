@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { useReserve } from "./ReserveContext";
+import Link from "next/link";
 
 /**
  * Sección "Priorizamos la experiencia de la selva peruana" — Inicio.
@@ -11,11 +11,14 @@ import { useReserve } from "./ReserveContext";
  * A medida que se hace scroll, cada una se separa hacia su lado —como
  * cartas que se abren— revelando el texto central. Referencia dada por
  * Bryan: efecto de scroll con las dos tarjetas separándose.
+ *
+ * Las dos tarjetas y el CTA central son el conector de esta sección hacia
+ * /experiencia (pedido explícito de Bryan: cada slide de Inicio debe
+ * enlazar a su pestaña correspondiente).
  */
 export default function PriorizamosSelva() {
   const trackRef = useRef<HTMLDivElement>(null);
   const [progress, setProgress] = useState(0);
-  const { open } = useReserve();
 
   useEffect(() => {
     const onScroll = () => {
@@ -77,18 +80,19 @@ export default function PriorizamosSelva() {
           <p className="mt-3 text-xs sm:text-sm uppercase tracking-[0.2em] text-cloud/60">
             Desde las alturas
           </p>
-          <button
-            onClick={open}
+          <Link
+            href="/experiencia"
             className="mt-8 pointer-events-auto inline-flex items-center gap-1.5 bg-forest-dark text-white text-xs uppercase tracking-[0.12em] rounded-full px-6 py-3 transition-opacity"
             style={{ opacity: ctaOpacity, transitionDuration: "300ms" }}
           >
             Conoce la experiencia
             <span aria-hidden>↗</span>
-          </button>
+          </Link>
         </div>
 
-        {/* Tarjeta izquierda — Sobre las nubes */}
-        <div
+        {/* Tarjeta izquierda — Sobre las nubes (link a Experiencia) */}
+        <Link
+          href="/experiencia"
           className="absolute top-1/2 left-1/2 z-20 aspect-[3/4] rounded-xl overflow-hidden shadow-2xl ring-4 ring-white/90"
           style={{
             width: cardWidth,
@@ -107,10 +111,11 @@ export default function PriorizamosSelva() {
           >
             <p className="text-white font-display text-sm sm:text-lg">Sobre las nubes</p>
           </div>
-        </div>
+        </Link>
 
-        {/* Tarjeta derecha — Dentro de la selva */}
-        <div
+        {/* Tarjeta derecha — Dentro de la selva (link a Experiencia) */}
+        <Link
+          href="/experiencia"
           className="absolute top-1/2 left-1/2 z-20 aspect-[3/4] rounded-xl overflow-hidden shadow-2xl ring-4 ring-white/90"
           style={{
             width: cardWidth,
@@ -129,7 +134,7 @@ export default function PriorizamosSelva() {
           >
             <p className="text-white font-display text-sm sm:text-lg">Dentro de la selva</p>
           </div>
-        </div>
+        </Link>
       </div>
     </section>
   );

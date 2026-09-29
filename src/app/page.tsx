@@ -70,9 +70,15 @@ export default function InicioPage() {
         <div className="relative z-10 max-w-7xl mx-auto px-5 sm:px-8 w-full grid lg:grid-cols-2 gap-10 items-center">
           <div className="text-white">
             <p className="uppercase tracking-[0.2em] text-xs text-cloud/80 mb-3">Ubicación</p>
-            <h2 className="font-display text-3xl sm:text-5xl leading-tight">
+            <h2 className="font-display text-3xl sm:text-5xl leading-tight mb-4">
               Llegar a HANAK es muy sencillo
             </h2>
+            <Link
+              href="/como-llegar"
+              className="inline-flex items-center gap-1.5 text-sm text-cloud hover:text-white hover:underline"
+            >
+              Ver cómo llegar <span aria-hidden>→</span>
+            </Link>
           </div>
 
           <Link
