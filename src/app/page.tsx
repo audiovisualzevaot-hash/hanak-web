@@ -16,11 +16,15 @@ export default function InicioPage() {
       <PriorizamosSelva />
 
       {/* LLEGAR A HANAK — una sola foto continua de fondo (grupo llegando a
-          Hanak). Abajo a la izquierda va la silueta del distrito + el
-          lockup HANAK (tal como en el export — ahí es donde vive el logo
-          en esta sección, no como una línea de marca aparte arriba), el
-          título arriba a la derecha y el botón de ir a "Cómo llegar"
-          abajo a la derecha. Todo sobre la misma foto. */}
+          Hanak). Como en el export de Illustrator: la silueta del distrito
+          + el lockup HANAK van arriba a la IZQUIERDA, a la misma altura
+          que el título "Llegar a HANAK / es muy sencillo" arriba a la
+          derecha — un header de dos columnas sobre la foto, dejando el
+          resto de la imagen (centro y abajo) totalmente libre. Antes el
+          mapa vivía anclado abajo con mt-auto, muy lejos del título; Bryan
+          pidió específicamente subirlo para que quede a la par (el
+          título ya estaba bien, solo el mapa estaba mal colocado). El
+          botón de ir a "Cómo llegar" sigue abajo a la derecha. */}
       <Link
         href="/como-llegar"
         className="group relative flex min-h-[85vh] sm:min-h-[95vh] flex-col overflow-hidden bg-forest"
@@ -32,26 +36,24 @@ export default function InicioPage() {
           className="absolute inset-0 h-full w-full object-cover"
         />
 
-        <div className="relative z-10 flex justify-end px-5 pt-16 sm:px-10 sm:pt-20 lg:px-14 lg:pt-24">
+        <div className="relative z-10 flex items-start justify-between px-5 pt-16 sm:px-10 sm:pt-20 lg:px-14 lg:pt-24">
+          {/* Silueta del distrito de Hanak + lockup — gráfico real
+              exportado por Bryan desde Illustrator con fondo transparente.
+              A la misma altura que el título (items-start), no anclado al
+              fondo de la foto. */}
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src="/images/inicio/mapa-llegar-hanak.webp"
+            alt="Silueta del distrito de Hanak y lockup Hanak Sky Resort & Villas Club"
+            className="w-28 sm:w-44 lg:w-56 xl:w-64 h-auto drop-shadow-sm"
+          />
+
           <div className="text-right text-forest-dark">
             <h2 className="font-display text-3xl sm:text-5xl lg:text-6xl xl:text-7xl leading-tight">
               Llegar a HANAK
             </h2>
             <p className="mt-1 text-lg sm:text-2xl lg:text-3xl text-forest-dark/70">es muy sencillo</p>
           </div>
-        </div>
-
-        {/* Silueta del distrito de Hanak + lockup — gráfico real exportado
-            por Bryan desde Illustrator con fondo transparente (reemplaza
-            la aproximación a mano de la versión anterior). Escala hasta
-            pantallas anchas para que no se vea pequeño ni descentrado. */}
-        <div className="relative z-10 mt-auto px-5 pb-6 sm:px-10 sm:pb-10 lg:px-14 lg:pb-14">
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
-            src="/images/inicio/mapa-llegar-hanak.webp"
-            alt="Silueta del distrito de Hanak y lockup Hanak Sky Resort & Villas Club"
-            className="w-40 sm:w-64 lg:w-80 xl:w-96 h-auto drop-shadow-sm"
-          />
         </div>
 
         <span className="absolute bottom-6 right-5 sm:bottom-10 sm:right-10 z-10 flex h-11 w-11 sm:h-14 sm:w-14 items-center justify-center rounded-full bg-white/90 text-forest transition group-hover:bg-white">
