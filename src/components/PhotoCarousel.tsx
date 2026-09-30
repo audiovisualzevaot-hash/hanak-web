@@ -25,13 +25,27 @@ const AUTOPLAY_MS = 6000;
  * corte + una carga (la siguiente foto recién empezaba a pedirse al
  * navegador en ese momento). Con todas precargadas (loading="eager") no
  * hay nada que esperar al deslizar.
+ *
+ * `className` / `frameClassName` / `dots` son opcionales y no cambian nada
+ * para quien ya usa el componente sin pasarlos (Hanak): permiten reusar el
+ * mismo mecanismo de deslizamiento en una sección a pantalla completa (p.
+ * ej. el hero o el cierre de "Sky Club" en Experiencia), donde no queremos
+ * el marco redondeado ni los puntos de página debajo — ahí `aspect` pasa a
+ * ser "aspect-auto h-full" y el contenedor recibe su alto real vía
+ * `className="absolute inset-0"` desde afuera.
  */
 export default function PhotoCarousel({
   photos,
   aspect = "aspect-[16/9]",
+  className = "",
+  frameClassName = "rounded-xl bg-charcoal/10",
+  dots = true,
 }: {
   photos: Photo[];
   aspect?: string;
+  className?: string;
+  frameClassName?: string;
+  dots?: boolean;
 }) {
   const [index, setIndex] = useState(0);
 
@@ -47,9 +61,16 @@ export default function PhotoCarousel({
     return () => clearInterval(id);
   }, [index, photos.length]);
 
+  // Igual que en MediaPlaceholder: si quien llama ya trae su propia utilidad
+  // de position (p. ej. "absolute inset-0" para un carrusel a pantalla
+  // completa), no agregamos "relative" — Tailwind no garantiza que gane
+  // sobre la clase del caller si ambas compiten por la misma propiedad.
+  const hasOwnPosition = /\b(absolute|fixed|sticky|static)\b/.test(className);
+  const position = hasOwnPosition ? "" : "relative";
+
   return (
-    <div className="relative">
-      <div className={`relative ${aspect} w-full overflow-hidden rounded-xl bg-charcoal/10`}>
+    <div className={`${position} ${className}`}>
+      <div className={`relative ${aspect} w-full h-full overflow-hidden ${frameClassName}`}>
         <div
           className="flex h-full transition-transform duration-700 ease-[cubic-bezier(0.65,0,0.35,1)]"
           style={{
@@ -104,16 +125,18 @@ export default function PhotoCarousel({
             ›
           </button>
 
-          <div className="flex items-center justify-center gap-1.5 mt-4">
-            {photos.map((_, i) => (
-              <span
-                key={i}
-                className={`w-1.5 h-1.5 rounded-full transition-colors ${
-                  i === index ? "bg-forest" : "bg-forest/20"
-                }`}
-              />
-            ))}
-          </div>
+          {dots && (
+            <div className="flex items-center justify-center gap-1.5 mt-4">
+              {photos.map((_, i) => (
+                <span
+                  key={i}
+                  className={`w-1.5 h-1.5 rounded-full transition-colors ${
+                    i === index ? "bg-forest" : "bg-forest/20"
+                  }`}
+                />
+              ))}
+            </div>
+          )}
         </>
       )}
     </div>
