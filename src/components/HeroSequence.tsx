@@ -2,7 +2,6 @@
 
 import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
-import SunArc from "./SunArc";
 import PeruMiniMap from "./PeruMiniMap";
 
 const clamp01 = (v: number) => Math.min(Math.max(v, 0), 1);
@@ -159,11 +158,6 @@ export default function HeroSequence() {
             priority
             className="w-56 sm:w-72 lg:w-80 h-auto animate-hero-intro"
             style={{ animationDelay: "0.35s" }}
-          />
-          <SunArc
-            className="mt-9 sm:mt-11 animate-hero-intro"
-            color="#fff"
-            style={{ animationDelay: "0.7s" }}
           />
         </div>
 

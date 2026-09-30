@@ -1,5 +1,4 @@
 import MediaPlaceholder from "@/components/MediaPlaceholder";
-import SunArc from "@/components/SunArc";
 import LogoMark from "@/components/LogoMark";
 import VideoLightbox from "@/components/VideoLightbox";
 import ScrollingGallery from "@/components/ScrollingGallery";
@@ -54,7 +53,6 @@ export default function TarapotoPage() {
 
         <div className="relative z-10 flex flex-col items-center text-center text-white px-5 pt-28 sm:pt-32">
           <h1 className="font-display text-6xl sm:text-8xl">TARAPOTO</h1>
-          <SunArc className="mt-6" color="#fff" />
 
           <div className="max-w-xl mt-10">
             <p className="font-display text-xl sm:text-2xl leading-snug">
