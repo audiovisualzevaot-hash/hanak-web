@@ -63,12 +63,16 @@ export default function InicioPage() {
           de Illustrator: texto a la izquierda, la ilustración isométrica
           grande a la derecha, sin tarjeta/rotación/sombra encima — el
           gráfico ya trae su propio fondo crema (ajustado a --hanak-cloud)
-          y se integra directo con la página. El plano se agranda para que
-          complete más la pantalla, como pidió Bryan, así que la columna de
-          texto se angosta y el contenedor crece más allá del max-w-7xl del
-          resto de la página. */}
-      <section className="max-w-[100rem] mx-auto px-5 sm:px-8 py-20 sm:py-28 grid lg:grid-cols-[0.5fr_1.5fr] gap-10 lg:gap-12 items-center">
-        <div className="order-1">
+          y se integra directo con la página. Bryan insistió dos veces en
+          que el plano se seguía viendo chico: además del recorte del PNG
+          (mapa.webp ya viene recortado sin el margen crema muerto que
+          traía el export), la sección ahora es de ancho completo — ya no
+          vive dentro de un contenedor centrado — y la columna de la
+          imagen no lleva padding a la derecha, así que en pantallas
+          grandes el plano llega literalmente hasta el borde del navegador
+          en vez de quedar encerrado en una columna angosta. */}
+      <section className="w-full py-20 sm:py-28 grid lg:grid-cols-[minmax(0,26rem)_1fr] gap-10 lg:gap-12 items-center">
+        <div className="order-1 px-5 sm:px-8 lg:pl-10 xl:pl-16">
           <p className="uppercase tracking-[0.2em] text-xs text-charcoal/50 mb-3">
             Encuentra tu lugar
           </p>
@@ -86,7 +90,10 @@ export default function InicioPage() {
             Explora el masterplan <span aria-hidden>↗</span>
           </Link>
         </div>
-        <Link href="/masterplan" className="group block order-2">
+        <Link
+          href="/masterplan"
+          className="group block order-2 px-5 sm:px-8 lg:px-0"
+        >
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             src="/images/inicio/mapa.webp"

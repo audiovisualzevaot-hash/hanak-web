@@ -75,49 +75,53 @@ export default function HeroSequence() {
   }, []);
 
   // --- Capa 1 — atardecer: paneo puro (sin escala) que TERMINA antes de que
-  // empiece el disolve (0→0.26), nunca al mismo tiempo — así se alcanza a
+  // empiece el disolve (0→0.2), nunca al mismo tiempo — así se alcanza a
   // ver la foto completa antes de que el difuminado la empiece a tapar
   // (pedido de Bryan: "que se vea más, hasta antes de hacer el difuminado").
-  const heroPanY = mix(4, 94, local(progress, 0, 0.26));
+  const heroPanY = mix(4, 94, local(progress, 0, 0.2));
 
   // Texto "Presentando a HANAK" — se apaga EN EL MISMO TRAMO que el disolve
-  // de las dos fotos (0.26→0.46, ver sheetOpacity abajo), no antes: así se
+  // de las dos fotos (0.2→0.36, ver sheetOpacity abajo), no antes: así se
   // va "junto con la imagen" en vez de desaparecer solo antes de que pase
   // nada, como pidió Bryan viendo la referencia de ayana.com.
-  const textOpacity = 1 - local(progress, 0.26, 0.46);
-  const textY = -local(progress, 0.26, 0.46) * 40;
+  const textOpacity = 1 - local(progress, 0.2, 0.36);
+  const textY = -local(progress, 0.2, 0.36) * 40;
 
   // --- Capa 2 — mar de nubes: disolve puro, sin deslizamiento. Ambas fotos
   // ocupan el mismo lugar (inset-0) desde el principio; solo cambia el
   // opacity de la que entra. Así se ven "integradas" de verdad, sin ningún
   // borde recto cruzando la pantalla — exactamente como en ayana.com,
   // donde la foto nueva nunca se desliza como una hoja aparte. Empieza
-  // justo cuando termina el paneo de la Hoja 1 (0.26), nunca antes.
-  const sheetOpacity = local(progress, 0.26, 0.46);
+  // justo cuando termina el paneo de la Hoja 1 (0.2), nunca antes.
+  const sheetOpacity = local(progress, 0.2, 0.36);
   // Paneo en dos tramos: lento y dentro de la zona de nubes mientras el
-  // título+mapa están apareciendo/sosteniéndose/apagándose (0.26→0.82), y
-  // luego — recién cuando ya se apagaron del todo — más rápido hasta el
-  // final del scroll, mostrando SOLO la foto (el valle) sin nada encima.
-  // Así el mapa nunca queda flotando sobre terreno que todavía se está
-  // revelando, y el "tope" pedido por Bryan queda antes de que el paneo
-  // acelere.
+  // título+mapa están apareciendo/sosteniéndose/apagándose (0.2→0.66), y
+  // luego — recién cuando ya se apagaron del todo — un tramo bien largo y
+  // pausado hasta el final del scroll, mostrando SOLO la foto (el valle)
+  // sin nada encima: Bryan pidió que este tramo final no sea tan rápido
+  // para poder apreciar la foto, así que ahora ocupa más de un tercio del
+  // recorrido total (ver también la altura del track más abajo).
   const cloudsPanY =
-    progress < 0.82
-      ? mix(14, 22, local(progress, 0.26, 0.82))
-      : mix(22, 90, local(progress, 0.82, 1));
+    progress < 0.66
+      ? mix(14, 22, local(progress, 0.2, 0.66))
+      : mix(22, 90, local(progress, 0.66, 1));
 
   // --- Capítulo "El primer Sky Resort de Latinoamérica" + mapa, sobre la
   // misma foto de nubes — nunca sobre un fondo de color sólido. Ya no se
-  // queda fijo para siempre: aparece (0.5→0.62), se sostiene sobre las
-  // nubes (0.62→0.72) y se apaga por completo (0.72→0.82) — de ahí en
+  // queda fijo para siempre: aparece (0.4→0.5), se sostiene sobre las
+  // nubes (0.5→0.58) y se apaga por completo (0.58→0.66) — de ahí en
   // adelante el scroll muestra solo la foto sola, tal como en ayana.com
   // ("su texto, titulo y mapa no baja, tiene un tope, y de ahi solo se
   // muestra imagen sola").
-  const introOpacity = pulse(progress, 0.5, 0.62, 0.72, 0.82);
-  const introY = (1 - local(progress, 0.5, 0.62)) * 36;
+  const introOpacity = pulse(progress, 0.4, 0.5, 0.58, 0.66);
+  const introY = (1 - local(progress, 0.4, 0.5)) * 36;
 
   return (
-    <section ref={trackRef} className="relative h-[440vh] bg-forest-dark">
+    // 520vh (antes 440vh): el tramo final, donde ya no queda nada encima de
+    // la foto (0.66→1), pasó a ocupar más de un tercio del recorrido para
+    // que el paneo se sienta lento — pedido de Bryan tras ver que se
+    // aceleraba demasiado apenas se apagaba el texto+mapa.
+    <section ref={trackRef} className="relative h-[520vh] bg-forest-dark">
       <div className="sticky top-0 h-screen overflow-hidden">
         {/* Hoja 1 — atardecer, paneo vertical sin escala */}
         <div className="absolute inset-0">
