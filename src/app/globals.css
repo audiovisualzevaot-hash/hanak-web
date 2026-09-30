@@ -83,3 +83,62 @@ body {
    lugar: ahora recorre de verdad la línea punteada del aeropuerto hasta
    HANAK con <animateMotion> dentro del propio SVG (ver ese componente),
    así que este archivo ya no necesita un keyframe aparte para él. */
+
+/* Animación de entrada del hero de Tarapoto — Bryan pidió algo distinto al
+   fade+subida de "Presentando a HANAK" en Inicio. El título "TARAPOTO" se
+   "asienta": arranca con el tracking bien abierto y opacidad baja, y se
+   contrae a su letter-spacing normal mientras aparece (sin desplazamiento
+   vertical, a diferencia de HANAK). Corre una sola vez al cargar. */
+@keyframes tarapoto-title-settle {
+  from {
+    opacity: 0;
+    letter-spacing: 0.3em;
+  }
+  to {
+    opacity: 1;
+    letter-spacing: 0em;
+  }
+}
+.animate-tarapoto-title {
+  animation: tarapoto-title-settle 1.3s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+/* Texto y botón de video del hero: cascada línea por línea (fade + leve
+   subida), cada uno con su propio animation-delay en el JSX. */
+@keyframes tarapoto-line-in {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+/* Propiedades largas (no el shorthand "animation") a propósito: el
+   shorthand resetea animation-delay a 0s, lo que pisaba por completo el
+   delay de cada línea puesto vía clase arbitraria de Tailwind
+   ([animation-delay:350ms] etc. en el JSX) — todas las líneas aparecían
+   al mismo tiempo en vez de en cascada. */
+.animate-tarapoto-line {
+  animation-name: tarapoto-line-in;
+  animation-duration: 0.8s;
+  animation-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
+  animation-fill-mode: both;
+}
+
+/* Tarjetas de cifras: cascada izquierda→derecha con scale-in (no solo
+   fade), para distinguirlas de la cascada de texto de arriba. */
+@keyframes tarapoto-card-in {
+  from {
+    opacity: 0;
+    transform: scale(0.92) translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+.animate-tarapoto-card {
+  animation: tarapoto-card-in 0.65s cubic-bezier(0.16, 1, 0.3, 1) both;
+}

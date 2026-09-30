@@ -52,17 +52,19 @@ export default function TarapotoPage() {
         <div className="absolute inset-0 bg-gradient-to-b from-black/15 via-black/45 to-forest-dark" />
 
         <div className="relative z-10 flex flex-col items-center text-center text-white px-5 pt-28 sm:pt-32">
-          <h1 className="font-display text-6xl sm:text-8xl">TARAPOTO</h1>
+          <h1 className="font-display text-6xl sm:text-8xl animate-tarapoto-title">
+            TARAPOTO
+          </h1>
 
           <div className="max-w-xl mt-10">
-            <p className="font-display text-xl sm:text-2xl leading-snug">
+            <p className="font-display text-xl sm:text-2xl leading-snug animate-tarapoto-line [animation-delay:350ms]">
               Dejó de ser solo un destino de turismo ecológico
             </p>
-            <p className="mt-5 text-cloud/85 leading-relaxed">
+            <p className="mt-5 text-cloud/85 leading-relaxed animate-tarapoto-line [animation-delay:480ms]">
               Para convertirse en uno de los mercados inmobiliarios de mayor
               proyección del país.
             </p>
-            <p className="mt-4 text-cloud/85 leading-relaxed">
+            <p className="mt-4 text-cloud/85 leading-relaxed animate-tarapoto-line [animation-delay:610ms]">
               La demanda es constante impulsada por escapadas de fin de
               semana, turismo corporativo y feriados largos y el segmento
               premium es, con diferencia, el que mejor la captura.
@@ -75,16 +77,17 @@ export default function TarapotoPage() {
           <VideoLightbox
             overlay={false}
             label="Reproducir video de Tarapoto"
-            className="mt-10"
+            className="mt-10 animate-tarapoto-line [animation-delay:740ms]"
           />
         </div>
 
         <div className="relative z-10 mt-auto px-5 sm:px-8 pb-16 sm:pb-20 pt-14">
           <div className="max-w-5xl mx-auto grid grid-cols-2 gap-3 sm:gap-4">
-            {tarapotoStats.map((s) => (
+            {tarapotoStats.map((s, i) => (
               <div
                 key={s.n}
-                className="border border-white/25 rounded-xl px-4 sm:px-6 py-5 sm:py-6 text-center text-white"
+                className="border border-white/25 rounded-xl px-4 sm:px-6 py-5 sm:py-6 text-center text-white animate-tarapoto-card"
+                style={{ animationDelay: `${820 + i * 110}ms` }}
               >
                 <p className="text-[10px] sm:text-xs uppercase tracking-[0.2em] text-white/55 mb-2">
                   N.º {s.n}
