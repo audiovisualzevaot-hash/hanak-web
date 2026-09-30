@@ -39,57 +39,16 @@ export default function InicioPage() {
           </div>
         </div>
 
-        {/* Silueta del distrito de Hanak + lockup — referencia aproximada
-            mientras Bryan nos pasa el gráfico exportado de Illustrator con
-            fondo transparente (la forma real es el límite del distrito,
-            no una mancha genérica: pixel-perfect solo sale de un vector
-            limpio, no de recortar la foto del export). */}
-        <div className="relative z-10 mt-auto flex items-end gap-4 sm:gap-6 px-5 pb-10 sm:px-10 sm:pb-16">
-          <svg viewBox="0 0 200 220" className="h-24 w-auto sm:h-36 shrink-0 drop-shadow-sm">
-            <path
-              d="M78 8
-                 C 84 18, 74 26, 82 34
-                 C 92 44, 108 40, 120 50
-                 C 134 61, 132 76, 144 86
-                 C 156 96, 172 92, 178 106
-                 C 184 120, 172 132, 156 134
-                 C 140 136, 132 126, 116 130
-                 C 102 133, 96 146, 82 148
-                 C 68 150, 58 142, 48 146
-                 C 38 150, 34 160, 24 156
-                 C 14 152, 12 140, 18 130
-                 C 24 120, 36 120, 38 108
-                 C 40 96, 30 88, 34 76
-                 C 38 64, 52 62, 54 50
-                 C 56 38, 46 30, 54 20
-                 C 61 11, 72 4, 78 8 Z"
-              fill="var(--color-forest-dark)"
-            />
-            <circle cx="96" cy="66" r="4" fill="var(--color-cloud)" />
-            <path
-              d="M28 148 C 40 156, 46 172, 42 190 C 38 206, 26 214, 30 220"
-              fill="none"
-              stroke="var(--color-cloud)"
-              strokeWidth="2"
-              opacity="0.85"
-            />
-            <path
-              d="M70 150 C 80 162, 78 180, 88 194 C 96 206, 96 214, 92 220"
-              fill="none"
-              stroke="var(--color-cloud)"
-              strokeWidth="2"
-              opacity="0.85"
-            />
-          </svg>
-
-          <div className="text-forest-dark pb-1">
-            <p className="font-display text-2xl sm:text-4xl leading-none">HANAK</p>
-            <div className="mt-2 border-t border-forest-dark/50 pt-1.5 w-fit">
-              <p className="text-[9px] sm:text-[11px] uppercase tracking-[0.2em] text-forest-dark/75">
-                Sky Resort &amp; Villas Club
-              </p>
-            </div>
-          </div>
+        {/* Silueta del distrito de Hanak + lockup — gráfico real exportado
+            por Bryan desde Illustrator con fondo transparente (reemplaza
+            la aproximación a mano de la versión anterior). */}
+        <div className="relative z-10 mt-auto px-5 pb-6 sm:px-10 sm:pb-10">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src="/images/inicio/mapa-llegar-hanak.webp"
+            alt="Silueta del distrito de Hanak y lockup Hanak Sky Resort & Villas Club"
+            className="w-40 sm:w-64 h-auto drop-shadow-sm"
+          />
         </div>
 
         <span className="absolute bottom-6 right-5 sm:bottom-10 sm:right-10 z-10 flex h-11 w-11 sm:h-14 sm:w-14 items-center justify-center rounded-full bg-white/90 text-forest transition group-hover:bg-white">
