@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import Image from "next/image";
 
-type Photo = { src: string; alt: string };
+type Photo = { src: string; alt: string; objectPosition?: string };
 
 const AUTOPLAY_MS = 6000;
 
@@ -92,6 +92,7 @@ export default function PhotoCarousel({
                   priority
                   sizes="100vw"
                   className="object-cover"
+                  style={photo.objectPosition ? { objectPosition: photo.objectPosition } : undefined}
                 />
               ) : (
                 <Image
@@ -101,6 +102,7 @@ export default function PhotoCarousel({
                   loading="eager"
                   sizes="100vw"
                   className="object-cover"
+                  style={photo.objectPosition ? { objectPosition: photo.objectPosition } : undefined}
                 />
               )}
             </div>

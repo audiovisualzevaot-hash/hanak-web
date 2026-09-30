@@ -2,7 +2,7 @@ import MediaPlaceholder from "@/components/MediaPlaceholder";
 import LogoMark from "@/components/LogoMark";
 import VideoLightbox from "@/components/VideoLightbox";
 import PhotoCarousel from "@/components/PhotoCarousel";
-import ExperienciaSelva from "@/components/ExperienciaSelva";
+import ExperienciaReveal from "@/components/ExperienciaReveal";
 
 export const metadata = { title: "Experiencia — HANAK" };
 
@@ -11,9 +11,10 @@ export const metadata = { title: "Experiencia — HANAK" };
 // completa con "HANAK se vive en tres tiempos" + "EXPERIENCIA", debajo va
 // una franja de 3 anclas (Sobre las nubes / Inmersión en selva / Sky Club),
 // luego "01 Sobre las nubes" a pantalla completa con su propio botón de
-// play, una cita a dos fotos con texto superpuesto, la foto larga de la
-// selva con el mecanismo de paneo sostenido de Inicio (ver
-// ExperienciaSelva.tsx), y "Sky Club" cerrando con sus fotos de amenidades.
+// play, seguido de una secuencia continua (ver ExperienciaReveal.tsx) que
+// acopla la cita con foto ("imagen suelta") y la foto larga de la selva en
+// un solo scroll fluido, igual mecanismo que el hero de Inicio, y "Sky
+// Club" cerrando con sus fotos de amenidades.
 //
 // Confirmado con Bryan:
 // - Los contadores tipo "< 5/11 >" del export NO se replican tal cual: esas
@@ -53,7 +54,7 @@ export default function ExperienciaPage() {
           <p className="text-xs sm:text-sm uppercase tracking-[0.25em] text-white/75 mb-4">
             HANAK se vive en tres tiempos
           </p>
-          <h1 className="font-display text-cloud text-5xl sm:text-7xl tracking-wide">
+          <h1 className="font-display text-cloud text-5xl sm:text-8xl lg:text-9xl tracking-wide">
             EXPERIENCIA
           </h1>
         </div>
@@ -120,33 +121,11 @@ export default function ExperienciaPage() {
         </div>
       </section>
 
-      {/* CITA — foto con texto superpuesto, copy aprobado */}
-      <section className="bg-cloud py-16 sm:py-24">
-        <div className="max-w-4xl mx-auto px-5 sm:px-8">
-          <div className="relative aspect-[4/5] sm:aspect-[16/9] rounded-2xl overflow-hidden">
-            <MediaPlaceholder
-              label="Sobre las nubes — colchón de nubes sobre el valle"
-              aspect="aspect-auto"
-              className="absolute inset-0 !rounded-none"
-              src="/images/experiencia/1ra-foto-suelta.webp"
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/5 to-black/20" />
-            <div className="absolute inset-0 flex items-end p-6 sm:p-10">
-              <p className="text-white text-xl sm:text-3xl leading-snug max-w-xl">
-                Vistas abiertas hacia el{" "}
-                <span className="font-semibold">colchón de nubes</span>, el
-                valle y la ciudad de Tarapoto — el momento que le da{" "}
-                <span className="font-semibold">nombre a todo el proyecto</span>
-                .
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* 02 — INMERSIÓN EN SELVA: foto larga con paneo sostenido, igual
-          mecanismo que el hero de Inicio (ver ExperienciaSelva.tsx). */}
-      <ExperienciaSelva />
+      {/* 02 — SOBRE LAS NUBES (cita) → INMERSIÓN EN SELVA: secuencia
+          continua, igual mecanismo que el hero de Inicio (ver
+          ExperienciaReveal.tsx) — la tarjeta de cita sobre fondo crema se
+          disuelve en la foto larga de la selva, sin cortes entre ambas. */}
+      <ExperienciaReveal />
 
       {/* 03 — SKY CLUB */}
       <section
@@ -155,7 +134,7 @@ export default function ExperienciaPage() {
       >
         <div className="max-w-3xl mx-auto px-5 text-center">
           <LogoMark size={28} tone="forest" className="mx-auto mb-4" />
-          <h2 className="font-display text-3xl sm:text-5xl text-forest">
+          <h2 className="font-display uppercase text-4xl sm:text-6xl lg:text-7xl tracking-wide text-forest">
             Sky Club
           </h2>
         </div>
@@ -194,18 +173,13 @@ export default function ExperienciaPage() {
           dots={false}
           photos={[
             { src: "/images/experiencia/amenidades-de-hanak.webp", alt: "Sky Club — alameda y jardines de Hanak" },
-            { src: "/images/experiencia/columpios.webp", alt: "Sky Club — columpios en la pérgola" },
+            { src: "/images/experiencia/columpios.webp", alt: "Sky Club — columpios en la pérgola", objectPosition: "50% 62%" },
             { src: "/images/experiencia/maloca1.webp", alt: "Sky Club — recepción de la maloca" },
             { src: "/images/experiencia/maloca2.webp", alt: "Sky Club — maloca al atardecer" },
             { src: "/images/experiencia/parque-central.webp", alt: "Sky Club — zona de pérgolas y parque central" },
           ]}
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/55 via-transparent to-transparent pointer-events-none" />
-        <div className="absolute bottom-6 sm:bottom-10 inset-x-0 text-center px-5 z-10 pointer-events-none">
-          <p className="font-display text-2xl sm:text-3xl text-white">
-            Bienestar y relajación
-          </p>
-        </div>
+        <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent pointer-events-none" />
       </section>
     </>
   );
