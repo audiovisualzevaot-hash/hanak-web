@@ -5,40 +5,39 @@ import RutaLimaHanak from "@/components/RutaLimaHanak";
 export const metadata = { title: "Cómo llegar — HANAK" };
 
 // Reformulación completa según el export de Illustrator que mandó Bryan
-// (segunda vuelta de correcciones sobre esta misma hoja):
+// (tercera vuelta de correcciones sobre esta misma hoja):
 //
-// - El hero deja de ser una franja de 45vh para pasar a foto a pantalla
-//   completa, igual mecanismo que el resto de las hojas (Inicio,
-//   Experiencia): título "LLEGAR A HANAK" arriba, y más abajo el bloque
-//   "Es parte de la experiencia" / "Parte del viaje" (este último en el
-//   acento teal que ya estaba reservado en globals.css para este uso
-//   exacto). La foto del export es un cerro con pasto + mar de nubes,
-//   distinta a la que hoy vive en /como-llegar (bosque neblinoso) — Bryan
-//   va a mandar la foto definitiva para este hero, así que por ahora se
-//   mantiene el header.webp actual a pantalla completa como placeholder;
-//   en cuanto llegue la nueva foto, solo hay que cambiar el `src` de abajo.
-// - "Conecta desde LIMA a HANAK": el mapa esquemático (RutaAnimada.tsx) se
-//   reemplaza por el mapa real que exportó Bryan de Illustrator (mismo
-//   criterio que el mini-mapa de Inicio — PeruMiniMap.tsx), mostrado grande
-//   ("como si fuesen dos bloques"), con el avión y el carrito animados de
-//   verdad sobre la línea punteada real del gráfico (ver RutaLimaHanak.tsx
-//   para el detalle de cómo se limpiaron y recortaron esos íconos).
-// - Debajo, una sola foto continua (2da-foto.webp, ya estaba en el
-//   proyecto y calza con la foto del export) hace de fondo para dos
-//   momentos: arriba "Vuelos directos y diarios desde Lima" con las 3
-//   tarjetas de vuelo que mandó Bryan (JetSMART, LATAM, SKY — export real
-//   de Illustrator, se muestran tal cual como gráfico, no se recrean con
-//   texto/logos propios), y abajo "De Tarapoto a Hanak". El copy sigue
-//   mencionando "5 aerolíneas" a pedido de Bryan, como adelanto de las 2
-//   tarjetas que faltan mandar.
+// - Hero: ya con la foto definitiva que mandó Bryan (cerro con selva y
+//   neblina), a pantalla completa. Gradiente mucho más liviano — igual
+//   criterio que el de Inicio (HeroSequence.tsx: from-black/20 via-black/5
+//   to-black/30) — para que se vea "gran parte de la foto" en vez de
+//   taparla. Título + bloque "Parte del viaje" ahora van como una sola
+//   composición centrada (antes el título vivía arriba a la izquierda,
+//   separado del resto) y más grandes, como pidió Bryan.
+// - "Conecta desde LIMA a HANAK": el mapa (RutaLimaHanak.tsx) vivía en un
+//   lienzo cuadrado con mucho margen transparente alrededor — dejaba ver
+//   de más el fondo crema de la sección detrás. Se recortó el PNG pegado
+//   al contenido real (ver comentario en RutaLimaHanak.tsx) y se agrandó
+//   el ancho máximo del componente + el título de la sección.
+// - VUELOS + DE TARAPOTO A HANAK: Bryan mandó una captura de esa parte
+//   exacta del Illustrator — no es una sección altísima con los bloques
+//   flotando muy separados (como había quedado con min-h-140vh), es una
+//   sola foto de proporción normal (misma relación de aspecto que
+//   2da-foto.webp) con todo compacto: título arriba, las 3 tarjetas de
+//   vuelo grandes justo debajo, y "De Tarapoto a Hanak" más abajo. Se
+//   reconstruyó la sección con la altura real de la foto (aspect-ratio,
+//   no min-h forzado) y todo posicionado en porcentaje según esa captura;
+//   en mobile, donde ese mismo layout quedaría demasiado apretado, se usa
+//   una versión apilada en vez de las posiciones absolutas.
 // - Cierra con la cita suelta sobre crema, tal como en el export. La
 //   sección de "Ubicación" con el mapa de Google que tenía la versión
-//   anterior se quita del todo (no está en el export; Bryan pidió
-//   quitarla).
+//   anterior sigue fuera (no está en el export; Bryan pidió quitarla).
 export default function ComoLlegarPage() {
   return (
     <>
-      {/* HERO — foto a pantalla completa (antes franja de 45vh) */}
+      {/* HERO — foto a pantalla completa, tratamiento igual al de Inicio:
+          gradiente liviano (se ve casi toda la foto) y todo el texto en una
+          sola composición centrada, grande. */}
       <section className="relative min-h-screen flex flex-col overflow-hidden bg-forest-dark">
         <MediaPlaceholder
           label="Cómo llegar — HANAK"
@@ -47,19 +46,19 @@ export default function ComoLlegarPage() {
           src="/images/como-llegar/header.webp"
           priority
         />
-        <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-black/15 to-black/55" />
+        <div className="absolute inset-0 bg-gradient-to-b from-black/20 via-black/5 to-black/35" />
 
-        <div className="relative z-10 flex flex-col flex-1 px-5 sm:px-10 lg:px-14 pt-16 sm:pt-20 pb-14 sm:pb-20">
-          <h1 className="font-display uppercase text-cloud text-4xl sm:text-6xl lg:text-7xl tracking-wide leading-tight max-w-2xl">
+        <div className="relative z-10 flex flex-col flex-1 items-center justify-center text-center px-5 gap-5 sm:gap-6">
+          <h1 className="font-display uppercase text-cloud text-5xl sm:text-7xl lg:text-8xl tracking-wide leading-tight drop-shadow-sm">
             Llegar a HANAK
           </h1>
 
-          <div className="flex-1 flex flex-col items-center justify-center text-center gap-3">
-            <LogoMark size={24} tone="cream" />
-            <p className="text-xs sm:text-sm uppercase tracking-[0.25em] text-white/80">
+          <div className="flex flex-col items-center gap-3">
+            <LogoMark size={28} tone="cream" />
+            <p className="text-sm sm:text-base uppercase tracking-[0.3em] text-white/85">
               Es parte de la experiencia
             </p>
-            <p className="font-display italic text-teal text-4xl sm:text-6xl">
+            <p className="font-display italic text-teal text-5xl sm:text-7xl">
               Parte del viaje
             </p>
           </div>
@@ -76,40 +75,48 @@ export default function ComoLlegarPage() {
       {/* CONECTA DESDE LIMA A HANAK — mapa real animado, grande */}
       <section className="bg-cloud pt-16 sm:pt-24 pb-10 sm:pb-14">
         <div className="max-w-3xl mx-auto px-5 text-center mb-8 sm:mb-12">
-          <p className="uppercase tracking-[0.2em] text-xs text-charcoal/50 mb-3">
+          <p className="uppercase tracking-[0.2em] text-sm text-charcoal/50 mb-3">
             Conecta desde
           </p>
-          <h2 className="font-display text-3xl sm:text-5xl lg:text-6xl text-forest leading-tight">
+          <h2 className="font-display text-4xl sm:text-6xl lg:text-7xl text-forest leading-tight">
             LIMA a HANAK
           </h2>
         </div>
         <RutaLimaHanak />
       </section>
 
-      {/* VUELOS + DE TARAPOTO A HANAK — una sola foto continua de fondo */}
-      <section className="relative min-h-[140vh] sm:min-h-[120vh] overflow-hidden bg-forest">
+      {/* VUELOS + DE TARAPOTO A HANAK — una sola foto continua de fondo.
+          Bryan mandó una captura de esta parte exacta del Illustrator: no
+          es una franja altísima con los bloques flotando muy separados,
+          es una foto de proporción normal (misma relación que
+          2da-foto.webp) con todo compacto. De sm: en adelante la sección
+          respeta esa proporción real (aspect-ratio) y el contenido va
+          posicionado en porcentaje calcado de esa captura; en mobile ese
+          mismo layout quedaría ilegible, así que se usa una versión
+          apilada normal. */}
+      <section className="relative w-full overflow-hidden bg-forest sm:aspect-[2048/1271]">
         <MediaPlaceholder
           label="Vuelos directos desde Lima"
           aspect="aspect-auto"
           className="absolute inset-0 !rounded-none"
           src="/images/como-llegar/2da-foto.webp"
         />
-        <div className="absolute inset-0 bg-gradient-to-b from-black/55 via-black/10 to-black/60" />
+        <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-black/10 to-black/45" />
 
-        <div className="relative z-10 flex flex-col justify-between min-h-[140vh] sm:min-h-[120vh] px-5 sm:px-10 lg:px-14 py-14 sm:py-20">
-          <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4 max-w-4xl">
-            <h2 className="font-display text-3xl sm:text-5xl text-white leading-tight">
-              Vuelos directos y diarios desde Lima
-            </h2>
-            <p className="text-white/80 leading-relaxed sm:text-right sm:max-w-xs">
-              Con 5 aerolíneas operando distintos horarios a lo largo del día.
-            </p>
-          </div>
+        {/* Tarjetas de vuelo — export real de Illustrator (JetSMART, LATAM,
+            SKY), se muestran tal cual: recrearlas con texto y logotipos
+            propios implicaría reproducir marcas de terceros. */}
 
-          {/* Tarjetas de vuelo — export real de Illustrator (JetSMART, LATAM,
-              SKY), se muestran tal cual: recrearlas con texto y logotipos
-              propios implicaría reproducir marcas de terceros. */}
-          <div className="grid gap-4 sm:gap-6 sm:grid-cols-3 max-w-4xl mx-auto w-full my-10 sm:my-0">
+        {/* Mobile — apilado normal, nada de posiciones absolutas */}
+        <div className="relative z-10 flex flex-col gap-8 px-5 py-14 sm:hidden">
+          <h2 className="font-display text-3xl text-white leading-tight">
+            Vuelos directos y diarios desde Lima
+          </h2>
+          <p className="text-white/80 leading-relaxed -mt-4">
+            Con 5 aerolíneas operando distintos horarios a lo largo del día.
+          </p>
+
+          <div className="grid grid-cols-1 gap-4">
             <MediaPlaceholder
               label="Vuelo LATAM Lima–Tarapoto"
               aspect="aspect-[1440/543]"
@@ -130,13 +137,57 @@ export default function ComoLlegarPage() {
             />
           </div>
 
-          <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4">
-            <h2 className="font-display text-3xl sm:text-5xl text-white leading-tight">
-              De Tarapoto a Hanak
-            </h2>
-            <p className="text-white/80 leading-relaxed sm:text-right sm:max-w-xs">
-              A solo 30 minutos del aeropuerto de Tarapoto.
-            </p>
+          <h2 className="font-display text-3xl text-white leading-tight mt-6">
+            De Tarapoto a Hanak
+          </h2>
+          <p className="text-white/80 leading-relaxed -mt-4">
+            A solo 30 minutos del aeropuerto de Tarapoto.
+          </p>
+        </div>
+
+        {/* Desktop/tablet — posiciones en porcentaje calcadas de la captura
+            del Illustrator que mandó Bryan */}
+        <div className="hidden sm:block absolute inset-0 px-8 lg:px-14 py-8">
+          <div className="relative w-full h-full">
+            <div className="absolute top-[7%] inset-x-0 flex items-start justify-between gap-6">
+              <h2 className="font-display text-4xl lg:text-5xl text-white leading-tight max-w-md">
+                Vuelos directos y diarios desde Lima
+              </h2>
+              <p className="text-white/80 text-sm lg:text-base leading-relaxed text-right max-w-[15rem] pt-2">
+                Con 5 aerolíneas operando distintos horarios a lo largo del día.
+              </p>
+            </div>
+
+            <div className="absolute top-[23%] inset-x-0 grid grid-cols-3 gap-4 lg:gap-6">
+              <MediaPlaceholder
+                label="Vuelo LATAM Lima–Tarapoto"
+                aspect="aspect-[1440/543]"
+                className="!rounded-none"
+                src="/images/como-llegar/vuelo-latam.webp"
+              />
+              <MediaPlaceholder
+                label="Vuelo SKY Lima–Tarapoto"
+                aspect="aspect-[1440/543]"
+                className="!rounded-none"
+                src="/images/como-llegar/vuelo-sky.webp"
+              />
+              <MediaPlaceholder
+                label="Vuelo JetSMART Lima–Tarapoto"
+                aspect="aspect-[1440/543]"
+                className="!rounded-none"
+                src="/images/como-llegar/vuelo-jetsmart.webp"
+              />
+            </div>
+
+            <div className="absolute top-[68%] inset-x-0 flex items-end justify-between gap-6">
+              <h2 className="font-display text-4xl lg:text-5xl text-white leading-tight">
+                De Tarapoto
+                <br />a Hanak
+              </h2>
+              <p className="text-white/80 text-sm lg:text-base leading-relaxed text-right max-w-[15rem]">
+                A solo 30 minutos del aeropuerto de Tarapoto.
+              </p>
+            </div>
           </div>
         </div>
       </section>

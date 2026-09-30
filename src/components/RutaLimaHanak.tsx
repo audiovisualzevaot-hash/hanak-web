@@ -18,20 +18,26 @@
 // real.
 export default function RutaLimaHanak({
   className = "",
-  maxWidthClassName = "max-w-[640px] sm:max-w-[820px] lg:max-w-[960px]",
+  maxWidthClassName = "max-w-[760px] sm:max-w-[980px] lg:max-w-[1160px]",
 }: {
   className?: string;
   maxWidthClassName?: string;
 }) {
   return (
     <div className={`w-full mx-auto ${maxWidthClassName} ${className}`}>
+      {/* El gráfico se recortó pegado al contenido real (antes vivía en un
+          lienzo cuadrado de 1440x1440 con mucho margen transparente
+          alrededor, que dejaba ver de más el fondo crema de la sección
+          detrás — Bryan pidió que el mapa "se vea grande" de verdad). Las
+          curvas de abajo están recalculadas para el nuevo recorte
+          (offset -125,-274 sobre las coordenadas originales). */}
       <svg
-        viewBox="0 0 1440 1440"
+        viewBox="0 0 1188 897"
         className="w-full h-auto"
         role="img"
         aria-label="Mapa de Lima a Hanak: vuelo directo a Tarapoto y 30 minutos por tierra hasta el resort"
       >
-        <image href="/images/como-llegar/mapa-lima-hanak.webp" width={1440} height={1440} />
+        <image href="/images/como-llegar/mapa-lima-hanak.webp" width={1188} height={897} />
 
         {/* Avión — Lima → Tarapoto (1h 20min) */}
         <image
@@ -49,7 +55,7 @@ export default function RutaLimaHanak({
             keyPoints="0;1;1"
             keyTimes="0;0.38;1"
             calcMode="linear"
-            path="M 277,788 Q 599.5,430.7 922,764"
+            path="M 152,514 Q 474.5,156.7 797,490"
           />
           <animate
             attributeName="opacity"
@@ -76,7 +82,7 @@ export default function RutaLimaHanak({
             keyPoints="0;0;1;1"
             keyTimes="0;0.46;0.86;1"
             calcMode="linear"
-            path="M 922,764 C 965.2,704.3 807.6,644.7 1075,585"
+            path="M 797,490 C 840.2,430.3 682.6,370.7 950,311"
           />
           <animate
             attributeName="opacity"
