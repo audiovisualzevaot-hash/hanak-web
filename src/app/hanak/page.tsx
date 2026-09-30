@@ -1,5 +1,6 @@
 import HanakHero from "@/components/HanakHero";
 import MediaPlaceholder from "@/components/MediaPlaceholder";
+import PhotoCarousel from "@/components/PhotoCarousel";
 
 export const metadata = { title: "Hanak — HANAK" };
 
@@ -11,7 +12,7 @@ export default function HanakPage() {
       {/* Franja de cita — cierre directo del hero, misma línea que remata el
           "Concepto de marca" en el copy aprobado. */}
       <section className="bg-forest-dark py-6 sm:py-7">
-        <p className="max-w-3xl mx-auto px-5 sm:px-8 text-center text-cloud text-sm sm:text-base leading-relaxed">
+        <p className="max-w-3xl sm:max-w-none mx-auto px-5 sm:px-8 text-center text-cloud text-sm sm:text-base leading-relaxed sm:whitespace-nowrap">
           <span className="font-semibold">Es Wellness Real Estate:</span>{" "}
           bienes raíces pensados desde la salud física, mental y del
           entorno.
@@ -31,21 +32,14 @@ export default function HanakPage() {
           </span>
         </h2>
 
-        <div className="max-w-6xl mx-auto px-5 sm:px-8 mt-14 sm:mt-16 grid grid-cols-3 gap-2 sm:gap-3 items-stretch">
-          <MediaPlaceholder
-            label="Hanak — trabajo en el terreno"
-            aspect="aspect-[3/4]"
-            src="/images/hanak/lista3.webp"
-          />
-          <MediaPlaceholder
-            label="Hanak — reforestación y flora nativa"
-            aspect="aspect-[3/4]"
-            src="/images/hanak/3ra-foto-suelta.webp"
-          />
-          <MediaPlaceholder
-            label="Hanak — preparación del terreno"
-            aspect="aspect-[3/4]"
-            src="/images/hanak/lista4.webp"
+        <div className="max-w-5xl mx-auto px-5 sm:px-8 mt-14 sm:mt-16">
+          <PhotoCarousel
+            aspect="aspect-[16/10]"
+            photos={[
+              { src: "/images/hanak/lista3.webp", alt: "Hanak — trabajo en el terreno" },
+              { src: "/images/hanak/3ra-foto-suelta.webp", alt: "Hanak — reforestación y flora nativa" },
+              { src: "/images/hanak/lista4.webp", alt: "Hanak — preparación del terreno" },
+            ]}
           />
         </div>
 
@@ -71,35 +65,35 @@ export default function HanakPage() {
           <div className="sm:grid sm:grid-cols-12 sm:gap-8 sm:items-end">
             <MediaPlaceholder
               label="Hanak — el terreno como paisaje"
-              aspect="aspect-[4/5]"
+              aspect="aspect-[4/5] sm:aspect-[3/2]"
               src="/images/hanak/2da-foto-suelta.webp"
-              className="sm:col-span-5"
+              className="sm:col-span-7"
             />
-            <p className="sm:col-span-5 sm:col-start-7 mt-5 sm:mt-0 text-charcoal/70 leading-relaxed text-lg sm:text-xl">
+            <p className="sm:col-span-4 sm:col-start-9 mt-5 sm:mt-0 text-charcoal/70 leading-relaxed text-lg sm:text-xl">
               En un sector donde muchos venden metros cuadrados,
             </p>
           </div>
 
           <div className="sm:grid sm:grid-cols-12 sm:gap-8 sm:items-end sm:mt-20">
-            <p className="sm:col-span-4 sm:col-start-2 order-2 sm:order-1 mt-5 sm:mt-0 text-charcoal/70 leading-relaxed text-lg sm:text-xl text-left sm:text-right">
+            <p className="sm:col-span-4 order-2 sm:order-1 mt-5 sm:mt-0 text-charcoal/70 leading-relaxed text-lg sm:text-xl text-left sm:text-right">
               HANAK eligió vender pertenencia: a un paisaje,
             </p>
             <MediaPlaceholder
               label="Hanak — un paisaje propio"
-              aspect="aspect-[4/5]"
+              aspect="aspect-[4/5] sm:aspect-[3/2]"
               src="/images/hanak/1ra-foto-suelta.webp"
-              className="sm:col-span-5 sm:col-start-7 order-1 sm:order-2"
+              className="sm:col-span-7 sm:col-start-6 order-1 sm:order-2"
             />
           </div>
 
           <div className="sm:grid sm:grid-cols-12 sm:gap-8 sm:items-end sm:mt-20">
             <MediaPlaceholder
               label="Hanak — comunidad de socios fundadores"
-              aspect="aspect-[4/5]"
+              aspect="aspect-[4/5] sm:aspect-[3/2]"
               src="/images/hanak/lista5.webp"
-              className="sm:col-span-5"
+              className="sm:col-span-7"
             />
-            <p className="sm:col-span-5 sm:col-start-7 mt-5 sm:mt-0 text-charcoal/70 leading-relaxed text-lg sm:text-xl">
+            <p className="sm:col-span-4 sm:col-start-9 mt-5 sm:mt-0 text-charcoal/70 leading-relaxed text-lg sm:text-xl">
               a una comunidad y a una forma de entender el descanso que en
               Latinoamérica todavía no tenía nombre propio — hasta ahora.
             </p>

@@ -83,12 +83,12 @@ export default function HanakHero() {
           style={{ opacity: logoOpacity, transform: `translateY(${logoY}px)` }}
         >
           <Image
-            src="/images/brand/lockup-cream.png"
+            src="/images/brand/lockup-grid-forest.png"
             alt="HANAK — Sky Resort & Villas Club"
-            width={280}
-            height={176}
+            width={1440}
+            height={1440}
             priority
-            className="w-56 sm:w-72 lg:w-80 h-auto animate-hero-intro"
+            className="w-[22rem] sm:w-[30rem] lg:w-[36rem] h-auto animate-hero-intro"
           />
         </div>
 
