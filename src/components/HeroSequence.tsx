@@ -61,12 +61,18 @@ export default function HeroSequence() {
   const textOpacity = 1 - local(progress, 0, 0.14);
   const textY = -local(progress, 0, 0.14) * 50;
 
-  // --- Capa 2 — mar de nubes: se desliza como una hoja larga y tapa la 1
+  // --- Capa 2 — mar de nubes: se desliza como una hoja larga y tapa la 1.
+  // Además de deslizarse, se desvanece hacia adentro (opacity 0→1) durante
+  // el mismo tramo: así ambas fotos se "integran" en vez de que la nueva
+  // tape la anterior con un corte duro — el desvanecimiento "luxury" tipo
+  // Ayana que pidió Bryan, sumado al deslizamiento (no en su lugar).
   const sheetSlide = 100 - local(progress, 0.14, 0.46) * 100;
-  // panea de las nubes hacia el valle mientras se desliza, y se asienta
-  // (deja de paneear) apenas empieza el capítulo de texto + mapa, para que
-  // el fondo quede quieto y legible detrás de ellos
-  const cloudsPanY = mix(14, 52, local(progress, 0.14, 0.6));
+  const sheetOpacity = local(progress, 0.14, 0.38);
+  // Panea muy poco — se queda casi todo el tramo dentro de las nubes, para
+  // que el título y el mapa queden sobre el mar de nubes (como en el
+  // export) y el valle/terreno recién asome debajo, nunca que el mapa
+  // termine flotando sobre el terreno.
+  const cloudsPanY = mix(14, 19, local(progress, 0.14, 0.6));
 
   // --- Capítulo "El primer Sky Resort de Latinoamérica" + mapa, sobre la
   // misma foto de nubes/valle — nunca sobre un fondo de color sólido.
@@ -90,12 +96,18 @@ export default function HeroSequence() {
           <div className="absolute inset-0 bg-gradient-to-b from-black/20 via-black/5 to-black/30" />
         </div>
 
-        {/* Texto central de apertura — sobre la hoja de atardecer */}
+        {/* Texto central de apertura — sobre la hoja de atardecer. La
+            animación de entrada (fundido + subida, escalonada) corre una
+            sola vez al cargar la página, igual que ayana.com — separada
+            del opacity/translateY de scroll, que se aplica encima. */}
         <div
           className="absolute inset-0 z-10 flex flex-col items-center justify-center text-center text-white px-5"
           style={{ opacity: textOpacity, transform: `translateY(${textY}px)` }}
         >
-          <p className="uppercase tracking-[0.25em] text-[11px] sm:text-xs text-cloud/80 mb-6">
+          <p
+            className="uppercase tracking-[0.25em] text-xs sm:text-sm text-cloud/80 mb-7 animate-hero-intro"
+            style={{ animationDelay: "0.1s" }}
+          >
             Presentando a
           </p>
           <Image
@@ -104,9 +116,14 @@ export default function HeroSequence() {
             width={280}
             height={176}
             priority
-            className="w-44 sm:w-56 lg:w-64 h-auto"
+            className="w-56 sm:w-72 lg:w-80 h-auto animate-hero-intro"
+            style={{ animationDelay: "0.35s" }}
           />
-          <SunArc className="mt-8 sm:mt-10" color="#fff" />
+          <SunArc
+            className="mt-9 sm:mt-11 animate-hero-intro"
+            color="#fff"
+            style={{ animationDelay: "0.7s" }}
+          />
         </div>
 
         {/* Hoja 2 — mar de nubes / valle. Se desliza y luego sigue paneando;
@@ -114,7 +131,11 @@ export default function HeroSequence() {
             el export: todo sobre la misma foto, nunca sobre color sólido. */}
         <div
           className="absolute inset-0"
-          style={{ transform: `translateY(${sheetSlide}%)`, willChange: "transform" }}
+          style={{
+            transform: `translateY(${sheetSlide}%)`,
+            opacity: sheetOpacity,
+            willChange: "transform, opacity",
+          }}
         >
           <Image
             src="/images/inicio/nubes.webp"
@@ -126,39 +147,53 @@ export default function HeroSequence() {
           />
           <div className="absolute inset-0 bg-gradient-to-b from-black/10 via-transparent to-black/15" />
 
-          {/* Capítulo 2 — título + mapa, siempre sobre la foto */}
+          {/* Capítulo 2 — título + mapa, siempre sobre la foto. En pantallas
+              grandes el texto va a un lado y el mapa al otro (como en el
+              export de Illustrator), no apilados uno encima del otro: eso
+              era lo que hacía que la última línea de texto se viera
+              montada sobre las rutas del mapa (pedido explícito de Bryan). */}
           <div
-            className="absolute inset-0 z-10 flex flex-col items-center justify-center text-center px-5 pt-12 sm:pt-0"
+            className="absolute inset-0 z-10 flex flex-col items-center justify-start gap-6 px-5 pt-16 text-center sm:justify-center sm:gap-6 sm:pt-0 lg:flex-row lg:items-center lg:justify-center lg:gap-12 lg:px-10 lg:text-left xl:gap-20"
             style={{ opacity: introOpacity, transform: `translateY(${introY}px)` }}
           >
-            <h2 className="font-display uppercase text-xl sm:text-5xl text-forest leading-tight drop-shadow-sm">
-              El primer Sky Resort
-              <br className="hidden sm:block" /> de Latinoamérica
-            </h2>
+            <div className="flex flex-col items-center lg:items-start">
+              <h2 className="font-display uppercase text-lg sm:text-5xl lg:text-4xl xl:text-5xl text-forest leading-tight drop-shadow-sm">
+                El primer Sky Resort
+                <br className="hidden sm:block" /> de Latinoamérica
+              </h2>
 
-            <div className="mt-2 sm:mt-4 max-w-md">
-              <p className="text-xs sm:text-base text-charcoal font-medium leading-snug">
-                Sobre las nubes de la Amazonía peruana nace un nuevo concepto
-                de vivir:
-              </p>
-              <p className="text-[11px] sm:text-base text-charcoal/55 leading-snug">
-                Un resort donde cada momento del día es un privilegio.
-              </p>
+              <div className="mt-2 sm:mt-4 max-w-md">
+                <p className="text-xs sm:text-base text-charcoal font-medium leading-snug">
+                  Sobre las nubes de la Amazonía peruana nace un nuevo concepto
+                  de vivir:
+                </p>
+                <p className="text-[11px] sm:text-base text-charcoal/55 leading-snug">
+                  Un resort donde cada momento del día es un privilegio.
+                </p>
+              </div>
+
+              {/* En móvil este renglón se omite: el texto de arriba ya
+                  transmite la idea y el espacio es demasiado justo para
+                  sumar una tercera línea sin volver a chocar con el mapa
+                  (el problema exacto que reportó Bryo). Vuelve a partir de
+                  sm:, donde sí hay aire de sobra. */}
+              <div className="mt-2 hidden max-w-[230px] items-start gap-2 text-left sm:mt-6 sm:flex sm:max-w-sm sm:gap-3">
+                <span className="mt-1 h-6 w-px shrink-0 bg-charcoal/25 sm:h-10" />
+                <p className="text-[11px] leading-snug sm:text-sm">
+                  <span className="text-charcoal font-medium">
+                    HANAK no es un condominio,
+                  </span>{" "}
+                  <span className="text-charcoal/60">
+                    Es una forma distinta de estar en el mundo.
+                  </span>
+                </p>
+              </div>
             </div>
 
-            <div className="mt-2 sm:mt-6 flex items-start gap-2 sm:gap-3 max-w-[230px] sm:max-w-sm text-left">
-              <span className="mt-1 h-6 sm:h-10 w-px bg-charcoal/25 shrink-0" />
-              <p className="text-[11px] sm:text-sm leading-snug">
-                <span className="text-charcoal font-medium">
-                  HANAK no es un condominio,
-                </span>{" "}
-                <span className="text-charcoal/60">
-                  Es una forma distinta de estar en el mundo.
-                </span>
-              </p>
-            </div>
-
-            <PeruMiniMap className="mt-2 sm:mt-6" />
+            <PeruMiniMap
+              className="lg:mt-0 lg:shrink-0"
+              maxWidthClassName="max-w-[190px] sm:max-w-[460px] lg:max-w-[320px] xl:max-w-[400px]"
+            />
           </div>
         </div>
       </div>

@@ -61,3 +61,20 @@ body {
 .animate-marquee {
   animation: marquee 32s linear infinite;
 }
+
+/* Animación de entrada del titular "Presentando a HANAK" al cargar
+   Inicio — un fundido + leve subida, como el de ayana.com. Solo corre una
+   vez al montar la página, nunca ligada al scroll. */
+@keyframes hero-intro {
+  from {
+    opacity: 0;
+    transform: translateY(22px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.animate-hero-intro {
+  animation: hero-intro 1.4s cubic-bezier(0.16, 1, 0.3, 1) both;
+}

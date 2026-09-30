@@ -58,9 +58,10 @@ export default function Header() {
           transparent ? "h-20 sm:h-24" : "h-16 sm:h-20"
         } ${transparent ? "text-white" : "text-charcoal"}`}
       >
-        <Link href="/" className="flex items-center gap-2.5 font-display text-lg sm:text-xl tracking-wide">
-          <LogoMark size={30} tone={transparent ? "cream" : "forest"} />
-          <span>{site.name}</span>
+        {/* Solo el isotipo en el header, en todas las páginas — sin el
+            wordmark "HANAK" al lado (pedido explícito de Bryan). */}
+        <Link href="/" aria-label={site.name} className="flex items-center">
+          <LogoMark size={34} tone={transparent ? "cream" : "forest"} />
         </Link>
 
         <nav className="hidden lg:flex items-center gap-8 text-xs uppercase tracking-[0.12em]">

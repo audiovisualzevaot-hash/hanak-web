@@ -22,6 +22,7 @@ import LogoMark from "./LogoMark";
 export default function PriorizamosSelva() {
   const trackRef = useRef<HTMLDivElement>(null);
   const [progress, setProgress] = useState(0);
+  const [windowWidth, setWindowWidth] = useState(1280);
 
   useEffect(() => {
     const onScroll = () => {
@@ -36,16 +37,25 @@ export default function PriorizamosSelva() {
       const scrolled = Math.min(Math.max(-rect.top, 0), total);
       setProgress(scrolled / total);
     };
-    onScroll();
+    const onResize = () => {
+      setWindowWidth(window.innerWidth);
+      onScroll();
+    };
+    onResize();
     window.addEventListener("scroll", onScroll, { passive: true });
-    window.addEventListener("resize", onScroll);
+    window.addEventListener("resize", onResize);
     return () => {
       window.removeEventListener("scroll", onScroll);
-      window.removeEventListener("resize", onScroll);
+      window.removeEventListener("resize", onResize);
     };
   }, []);
 
-  const travel = 30; // vw adicionales de separación en el punto máximo
+  // vw adicionales de separación en el punto máximo — más juntas y simétricas
+  // en pantallas grandes (pedido de Bryan, visto en una captura de escritorio
+  // ancho). En vw puro esto dejaba las tarjetas casi pegadas al título en
+  // móvil (texto y tarjetas compitiendo por el mismo ancho angosto), así que
+  // en pantallas chicas se mantiene la separación original.
+  const travel = windowWidth < 640 ? 30 : windowWidth < 1024 ? 24 : 18;
   const leftX = -progress * travel;
   const rightX = progress * travel;
   const textOpacity = 0.12 + progress * 0.88;

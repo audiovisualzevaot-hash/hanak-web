@@ -4,9 +4,11 @@
 export default function SunArc({
   className = "",
   color = "currentColor",
+  style,
 }: {
   className?: string;
   color?: string;
+  style?: React.CSSProperties;
 }) {
   return (
     <svg
@@ -15,6 +17,7 @@ export default function SunArc({
       viewBox="0 0 64 40"
       fill="none"
       className={className}
+      style={style}
       aria-hidden
     >
       <line x1="32" y1="0" x2="32" y2="16" stroke={color} strokeWidth="1" opacity="0.8" />

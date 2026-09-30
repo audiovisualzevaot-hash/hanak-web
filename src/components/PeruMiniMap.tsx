@@ -6,7 +6,7 @@
 // dimensiona sobre la foto de fondo del hero.
 export default function PeruMiniMap({
   className = "",
-  maxWidthClassName = "max-w-[280px] sm:max-w-[640px]",
+  maxWidthClassName = "max-w-[280px] sm:max-w-[560px] lg:max-w-[640px] xl:max-w-[720px]",
 }: {
   className?: string;
   /** Ancho máximo del mapa — se pasa aparte para no chocar con la clase

@@ -32,22 +32,25 @@ export default function InicioPage() {
           className="absolute inset-0 h-full w-full object-cover"
         />
 
-        <div className="relative z-10 flex justify-end px-5 pt-16 sm:px-10 sm:pt-20">
+        <div className="relative z-10 flex justify-end px-5 pt-16 sm:px-10 sm:pt-20 lg:px-14 lg:pt-24">
           <div className="text-right text-forest-dark">
-            <h2 className="font-display text-3xl sm:text-5xl leading-tight">Llegar a HANAK</h2>
-            <p className="mt-1 text-lg sm:text-2xl text-forest-dark/70">es muy sencillo</p>
+            <h2 className="font-display text-3xl sm:text-5xl lg:text-6xl xl:text-7xl leading-tight">
+              Llegar a HANAK
+            </h2>
+            <p className="mt-1 text-lg sm:text-2xl lg:text-3xl text-forest-dark/70">es muy sencillo</p>
           </div>
         </div>
 
         {/* Silueta del distrito de Hanak + lockup — gráfico real exportado
             por Bryan desde Illustrator con fondo transparente (reemplaza
-            la aproximación a mano de la versión anterior). */}
-        <div className="relative z-10 mt-auto px-5 pb-6 sm:px-10 sm:pb-10">
+            la aproximación a mano de la versión anterior). Escala hasta
+            pantallas anchas para que no se vea pequeño ni descentrado. */}
+        <div className="relative z-10 mt-auto px-5 pb-6 sm:px-10 sm:pb-10 lg:px-14 lg:pb-14">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             src="/images/inicio/mapa-llegar-hanak.webp"
             alt="Silueta del distrito de Hanak y lockup Hanak Sky Resort & Villas Club"
-            className="w-40 sm:w-64 h-auto drop-shadow-sm"
+            className="w-40 sm:w-64 lg:w-80 xl:w-96 h-auto drop-shadow-sm"
           />
         </div>
 
