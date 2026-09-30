@@ -36,9 +36,11 @@ export default function HanakPage() {
           <PhotoCarousel
             aspect="aspect-[16/10]"
             photos={[
+              { src: "/images/hanak/lista1.webp", alt: "Hanak — picnic al atardecer" },
+              { src: "/images/hanak/lista2.webp", alt: "Hanak — mesa de picnic" },
               { src: "/images/hanak/lista3.webp", alt: "Hanak — trabajo en el terreno" },
-              { src: "/images/hanak/3ra-foto-suelta.webp", alt: "Hanak — reforestación y flora nativa" },
               { src: "/images/hanak/lista4.webp", alt: "Hanak — preparación del terreno" },
+              { src: "/images/hanak/lista5.webp", alt: "Hanak — equipo en el terreno" },
             ]}
           />
         </div>

@@ -1,9 +1,11 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Image from "next/image";
 
 type Photo = { src: string; alt: string };
+
+const AUTOPLAY_MS = 6000;
 
 /**
  * Carrusel de una foto completa a la vez, sin panel de texto ni tarjeta —
@@ -11,6 +13,10 @@ type Photo = { src: string; alt: string };
  * ocupa todo el espacio y los botones de navegación son transparentes
  * (solo la flecha, sin fondo), flotando sobre la propia imagen. Pedido
  * explícito de Bryan para la sección de "Propósito social" en Hanak.
+ *
+ * Avanza solo cada 6s (AUTOPLAY_MS), además del mecanismo de botones
+ * laterales — el timer se reinicia cada vez que cambia el índice, así que
+ * una navegación manual no se pisa con el siguiente avance automático.
  */
 export default function PhotoCarousel({
   photos,
@@ -25,6 +31,14 @@ export default function PhotoCarousel({
   const go = (dir: 1 | -1) => {
     setIndex((i) => (i + dir + photos.length) % photos.length);
   };
+
+  useEffect(() => {
+    if (photos.length <= 1) return;
+    const id = setInterval(() => {
+      setIndex((i) => (i + 1) % photos.length);
+    }, AUTOPLAY_MS);
+    return () => clearInterval(id);
+  }, [index, photos.length]);
 
   return (
     <div className="relative">
