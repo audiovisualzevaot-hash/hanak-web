@@ -40,12 +40,17 @@ export default function InicioPage() {
           {/* Silueta del distrito de Hanak + lockup — gráfico real
               exportado por Bryan desde Illustrator con fondo transparente.
               A la misma altura que el título (items-start), no anclado al
-              fondo de la foto. */}
+              fondo de la foto. El export completo (sin recortar la cola del
+              contorno) es mucho más alto que ancho, así que se ve grande en
+              alto aunque el ancho parezca moderado. Un margen izquierdo
+              extra lo separa del borde de la pantalla — Bryan pidió que no
+              quede "muy pegado al lado izquierdo" sino un poco más hacia el
+              centro de esa mitad. */}
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             src="/images/inicio/mapa-llegar-hanak.webp"
             alt="Silueta del distrito de Hanak y lockup Hanak Sky Resort & Villas Club"
-            className="w-28 sm:w-44 lg:w-56 xl:w-64 h-auto drop-shadow-sm"
+            className="w-32 sm:w-48 lg:w-64 xl:w-72 h-auto ml-2 sm:ml-8 lg:ml-14 xl:ml-20 drop-shadow-sm"
           />
 
           <div className="text-right text-forest-dark">
