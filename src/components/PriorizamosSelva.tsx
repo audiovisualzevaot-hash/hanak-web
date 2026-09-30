@@ -18,6 +18,15 @@ import LogoMark from "./LogoMark";
  * Las dos tarjetas y el CTA central son el conector de esta sección hacia
  * /experiencia (pedido explícito de Bryan: cada slide de Inicio debe
  * enlazar a su pestaña correspondiente).
+ *
+ * La separación ya no espera a que el bloque anterior termine: arranca
+ * apenas la sección asoma por abajo de la pantalla (progreso de ENTRADA,
+ * de 0 a 1 mientras rect.top va de una pantalla completa hasta 0) y llega
+ * al 100% justo cuando la sección ya ocupa toda la pantalla — para ese
+ * momento el texto, las etiquetas y el botón ya están listos, en vez de
+ * arrancar recién ahí (pedido de Bryan: "ni bien ya se vean, se vayan
+ * separando, para cuando ya esté en la pantalla completa se vea ya el
+ * texto", para que se sienta más fluido).
  */
 export default function PriorizamosSelva() {
   const trackRef = useRef<HTMLDivElement>(null);
@@ -29,13 +38,9 @@ export default function PriorizamosSelva() {
       const el = trackRef.current;
       if (!el) return;
       const rect = el.getBoundingClientRect();
-      const total = rect.height - window.innerHeight;
-      if (total <= 0) {
-        setProgress(rect.top <= 0 ? 1 : 0);
-        return;
-      }
-      const scrolled = Math.min(Math.max(-rect.top, 0), total);
-      setProgress(scrolled / total);
+      const vh = window.innerHeight;
+      const entrance = vh > 0 ? (vh - rect.top) / vh : 1;
+      setProgress(Math.min(Math.max(entrance, 0), 1));
     };
     const onResize = () => {
       setWindowWidth(window.innerWidth);
@@ -68,7 +73,11 @@ export default function PriorizamosSelva() {
   const ctaOpacity = Math.max(0, (progress - 0.6) / 0.35);
 
   return (
-    <section ref={trackRef} className="relative h-[220vh] bg-cloud">
+    // 150vh (antes 220vh): la separación ya se completa DURANTE la entrada
+    // (el primer 100vh de este track), así que ya no hace falta un tramo
+    // fijo tan largo después de eso — solo una pausa breve (50vh) para leer
+    // el texto y el botón antes de pasar a la siguiente sección.
+    <section ref={trackRef} className="relative h-[150vh] bg-cloud">
       <div className="sticky top-0 h-screen overflow-hidden flex items-center justify-center">
         {/* Titular central — fondo crema plano, como en el export */}
         <div

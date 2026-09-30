@@ -5,12 +5,15 @@
 // punteada al aeropuerto), así que este componente solo lo ubica y lo
 // dimensiona sobre la foto de fondo del hero.
 //
-// El avioncito del ícono de "Aeropuerto" se recortó aparte (ver
-// avioncito.webp) y se borró de ese lugar en el gráfico base, para poder
-// darle vida propia con una animación en loop — como el detalle animado
-// del aeropuerto en ayana.com — sin tener que re-exportar todo el mapa
-// como SVG. Las posiciones de abajo (left/top/width en %) son las
-// coordenadas exactas de ese recorte dentro del gráfico original.
+// El ícono del avioncito se recortó aparte (avioncito.webp, sin el círculo
+// verde — ese círculo quedó pintado de nuevo en el gráfico base como el
+// pin fijo del "Aeropuerto") para poder animarlo de verdad: en vez de solo
+// flotar en el sitio, ahora RECORRE la línea punteada real que va del
+// aeropuerto hasta HANAK — igual que el detalle animado de ayana.com. La
+// curva de <animateMotion> de abajo es un arco de círculo (centro y radio
+// calculados a partir de la propia línea punteada del gráfico, pixel por
+// pixel) que calza exactamente sobre esa ruta, así que el avioncito viaja
+// pegado a las rayitas del mapa y no en línea recta.
 export default function PeruMiniMap({
   className = "",
   maxWidthClassName = "max-w-[280px] sm:max-w-[560px] lg:max-w-[640px] xl:max-w-[720px]",
@@ -22,21 +25,38 @@ export default function PeruMiniMap({
   maxWidthClassName?: string;
 }) {
   return (
-    <div className={`relative w-full mx-auto ${maxWidthClassName} ${className}`}>
-      {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img
-        src="/images/inicio/mapa-ubicacion.webp"
-        alt="Ubicación de Hanak, entre Lamas, Tarapoto y el aeropuerto"
+    <div className={`w-full mx-auto ${maxWidthClassName} ${className}`}>
+      <svg
+        viewBox="0 0 1292 867"
         className="w-full h-auto"
-      />
-      {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img
-        src="/images/inicio/avioncito.webp"
-        alt=""
-        aria-hidden="true"
-        className="absolute animate-plane-float"
-        style={{ left: "76.6%", top: "75.3%", width: "6.2%", height: "auto" }}
-      />
+        role="img"
+        aria-label="Ubicación de Hanak, entre Lamas, Tarapoto y el aeropuerto"
+      >
+        <image href="/images/inicio/mapa-ubicacion.webp" width={1292} height={867} />
+        {/* El avioncito arranca centrado en su propio origen (x/y negativos
+            a la mitad de su ancho/alto) para que <animateMotion> lo mueva
+            por su centro, no por la esquina — si no, viaja "descolgado"
+            de la línea punteada en vez de montado sobre ella. */}
+        <image href="/images/inicio/avioncito.webp" width={40} height={40} x={-20} y={-20}>
+          <animateMotion
+            dur="5.5s"
+            repeatCount="indefinite"
+            rotate="auto"
+            path="M 1053 651 A 243.58 243.58 0 0 0 781 343"
+          />
+          {/* Se apaga justo antes de llegar y se enciende recién saliendo,
+              para que el reinicio del loop (de HANAK de vuelta al
+              aeropuerto) sea invisible, como pidió Bryan: un viaje
+              continuo del aeropuerto a HANAK, nunca un salto brusco. */}
+          <animate
+            attributeName="opacity"
+            values="0;1;1;0"
+            keyTimes="0;0.08;0.92;1"
+            dur="5.5s"
+            repeatCount="indefinite"
+          />
+        </image>
+      </svg>
     </div>
   );
 }
