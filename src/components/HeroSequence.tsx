@@ -9,31 +9,40 @@ const clamp01 = (v: number) => Math.min(Math.max(v, 0), 1);
 const mix = (a: number, b: number, t: number) => a + (b - a) * clamp01(t);
 // progreso local dentro de un tramo [from, to] del progreso global
 const local = (p: number, from: number, to: number) => clamp01((p - from) / (to - from));
+// "pulso": aparece (inStart→inEnd), se mantiene fijo en 1, y luego desaparece
+// del todo (outStart→outEnd) — a diferencia de local(), que solo sube y se
+// queda. Lo usamos para que el título + mapa del Capítulo 2 no se queden
+// pegados en pantalla para siempre: aparecen, se sostienen un momento sobre
+// las nubes, y se apagan por completo antes de que termine el scroll.
+const pulse = (p: number, inStart: number, inEnd: number, outStart: number, outEnd: number) => {
+  if (p < inStart) return 0;
+  if (p < inEnd) return local(p, inStart, inEnd);
+  if (p < outStart) return 1;
+  if (p < outEnd) return 1 - local(p, outStart, outEnd);
+  return 0;
+};
 
 /**
  * Secuencia de apertura de Inicio, fiel al export de Illustrator y a la
  * referencia que grabó Bryan de ayana.com:
  *
- * 1. Atardecer sobre los cerros de Tarapoto (header.webp) — fija en cuadro,
- *    paneando hacia abajo a medida que se hace scroll (un paneo, nunca un
- *    zoom) hasta recorrer prácticamente toda la foto alta, de arriba a
- *    abajo — "que se vea la foto completa, no recortada".
- * 2. Mar de nubes (nubes.webp) — la segunda foto NUNCA se desliza como una
- *    hoja aparte: queda en el mismo lugar que la primera desde el inicio y
- *    solo se desvanece hacia adentro (opacity 0→1), un disolve puro sin
- *    ningún borde recto cruzando la pantalla. Igual que la Hoja 1, esta
- *    foto también recorre prácticamente toda su altura — pero en dos
- *    tramos: primero panea lento y se queda dentro de la zona de nubes
- *    mientras aparece "El primer Sky Resort de Latinoamérica" + el mapa;
- *    una vez que ese texto ya está fijo en pantalla, el paneo sigue
- *    avanzando (más rápido) hasta el final del scroll, revelando el resto
- *    de la foto (el valle) por debajo del texto ya asentado — tal como se
- *    ve en ayana.com: el fondo se sigue transformando después de que el
- *    contenido de encima ya se fijó.
- * 3. El titular de apertura ("Presentando a HANAK") no desaparece antes de
- *    que empiece el disolve — se apaga EN EL MISMO TRAMO que las dos fotos
- *    se cruzan, para que se sienta como una sola transición continua y no
- *    como dos animaciones independientes.
+ * 1. Atardecer sobre los cerros de Tarapoto (header.webp) — paneo puro que
+ *    TERMINA de recorrer la foto antes de que empiece el disolve hacia la
+ *    Hoja 2: paneo y disolve nunca se superponen, para que la foto se
+ *    alcance a ver completa antes de que el difuminado empiece a taparla
+ *    ("que se vea más, hasta antes de hacer el difuminado").
+ * 2. Mar de nubes (nubes.webp) — disolve puro (solo opacity, sin
+ *    deslizamiento), igual que antes. Sobre ella aparece "El primer Sky
+ *    Resort de Latinoamérica" + el mapa mientras el fondo panea lento y se
+ *    mantiene dentro de la zona de nubes. Ese texto+mapa NO se queda fijo
+ *    para siempre: se sostiene un momento y luego se apaga por completo
+ *    (pulso, ver arriba) — de ahí en adelante el scroll solo muestra la
+ *    foto sola, sin nada superpuesto, mientras el paneo acelera y revela el
+ *    resto de la imagen (el valle) — tal como en ayana.com: su texto/mapa
+ *    "tiene un tope" y después solo queda la imagen.
+ * 3. El titular de apertura ("Presentando a HANAK") se apaga EN EL MISMO
+ *    TRAMO que las dos fotos se cruzan, para que se sienta como una sola
+ *    transición continua y no como dos animaciones independientes.
  *
  * Referencia pedida por Bryan (ayana.com): sin cortes, sin zooms, todo es
  * disolver y panear — el único zoom prohibido es el scale(); el paneo
@@ -65,42 +74,47 @@ export default function HeroSequence() {
     };
   }, []);
 
-  // --- Capa 1 — atardecer: paneo puro (sin escala) que recorre prácticamente
-  // toda la foto alta antes de disolver a la Hoja 2 (pedido de Bryan: "que
-  // se vea la foto completa, no recortada").
-  const heroPanY = mix(4, 94, local(progress, 0, 0.48));
+  // --- Capa 1 — atardecer: paneo puro (sin escala) que TERMINA antes de que
+  // empiece el disolve (0→0.26), nunca al mismo tiempo — así se alcanza a
+  // ver la foto completa antes de que el difuminado la empiece a tapar
+  // (pedido de Bryan: "que se vea más, hasta antes de hacer el difuminado").
+  const heroPanY = mix(4, 94, local(progress, 0, 0.26));
 
   // Texto "Presentando a HANAK" — se apaga EN EL MISMO TRAMO que el disolve
-  // de las dos fotos (0.14→0.46, ver sheetOpacity abajo), no antes: así se
+  // de las dos fotos (0.26→0.46, ver sheetOpacity abajo), no antes: así se
   // va "junto con la imagen" en vez de desaparecer solo antes de que pase
   // nada, como pidió Bryan viendo la referencia de ayana.com.
-  const textOpacity = 1 - local(progress, 0.14, 0.46);
-  const textY = -local(progress, 0.14, 0.46) * 40;
+  const textOpacity = 1 - local(progress, 0.26, 0.46);
+  const textY = -local(progress, 0.26, 0.46) * 40;
 
   // --- Capa 2 — mar de nubes: disolve puro, sin deslizamiento. Ambas fotos
   // ocupan el mismo lugar (inset-0) desde el principio; solo cambia el
   // opacity de la que entra. Así se ven "integradas" de verdad, sin ningún
   // borde recto cruzando la pantalla — exactamente como en ayana.com,
-  // donde la foto nueva nunca se desliza como una hoja aparte.
-  const sheetOpacity = local(progress, 0.14, 0.46);
+  // donde la foto nueva nunca se desliza como una hoja aparte. Empieza
+  // justo cuando termina el paneo de la Hoja 1 (0.26), nunca antes.
+  const sheetOpacity = local(progress, 0.26, 0.46);
   // Paneo en dos tramos: lento y dentro de la zona de nubes mientras el
-  // título+mapa todavía están apareciendo (0.14→0.66), y luego — una vez
-  // que ya quedaron fijos en pantalla — más rápido hasta el final del
-  // scroll, recorriendo el resto de la foto (el valle) por debajo del
-  // texto ya asentado. Así la foto se ve completa, como pidió Bryan, sin
-  // que el mapa aparezca flotando sobre el terreno mientras se está
-  // formando.
+  // título+mapa están apareciendo/sosteniéndose/apagándose (0.26→0.82), y
+  // luego — recién cuando ya se apagaron del todo — más rápido hasta el
+  // final del scroll, mostrando SOLO la foto (el valle) sin nada encima.
+  // Así el mapa nunca queda flotando sobre terreno que todavía se está
+  // revelando, y el "tope" pedido por Bryan queda antes de que el paneo
+  // acelere.
   const cloudsPanY =
-    progress < 0.66
-      ? mix(14, 22, local(progress, 0.14, 0.66))
-      : mix(22, 90, local(progress, 0.66, 1));
+    progress < 0.82
+      ? mix(14, 22, local(progress, 0.26, 0.82))
+      : mix(22, 90, local(progress, 0.82, 1));
 
   // --- Capítulo "El primer Sky Resort de Latinoamérica" + mapa, sobre la
-  // misma foto de nubes/valle — nunca sobre un fondo de color sólido. Una
-  // vez que llega a opacity 1 / translateY 0 se queda ahí fijo el resto
-  // del scroll (el fondo sigue paneando detrás, ver cloudsPanY).
-  const introOpacity = local(progress, 0.5, 0.66);
-  const introY = (1 - local(progress, 0.5, 0.7)) * 36;
+  // misma foto de nubes — nunca sobre un fondo de color sólido. Ya no se
+  // queda fijo para siempre: aparece (0.5→0.62), se sostiene sobre las
+  // nubes (0.62→0.72) y se apaga por completo (0.72→0.82) — de ahí en
+  // adelante el scroll muestra solo la foto sola, tal como en ayana.com
+  // ("su texto, titulo y mapa no baja, tiene un tope, y de ahi solo se
+  // muestra imagen sola").
+  const introOpacity = pulse(progress, 0.5, 0.62, 0.72, 0.82);
+  const introY = (1 - local(progress, 0.5, 0.62)) * 36;
 
   return (
     <section ref={trackRef} className="relative h-[440vh] bg-forest-dark">

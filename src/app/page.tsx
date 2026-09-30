@@ -62,10 +62,12 @@ export default function InicioPage() {
       {/* DENTRO DE HANAK — teaser masterplan. Reordenado como en el export
           de Illustrator: texto a la izquierda, la ilustración isométrica
           grande a la derecha, sin tarjeta/rotación/sombra encima — el
-          gráfico ya trae su propio fondo crema y se integra directo con la
-          página (pedido explícito de Bryan tras ver que no coincidía con
-          el Illustrator). */}
-      <section className="max-w-7xl mx-auto px-5 sm:px-8 py-20 sm:py-28 grid lg:grid-cols-[0.8fr_1.2fr] gap-10 lg:gap-16 items-center">
+          gráfico ya trae su propio fondo crema (ajustado a --hanak-cloud)
+          y se integra directo con la página. El plano se agranda para que
+          complete más la pantalla, como pidió Bryan, así que la columna de
+          texto se angosta y el contenedor crece más allá del max-w-7xl del
+          resto de la página. */}
+      <section className="max-w-[100rem] mx-auto px-5 sm:px-8 py-20 sm:py-28 grid lg:grid-cols-[0.5fr_1.5fr] gap-10 lg:gap-12 items-center">
         <div className="order-1">
           <p className="uppercase tracking-[0.2em] text-xs text-charcoal/50 mb-3">
             Encuentra tu lugar
