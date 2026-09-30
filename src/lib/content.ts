@@ -37,6 +37,15 @@ export type Testimonio = {
   lote: string;
   cita: string;
   contexto: string;
+  // Video vertical (9:16) + poster en public/videos|images/testimonios —
+  // llegaron en zips separados por cliente. video/poster ausentes ⇒
+  // SociosFundadores cae al MediaPlaceholder.
+  video?: string;
+  poster?: string;
+  // Nota que se muestra ARRIBA del nombre cuando el testimonio lo da otra
+  // persona en representación del propietario (ej. Freddy vive en EE.UU.
+  // y no pudo viajar; su hermana visitó el proyecto y dio el testimonio).
+  testimonioNota?: string;
 };
 
 export const testimonios: Testimonio[] = [
@@ -45,30 +54,41 @@ export const testimonios: Testimonio[] = [
     lote: "O-10",
     cita: "Vivan la experiencia que yo estoy viviendo en el proyecto, espectacular.",
     contexto: "Peruano, vive en Italia.",
+    video: "/videos/testimonios/elmer-perez.mp4",
+    poster: "/images/testimonios/elmer-perez.jpg",
   },
   {
     nombre: "Freddy Zambrano",
     lote: "P-1",
     cita: "Es muy accesible: en una hora llegas de Lima y en una hora regresas.",
     contexto: "Vive en Estados Unidos.",
+    video: "/videos/testimonios/freddy-zambrano.mp4",
+    poster: "/images/testimonios/freddy-zambrano.jpg",
+    testimonioNota: "Testimonio de su hermana, quien visitó el proyecto en su representación",
   },
   {
     nombre: "Julio Concha Rocca",
     lote: "M-1",
     cita: "Las vistas son impresionantes.",
     contexto: "De Huaraz, Áncash — viajó junto a su hijo.",
+    video: "/videos/testimonios/julio-rocca.mp4",
+    poster: "/images/testimonios/julio-rocca.jpg",
   },
   {
     nombre: "Stefano Gioe",
     lote: "K-2",
     cita: "Mi asesor me ayudó en todo el proceso.",
     contexto: "Italiano, encantado con la selva peruana.",
+    video: "/videos/testimonios/stefano-gioe.mp4",
+    poster: "/images/testimonios/stefano-gioe.jpg",
   },
   {
     nombre: "Elizabeth Montoya",
     lote: "M-2",
     cita: "La rentabilidad del proyecto me convenció.",
     contexto: "Peruana, vive en España.",
+    video: "/videos/testimonios/elizabeth-montoya.mp4",
+    poster: "/images/testimonios/elizabeth-montoya.jpg",
   },
 ];
 
