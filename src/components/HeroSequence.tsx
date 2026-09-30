@@ -15,17 +15,21 @@ const local = (p: number, from: number, to: number) => clamp01((p - from) / (to 
  * referencia que grabó Bryan de ayana.com:
  *
  * 1. Atardecer sobre los cerros de Tarapoto (header.webp) — fija en cuadro,
- *    pero recorriendo la foto hacia abajo a medida que se hace scroll (un
- *    paneo, nunca un zoom): por eso Bryan envió una foto tan alta, y por
- *    eso el paneo recorre un tramo amplio (que se vea más foto, sin que se
- *    sienta recortada).
- * 2. Mar de nubes (nubes.webp) — en ayana.com la segunda foto NUNCA se
- *    desliza como una hoja aparte: queda en el mismo lugar que la primera
- *    desde el inicio y solo se desvanece hacia adentro (opacity 0→1) —
- *    un disolve puro, sin ningún borde/corte recto cruzando la pantalla.
- *    Reproducimos exactamente eso acá. Una vez que las nubes son 100%
- *    opacas, siguen paneando hacia el valle mientras, encima, aparece
- *    "El primer Sky Resort de Latinoamérica" y el mapa de ubicación.
+ *    paneando hacia abajo a medida que se hace scroll (un paneo, nunca un
+ *    zoom) hasta recorrer prácticamente toda la foto alta, de arriba a
+ *    abajo — "que se vea la foto completa, no recortada".
+ * 2. Mar de nubes (nubes.webp) — la segunda foto NUNCA se desliza como una
+ *    hoja aparte: queda en el mismo lugar que la primera desde el inicio y
+ *    solo se desvanece hacia adentro (opacity 0→1), un disolve puro sin
+ *    ningún borde recto cruzando la pantalla. Igual que la Hoja 1, esta
+ *    foto también recorre prácticamente toda su altura — pero en dos
+ *    tramos: primero panea lento y se queda dentro de la zona de nubes
+ *    mientras aparece "El primer Sky Resort de Latinoamérica" + el mapa;
+ *    una vez que ese texto ya está fijo en pantalla, el paneo sigue
+ *    avanzando (más rápido) hasta el final del scroll, revelando el resto
+ *    de la foto (el valle) por debajo del texto ya asentado — tal como se
+ *    ve en ayana.com: el fondo se sigue transformando después de que el
+ *    contenido de encima ya se fijó.
  * 3. El titular de apertura ("Presentando a HANAK") no desaparece antes de
  *    que empiece el disolve — se apaga EN EL MISMO TRAMO que las dos fotos
  *    se cruzan, para que se sienta como una sola transición continua y no
@@ -61,10 +65,10 @@ export default function HeroSequence() {
     };
   }, []);
 
-  // --- Capa 1 — atardecer: paneo puro (sin escala), tramo amplio para que
-  // se recorra buena parte de la foto alta (pedido de Bryan: "que se vea
-  // más imagen, no recortes").
-  const heroPanY = mix(8, 56, local(progress, 0, 0.48));
+  // --- Capa 1 — atardecer: paneo puro (sin escala) que recorre prácticamente
+  // toda la foto alta antes de disolver a la Hoja 2 (pedido de Bryan: "que
+  // se vea la foto completa, no recortada").
+  const heroPanY = mix(4, 94, local(progress, 0, 0.48));
 
   // Texto "Presentando a HANAK" — se apaga EN EL MISMO TRAMO que el disolve
   // de las dos fotos (0.14→0.46, ver sheetOpacity abajo), no antes: así se
@@ -79,14 +83,22 @@ export default function HeroSequence() {
   // borde recto cruzando la pantalla — exactamente como en ayana.com,
   // donde la foto nueva nunca se desliza como una hoja aparte.
   const sheetOpacity = local(progress, 0.14, 0.46);
-  // Panea muy poco — se queda casi todo el tramo dentro de las nubes, para
-  // que el título y el mapa queden sobre el mar de nubes (como en el
-  // export) y el valle/terreno recién asome debajo, nunca que el mapa
-  // termine flotando sobre el terreno.
-  const cloudsPanY = mix(14, 19, local(progress, 0.14, 0.6));
+  // Paneo en dos tramos: lento y dentro de la zona de nubes mientras el
+  // título+mapa todavía están apareciendo (0.14→0.66), y luego — una vez
+  // que ya quedaron fijos en pantalla — más rápido hasta el final del
+  // scroll, recorriendo el resto de la foto (el valle) por debajo del
+  // texto ya asentado. Así la foto se ve completa, como pidió Bryan, sin
+  // que el mapa aparezca flotando sobre el terreno mientras se está
+  // formando.
+  const cloudsPanY =
+    progress < 0.66
+      ? mix(14, 22, local(progress, 0.14, 0.66))
+      : mix(22, 90, local(progress, 0.66, 1));
 
   // --- Capítulo "El primer Sky Resort de Latinoamérica" + mapa, sobre la
-  // misma foto de nubes/valle — nunca sobre un fondo de color sólido.
+  // misma foto de nubes/valle — nunca sobre un fondo de color sólido. Una
+  // vez que llega a opacity 1 / translateY 0 se queda ahí fijo el resto
+  // del scroll (el fondo sigue paneando detrás, ver cloudsPanY).
   const introOpacity = local(progress, 0.5, 0.66);
   const introY = (1 - local(progress, 0.5, 0.7)) * 36;
 
@@ -160,52 +172,49 @@ export default function HeroSequence() {
           />
           <div className="absolute inset-0 bg-gradient-to-b from-black/10 via-transparent to-black/15" />
 
-          {/* Capítulo 2 — título + mapa, siempre sobre la foto. En pantallas
-              grandes el texto va a un lado y el mapa al otro (como en el
-              export de Illustrator), no apilados uno encima del otro: eso
-              era lo que hacía que la última línea de texto se viera
-              montada sobre las rutas del mapa (pedido explícito de Bryan). */}
+          {/* Capítulo 2 — título + mapa, siempre sobre la foto. Apilado y
+              centrado, todo más grande — como en la referencia de ayana.com
+              que grabó Bryan (ahí el título, el texto y el mapa van uno
+              debajo del otro, centrados, no en columnas separadas). */}
           <div
-            className="absolute inset-0 z-10 flex flex-col items-center justify-start gap-6 px-5 pt-16 text-center sm:justify-center sm:gap-6 sm:pt-0 lg:flex-row lg:items-center lg:justify-center lg:gap-12 lg:px-10 lg:text-left xl:gap-20"
+            className="absolute inset-0 z-10 flex flex-col items-center justify-start gap-2 px-5 pt-16 text-center sm:justify-center sm:gap-3 sm:pt-0"
             style={{ opacity: introOpacity, transform: `translateY(${introY}px)` }}
           >
-            <div className="flex flex-col items-center lg:items-start">
-              <h2 className="font-display uppercase text-lg sm:text-5xl lg:text-4xl xl:text-5xl text-forest leading-tight drop-shadow-sm">
-                El primer Sky Resort
-                <br className="hidden sm:block" /> de Latinoamérica
-              </h2>
+            <h2 className="font-display uppercase text-2xl sm:text-4xl lg:text-5xl xl:text-6xl text-forest leading-tight drop-shadow-sm">
+              El primer Sky Resort
+              <br /> de Latinoamérica
+            </h2>
 
-              <div className="mt-2 sm:mt-4 max-w-md">
-                <p className="text-xs sm:text-base text-charcoal font-medium leading-snug">
-                  Sobre las nubes de la Amazonía peruana nace un nuevo concepto
-                  de vivir:
-                </p>
-                <p className="text-[11px] sm:text-base text-charcoal/55 leading-snug">
-                  Un resort donde cada momento del día es un privilegio.
-                </p>
-              </div>
+            <div className="max-w-sm sm:max-w-lg">
+              <p className="text-sm sm:text-base lg:text-lg text-charcoal font-medium leading-snug">
+                Sobre las nubes de la Amazonía peruana nace un nuevo concepto
+                de vivir:
+              </p>
+              <p className="text-xs sm:text-base lg:text-lg text-charcoal/55 leading-snug">
+                Un resort donde cada momento del día es un privilegio.
+              </p>
+            </div>
 
-              {/* En móvil este renglón se omite: el texto de arriba ya
-                  transmite la idea y el espacio es demasiado justo para
-                  sumar una tercera línea sin volver a chocar con el mapa
-                  (el problema exacto que reportó Bryo). Vuelve a partir de
-                  sm:, donde sí hay aire de sobra. */}
-              <div className="mt-2 hidden max-w-[230px] items-start gap-2 text-left sm:mt-6 sm:flex sm:max-w-sm sm:gap-3">
-                <span className="mt-1 h-6 w-px shrink-0 bg-charcoal/25 sm:h-10" />
-                <p className="text-[11px] leading-snug sm:text-sm">
-                  <span className="text-charcoal font-medium">
-                    HANAK no es un condominio,
-                  </span>{" "}
-                  <span className="text-charcoal/60">
-                    Es una forma distinta de estar en el mundo.
-                  </span>
-                </p>
-              </div>
+            {/* En móvil este renglón se omite: el texto de arriba ya
+                transmite la idea y el espacio es demasiado justo para
+                sumar una tercera línea sin competir con el mapa (el
+                problema que reportó Bryan). Vuelve a partir de sm:, donde
+                sí hay aire de sobra. */}
+            <div className="hidden max-w-sm items-start gap-2 text-left sm:flex sm:max-w-md">
+              <span className="mt-1 h-7 w-px shrink-0 bg-charcoal/25 sm:h-8" />
+              <p className="text-xs leading-snug sm:text-sm">
+                <span className="text-charcoal font-medium">
+                  HANAK no es un condominio,
+                </span>{" "}
+                <span className="text-charcoal/60">
+                  Es una forma distinta de estar en el mundo.
+                </span>
+              </p>
             </div>
 
             <PeruMiniMap
-              className="lg:mt-0 lg:shrink-0"
-              maxWidthClassName="max-w-[190px] sm:max-w-[460px] lg:max-w-[320px] xl:max-w-[400px]"
+              className="mt-1 sm:mt-2"
+              maxWidthClassName="max-w-[220px] sm:max-w-[380px] lg:max-w-[460px] xl:max-w-[540px]"
             />
           </div>
         </div>

@@ -59,34 +59,39 @@ export default function InicioPage() {
         </span>
       </Link>
 
-      {/* DENTRO DE HANAK — teaser masterplan */}
-      <section className="max-w-7xl mx-auto px-5 sm:px-8 py-20 sm:py-28 grid lg:grid-cols-2 gap-10 items-center">
-        <Link href="/masterplan" className="group block order-2 lg:order-1">
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
-            src="/images/inicio/mapa.webp"
-            alt="Masterplan de Hanak"
-            className="w-full rounded-2xl -rotate-2 group-hover:rotate-0 transition-transform duration-500 shadow-xl"
-          />
-        </Link>
-        <div className="order-1 lg:order-2">
+      {/* DENTRO DE HANAK — teaser masterplan. Reordenado como en el export
+          de Illustrator: texto a la izquierda, la ilustración isométrica
+          grande a la derecha, sin tarjeta/rotación/sombra encima — el
+          gráfico ya trae su propio fondo crema y se integra directo con la
+          página (pedido explícito de Bryan tras ver que no coincidía con
+          el Illustrator). */}
+      <section className="max-w-7xl mx-auto px-5 sm:px-8 py-20 sm:py-28 grid lg:grid-cols-[0.8fr_1.2fr] gap-10 lg:gap-16 items-center">
+        <div className="order-1">
           <p className="uppercase tracking-[0.2em] text-xs text-charcoal/50 mb-3">
-            Explora el proyecto
+            Encuentra tu lugar
           </p>
           <h2 className="font-display text-3xl sm:text-5xl text-forest leading-tight mb-4">
             Dentro de HANAK
           </h2>
-          <p className="text-charcoal/70 leading-relaxed max-w-md">
+          <p className="text-charcoal/70 leading-relaxed max-w-md mb-6">
             Veinte manzanas, cada una con su propia relación con el paisaje.
             Recorre el masterplan y encuentra la tuya.
           </p>
           <Link
             href="/masterplan"
-            className="inline-flex items-center gap-1.5 mt-6 text-sm text-forest hover:underline"
+            className="inline-flex items-center gap-1.5 text-sm uppercase tracking-[0.12em] text-forest hover:underline"
           >
-            Ver el masterplan <span aria-hidden>→</span>
+            Explora el masterplan <span aria-hidden>↗</span>
           </Link>
         </div>
+        <Link href="/masterplan" className="group block order-2">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src="/images/inicio/mapa.webp"
+            alt="Masterplan de Hanak"
+            className="w-full transition-transform duration-500 group-hover:scale-[1.02]"
+          />
+        </Link>
       </section>
 
       {/* SOCIOS FUNDADORES */}
