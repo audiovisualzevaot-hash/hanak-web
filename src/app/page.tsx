@@ -36,23 +36,7 @@ export default function InicioPage() {
           className="absolute inset-0 h-full w-full object-cover"
         />
 
-        <div className="relative z-10 flex items-start justify-between px-5 pt-16 sm:px-10 sm:pt-20 lg:px-14 lg:pt-24">
-          {/* Silueta del distrito de Hanak + lockup — gráfico real
-              exportado por Bryan desde Illustrator con fondo transparente.
-              A la misma altura que el título (items-start), no anclado al
-              fondo de la foto. El export completo (sin recortar la cola del
-              contorno) es mucho más alto que ancho, así que se ve grande en
-              alto aunque el ancho parezca moderado. Un margen izquierdo
-              extra lo separa del borde de la pantalla — Bryan pidió que no
-              quede "muy pegado al lado izquierdo" sino un poco más hacia el
-              centro de esa mitad. */}
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
-            src="/images/inicio/mapa-llegar-hanak.webp"
-            alt="Silueta del distrito de Hanak y lockup Hanak Sky Resort & Villas Club"
-            className="w-32 sm:w-48 lg:w-64 xl:w-72 h-auto ml-2 sm:ml-8 lg:ml-14 xl:ml-20 drop-shadow-sm"
-          />
-
+        <div className="relative z-10 flex justify-end px-5 pt-16 sm:px-10 sm:pt-20 lg:px-14 lg:pt-24">
           <div className="text-right text-forest-dark">
             <h2 className="font-display text-3xl sm:text-5xl lg:text-6xl xl:text-7xl leading-tight">
               Llegar a HANAK
@@ -60,6 +44,23 @@ export default function InicioPage() {
             <p className="mt-1 text-lg sm:text-2xl lg:text-3xl text-forest-dark/70">es muy sencillo</p>
           </div>
         </div>
+
+        {/* Silueta del distrito de Hanak + lockup — gráfico real exportado
+            por Bryan desde Illustrator con fondo transparente. Bryan marcó
+            con un círculo a mano en una captura suya el tamaño y la
+            posición que quiere: mucho más grande y más hacia el centro de
+            la mitad izquierda, no un badge chico pegado a la esquina. Por
+            eso va posicionado en porcentaje del contenedor completo (no en
+            píxeles fijos ni atado al padding del header) — así escala
+            igual de "grande" sin importar la resolución, incluyendo
+            monitores anchos/ultrawide donde un ancho en px fijo se veía
+            chico en proporción. */}
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src="/images/inicio/mapa-llegar-hanak.webp"
+          alt="Silueta del distrito de Hanak y lockup Hanak Sky Resort & Villas Club"
+          className="absolute z-10 top-[24%] sm:top-[7%] left-[8%] sm:left-[10%] lg:left-[14%] xl:left-[16%] w-[30%] sm:w-[27%] lg:w-[23%] xl:w-[20%] h-auto drop-shadow-sm"
+        />
 
         <span className="absolute bottom-6 right-5 sm:bottom-10 sm:right-10 z-10 flex h-11 w-11 sm:h-14 sm:w-14 items-center justify-center rounded-full bg-white/90 text-forest transition group-hover:bg-white">
           ↗
