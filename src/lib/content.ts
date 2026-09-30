@@ -139,6 +139,26 @@ export const skyClubAmenidades = [
   { categoria: "Naturaleza y experiencias", items: ["Mirador", "Viñedo y degustación", "Aventura Hanak", "Parques"] },
 ];
 
+export type AmenidadMapa = {
+  id: string;
+  label: string;
+  descripcion: string;
+  // Posición en % sobre public/images/masterplan/mapa.webp — leída
+  // visualmente sobre los elementos que el propio ilustrador ya dibujó ahí
+  // (canchas, piscinas, palapas), igual criterio que las coordenadas de
+  // "manzanas" arriba.
+  x: number;
+  y: number;
+};
+
+export const amenidadesMapa: AmenidadMapa[] = [
+  { id: "deportes", label: "Zona deportiva", descripcion: "Canchas de pádel, tenis y básquet.", x: 40.5, y: 25.8 },
+  { id: "recepcion", label: "Recepción · Club House", descripcion: "Punto de bienvenida y encuentro social del proyecto.", x: 34.8, y: 31.5 },
+  { id: "piscina", label: "Piscina infinita", descripcion: "La piscina principal de Sky Club, con vista abierta al valle.", x: 73.2, y: 61.8 },
+  { id: "spa", label: "Spa y bienestar", descripcion: "Zona de relajación, meditación y aromaterapia.", x: 55.3, y: 64.2 },
+  { id: "degustacion", label: "Viñedo y degustación", descripcion: "Zona de cata y experiencias gastronómicas al aire libre.", x: 61.0, y: 69.4 },
+];
+
 export const tarapotoStats = [
   { n: "01", valor: "1.05M+", label: "Turistas anuales que recibe San Martín — un flujo que ya no depende de temporada alta." },
   { n: "02", valor: "54%", label: "Ocupación anual promedio del segmento premium de casas de campo en Tarapoto, frente a un 26.8% del mercado general." },
