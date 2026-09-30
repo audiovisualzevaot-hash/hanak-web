@@ -11,21 +11,28 @@ const mix = (a: number, b: number, t: number) => a + (b - a) * clamp01(t);
 const local = (p: number, from: number, to: number) => clamp01((p - from) / (to - from));
 
 /**
- * Secuencia de apertura de Inicio, fiel al export de Illustrator:
+ * Secuencia de apertura de Inicio, fiel al export de Illustrator y a la
+ * referencia que grabó Bryan de ayana.com:
  *
  * 1. Atardecer sobre los cerros de Tarapoto (header.webp) — fija en cuadro,
  *    pero recorriendo la foto hacia abajo a medida que se hace scroll (un
- *    paneo, nunca un zoom): por eso Bryan envió una foto tan alta.
- * 2. Mar de nubes (nubes.webp) — una segunda "hoja" del tamaño completo de
- *    la pantalla que se desliza desde abajo y tapa la anterior. Una vez
- *    que cubre la pantalla, sigue paneando hacia abajo (de las nubes al
- *    valle) mientras, encima, aparece "El primer Sky Resort de
- *    Latinoamérica" y el mapa de ubicación — exactamente como en el
- *    export, donde ambos textos y el mapa van sobre la misma foto de
- *    fondo, nunca sobre un bloque de color sólido.
+ *    paneo, nunca un zoom): por eso Bryan envió una foto tan alta, y por
+ *    eso el paneo recorre un tramo amplio (que se vea más foto, sin que se
+ *    sienta recortada).
+ * 2. Mar de nubes (nubes.webp) — en ayana.com la segunda foto NUNCA se
+ *    desliza como una hoja aparte: queda en el mismo lugar que la primera
+ *    desde el inicio y solo se desvanece hacia adentro (opacity 0→1) —
+ *    un disolve puro, sin ningún borde/corte recto cruzando la pantalla.
+ *    Reproducimos exactamente eso acá. Una vez que las nubes son 100%
+ *    opacas, siguen paneando hacia el valle mientras, encima, aparece
+ *    "El primer Sky Resort de Latinoamérica" y el mapa de ubicación.
+ * 3. El titular de apertura ("Presentando a HANAK") no desaparece antes de
+ *    que empiece el disolve — se apaga EN EL MISMO TRAMO que las dos fotos
+ *    se cruzan, para que se sienta como una sola transición continua y no
+ *    como dos animaciones independientes.
  *
  * Referencia pedida por Bryan (ayana.com): sin cortes, sin zooms, todo es
- * deslizar y paneo — el único zoom prohibido es el scale(); el paneo
+ * disolver y panear — el único zoom prohibido es el scale(); el paneo
  * vertical de la propia foto (object-position) sí es parte del lenguaje.
  */
 export default function HeroSequence() {
@@ -54,20 +61,24 @@ export default function HeroSequence() {
     };
   }, []);
 
-  // --- Capa 1 — atardecer: paneo puro (sin escala) mientras está en cuadro
-  const heroPanY = mix(28, 58, local(progress, 0, 0.32));
+  // --- Capa 1 — atardecer: paneo puro (sin escala), tramo amplio para que
+  // se recorra buena parte de la foto alta (pedido de Bryan: "que se vea
+  // más imagen, no recortes").
+  const heroPanY = mix(8, 56, local(progress, 0, 0.48));
 
-  // Texto "Presentando a HANAK" — se desvanece apenas arranca el scroll
-  const textOpacity = 1 - local(progress, 0, 0.14);
-  const textY = -local(progress, 0, 0.14) * 50;
+  // Texto "Presentando a HANAK" — se apaga EN EL MISMO TRAMO que el disolve
+  // de las dos fotos (0.14→0.46, ver sheetOpacity abajo), no antes: así se
+  // va "junto con la imagen" en vez de desaparecer solo antes de que pase
+  // nada, como pidió Bryan viendo la referencia de ayana.com.
+  const textOpacity = 1 - local(progress, 0.14, 0.46);
+  const textY = -local(progress, 0.14, 0.46) * 40;
 
-  // --- Capa 2 — mar de nubes: se desliza como una hoja larga y tapa la 1.
-  // Además de deslizarse, se desvanece hacia adentro (opacity 0→1) durante
-  // el mismo tramo: así ambas fotos se "integran" en vez de que la nueva
-  // tape la anterior con un corte duro — el desvanecimiento "luxury" tipo
-  // Ayana que pidió Bryan, sumado al deslizamiento (no en su lugar).
-  const sheetSlide = 100 - local(progress, 0.14, 0.46) * 100;
-  const sheetOpacity = local(progress, 0.14, 0.38);
+  // --- Capa 2 — mar de nubes: disolve puro, sin deslizamiento. Ambas fotos
+  // ocupan el mismo lugar (inset-0) desde el principio; solo cambia el
+  // opacity de la que entra. Así se ven "integradas" de verdad, sin ningún
+  // borde recto cruzando la pantalla — exactamente como en ayana.com,
+  // donde la foto nueva nunca se desliza como una hoja aparte.
+  const sheetOpacity = local(progress, 0.14, 0.46);
   // Panea muy poco — se queda casi todo el tramo dentro de las nubes, para
   // que el título y el mapa queden sobre el mar de nubes (como en el
   // export) y el valle/terreno recién asome debajo, nunca que el mapa
@@ -126,15 +137,17 @@ export default function HeroSequence() {
           />
         </div>
 
-        {/* Hoja 2 — mar de nubes / valle. Se desliza y luego sigue paneando;
-            sobre ella va el segundo capítulo (título + mapa), tal como en
-            el export: todo sobre la misma foto, nunca sobre color sólido. */}
+        {/* Hoja 2 — mar de nubes / valle. Disolve puro (solo opacity, sin
+            transform): queda en el mismo lugar que la Hoja 1 desde el
+            principio y va tapándola por transparencia, nunca con un borde
+            que se desliza. Luego sigue paneando; sobre ella va el segundo
+            capítulo (título + mapa), tal como en el export: todo sobre la
+            misma foto, nunca sobre color sólido. */}
         <div
           className="absolute inset-0"
           style={{
-            transform: `translateY(${sheetSlide}%)`,
             opacity: sheetOpacity,
-            willChange: "transform, opacity",
+            willChange: "opacity",
           }}
         >
           <Image
