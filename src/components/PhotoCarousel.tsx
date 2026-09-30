@@ -17,6 +17,14 @@ const AUTOPLAY_MS = 6000;
  * Avanza solo cada 6s (AUTOPLAY_MS), además del mecanismo de botones
  * laterales — el timer se reinicia cada vez que cambia el índice, así que
  * una navegación manual no se pisa con el siguiente avance automático.
+ *
+ * Las 5 fotos van todas en el DOM desde el inicio, una al lado de la otra
+ * en una tira horizontal, y lo único que se mueve es un translateX sobre
+ * esa tira (deslizamiento real, foto empujando a foto). Antes cada cambio
+ * de foto desmontaba/montaba una sola <Image>, lo que se sentía como un
+ * corte + una carga (la siguiente foto recién empezaba a pedirse al
+ * navegador en ese momento). Con todas precargadas (loading="eager") no
+ * hay nada que esperar al deslizar.
  */
 export default function PhotoCarousel({
   photos,
@@ -26,7 +34,6 @@ export default function PhotoCarousel({
   aspect?: string;
 }) {
   const [index, setIndex] = useState(0);
-  const photo = photos[index];
 
   const go = (dir: 1 | -1) => {
     setIndex((i) => (i + dir + photos.length) % photos.length);
@@ -43,14 +50,41 @@ export default function PhotoCarousel({
   return (
     <div className="relative">
       <div className={`relative ${aspect} w-full overflow-hidden rounded-xl bg-charcoal/10`}>
-        <Image
-          key={photo.src}
-          src={photo.src}
-          alt={photo.alt}
-          fill
-          sizes="100vw"
-          className="object-cover"
-        />
+        <div
+          className="flex h-full transition-transform duration-700 ease-[cubic-bezier(0.65,0,0.35,1)]"
+          style={{
+            width: `${photos.length * 100}%`,
+            transform: `translateX(-${index * (100 / photos.length)}%)`,
+          }}
+        >
+          {photos.map((photo, i) => (
+            <div
+              key={photo.src}
+              className="relative h-full flex-none"
+              style={{ width: `${100 / photos.length}%` }}
+            >
+              {i === 0 ? (
+                <Image
+                  src={photo.src}
+                  alt={photo.alt}
+                  fill
+                  priority
+                  sizes="100vw"
+                  className="object-cover"
+                />
+              ) : (
+                <Image
+                  src={photo.src}
+                  alt={photo.alt}
+                  fill
+                  loading="eager"
+                  sizes="100vw"
+                  className="object-cover"
+                />
+              )}
+            </div>
+          ))}
+        </div>
       </div>
 
       {photos.length > 1 && (
