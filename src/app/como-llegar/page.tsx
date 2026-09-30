@@ -1,5 +1,5 @@
 import MediaPlaceholder from "@/components/MediaPlaceholder";
-import LogoMark from "@/components/LogoMark";
+import ComoLlegarHero from "@/components/ComoLlegarHero";
 import RutaLimaHanak from "@/components/RutaLimaHanak";
 
 export const metadata = { title: "Cómo llegar — HANAK" };
@@ -7,13 +7,16 @@ export const metadata = { title: "Cómo llegar — HANAK" };
 // Reformulación completa según el export de Illustrator que mandó Bryan
 // (tercera vuelta de correcciones sobre esta misma hoja):
 //
-// - Hero: ya con la foto definitiva que mandó Bryan (cerro con selva y
-//   neblina), a pantalla completa. Gradiente mucho más liviano — igual
-//   criterio que el de Inicio (HeroSequence.tsx: from-black/20 via-black/5
-//   to-black/30) — para que se vea "gran parte de la foto" en vez de
-//   taparla. Título + bloque "Parte del viaje" ahora van como una sola
-//   composición centrada (antes el título vivía arriba a la izquierda,
-//   separado del resto) y más grandes, como pidió Bryan.
+// - Hero (ComoLlegarHero.tsx): la foto es muy vertical (2:3, 3600x5400) —
+//   en una sección estática de min-h-screen solo se alcanzaba a ver una
+//   franja central, cortando tanto la neblina de arriba como la selva de
+//   abajo. Bryan pidió expresamente "la foto grande larga, como en
+//   INICIO": se reemplazó por el mismo mecanismo de paneo por scroll que
+//   ya usa HeroSequence.tsx (Inicio) y HanakHero.tsx (Hanak) — track alto,
+//   foto sticky, object-position animado revelando de a poco toda la
+//   extensión de la foto — con el mismo criterio de HanakHero de no ser
+//   tan largo/elaborado como el de Inicio (track de 170vh, un solo
+//   capítulo de texto siempre visible, sin cruce a una segunda foto).
 // - "Conecta desde LIMA a HANAK": el mapa (RutaLimaHanak.tsx) vivía en un
 //   lienzo cuadrado con mucho margen transparente alrededor — dejaba ver
 //   de más el fondo crema de la sección detrás. Se recortó el PNG pegado
@@ -35,42 +38,9 @@ export const metadata = { title: "Cómo llegar — HANAK" };
 export default function ComoLlegarPage() {
   return (
     <>
-      {/* HERO — foto a pantalla completa, tratamiento igual al de Inicio:
-          gradiente liviano (se ve casi toda la foto) y todo el texto en una
-          sola composición centrada, grande. */}
-      <section className="relative min-h-screen flex flex-col overflow-hidden bg-forest-dark">
-        <MediaPlaceholder
-          label="Cómo llegar — HANAK"
-          aspect="aspect-auto"
-          className="absolute inset-0 !rounded-none"
-          src="/images/como-llegar/header.webp"
-          priority
-        />
-        <div className="absolute inset-0 bg-gradient-to-b from-black/20 via-black/5 to-black/35" />
-
-        <div className="relative z-10 flex flex-col flex-1 items-center justify-center text-center px-5 gap-5 sm:gap-6">
-          <h1 className="font-display uppercase text-cloud text-5xl sm:text-7xl lg:text-8xl tracking-wide leading-tight drop-shadow-sm">
-            Llegar a HANAK
-          </h1>
-
-          <div className="flex flex-col items-center gap-3">
-            <LogoMark size={28} tone="cream" />
-            <p className="text-sm sm:text-base uppercase tracking-[0.3em] text-white/85">
-              Es parte de la experiencia
-            </p>
-            <p className="font-display italic text-teal text-5xl sm:text-7xl">
-              Parte del viaje
-            </p>
-          </div>
-        </div>
-
-        <div className="absolute z-10 bottom-8 sm:bottom-10 left-1/2 -translate-x-1/2 w-14 h-14 sm:w-16 sm:h-16">
-          <div className="absolute inset-0 rounded-full border border-dashed border-white/35 animate-[spin_40s_linear_infinite]" />
-          <span className="absolute inset-0 flex items-center justify-center">
-            <span className="w-1.5 h-1.5 rounded-full bg-white/70" />
-          </span>
-        </div>
-      </section>
+      {/* HERO — foto larga con paneo por scroll, igual mecanismo que
+          Inicio/Hanak (ver ComoLlegarHero.tsx). */}
+      <ComoLlegarHero />
 
       {/* CONECTA DESDE LIMA A HANAK — mapa real animado, grande */}
       <section className="bg-cloud pt-16 sm:pt-24 pb-10 sm:pb-14">
