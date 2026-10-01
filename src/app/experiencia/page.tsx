@@ -54,8 +54,20 @@ export default function ExperienciaPage() {
           <p className="text-xs sm:text-sm uppercase tracking-[0.25em] text-white/75 mb-4">
             HANAK se vive en tres tiempos
           </p>
-          <h1 className="font-display text-cloud text-5xl sm:text-8xl lg:text-9xl tracking-wide">
-            EXPERIENCIA
+          <h1
+            className="font-display text-cloud text-5xl sm:text-8xl lg:text-9xl tracking-wide"
+            aria-label="EXPERIENCIA"
+          >
+            {"EXPERIENCIA".split("").map((letra, i) => (
+              <span
+                key={i}
+                aria-hidden="true"
+                className="inline-block animate-experiencia-letter"
+                style={{ animationDelay: `${i * 55}ms` }}
+              >
+                {letra}
+              </span>
+            ))}
           </h1>
         </div>
 

@@ -142,3 +142,71 @@ body {
 .animate-tarapoto-card {
   animation: tarapoto-card-in 0.65s cubic-bezier(0.16, 1, 0.3, 1) both;
 }
+
+/* Bryan pidió una animación distinta para cada uno de los títulos de
+   Vistas, Experiencia y Cómo Llegar — ninguna repite la fórmula de las
+   otras ni la de Tarapoto/Inicio. Las tres corren una sola vez al cargar
+   la hoja (nunca ligadas al scroll). */
+
+/* VISTAS — "la niebla se disipa": el título "HANAK" arranca desenfocado y
+   un poco achicado, como tapado por el colchón de nubes, y se va
+   enfocando y agrandando a su tamaño normal mientras aparece. */
+@keyframes vistas-title-focus {
+  from {
+    opacity: 0;
+    filter: blur(14px);
+    transform: scale(0.92);
+  }
+  to {
+    opacity: 1;
+    filter: blur(0px);
+    transform: scale(1);
+  }
+}
+.animate-vistas-title {
+  animation: vistas-title-focus 1.6s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+/* EXPERIENCIA — letra por letra: cada letra de "EXPERIENCIA" sube y
+   aparece con un pequeño desfase respecto a la anterior (el delay por
+   letra se arma en el JSX con animation-delay inline, no con una clase
+   arbitraria de Tailwind — un estilo inline SIEMPRE gana por encima de la
+   clase sin importar el orden en que el shorthand "animation" de abajo
+   reinicie animation-delay a 0s, a diferencia del caso de
+   animate-tarapoto-card documentado arriba). */
+@keyframes experiencia-letter-in {
+  from {
+    opacity: 0;
+    transform: translateY(0.35em);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.animate-experiencia-letter {
+  animation: experiencia-letter-in 0.6s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+/* CÓMO LLEGAR — barrido de llegada: el título "Llegar a HANAK" entra
+   deslizándose desde la izquierda con una curva de easing marcada, en vez
+   de un simple fundido — conecta con la idea de trayecto/movimiento de
+   esa hoja. La distancia va en % (relativa al propio ancho del texto) en
+   vez de un valor fijo en px, para que se sienta igual de proporcionada
+   en los tres tamaños de tipografía (text-5xl → text-8xl). Con un -8% el
+   recorrido era tan corto que la curva de easing (muy "de salida rápida")
+   lo resolvía casi de golpe, sin que se llegue a percibir — se sube a
+   -34% y 1.3s para que el barrido realmente se note. */
+@keyframes como-llegar-title-arrive {
+  from {
+    opacity: 0;
+    transform: translateX(-34%);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+.animate-como-llegar-title {
+  animation: como-llegar-title-arrive 1.3s cubic-bezier(0.16, 1, 0.3, 1) both;
+}

@@ -72,7 +72,7 @@ export default function ComoLlegarHero() {
         </div>
 
         <div className="relative z-10 flex flex-col flex-1 items-center justify-center text-center px-5 gap-5 sm:gap-6">
-          <h1 className="font-display uppercase text-cloud text-5xl sm:text-7xl lg:text-8xl tracking-wide leading-tight drop-shadow-sm">
+          <h1 className="font-display uppercase text-cloud text-5xl sm:text-7xl lg:text-8xl tracking-wide leading-tight drop-shadow-sm animate-como-llegar-title">
             Llegar a HANAK
           </h1>
 

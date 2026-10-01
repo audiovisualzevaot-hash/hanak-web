@@ -69,7 +69,7 @@ export default function VistasPage() {
 
         <div className="relative z-10 flex flex-col items-center text-center px-5">
           <LogoMark size={44} tone="cream" className="mb-5" />
-          <h1 className="font-display text-cloud text-5xl sm:text-7xl tracking-wide">
+          <h1 className="font-display text-cloud text-5xl sm:text-7xl tracking-wide animate-vistas-title">
             HANAK
           </h1>
           <p className="mt-5 font-display italic text-cloud/85 text-lg sm:text-2xl">
