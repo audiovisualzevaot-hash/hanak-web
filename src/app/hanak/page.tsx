@@ -2,7 +2,7 @@ import HanakHero from "@/components/HanakHero";
 import MediaPlaceholder from "@/components/MediaPlaceholder";
 import PhotoCarousel from "@/components/PhotoCarousel";
 
-export const metadata = { title: "Hanak — HANAK" };
+export const metadata = { title: "Concepto de marca — HANAK" };
 
 export default function HanakPage() {
   return (
@@ -35,6 +35,7 @@ export default function HanakPage() {
         <div className="max-w-5xl mx-auto px-5 sm:px-8 mt-14 sm:mt-16">
           <PhotoCarousel
             aspect="aspect-[16/10]"
+            sizes="(min-width: 1024px) 1024px, 100vw"
             photos={[
               { src: "/images/hanak/lista1.webp", alt: "Hanak — picnic al atardecer" },
               { src: "/images/hanak/lista2.webp", alt: "Hanak — mesa de picnic" },
@@ -70,6 +71,7 @@ export default function HanakPage() {
               aspect="aspect-[4/5] sm:aspect-[3/2]"
               src="/images/hanak/2da-foto-suelta.webp"
               className="sm:col-span-7"
+              sizes="(min-width: 640px) 55vw, 100vw"
             />
             <p className="sm:col-span-4 sm:col-start-9 mt-5 sm:mt-0 text-charcoal/70 leading-relaxed text-lg sm:text-xl">
               En un sector donde muchos venden metros cuadrados,
@@ -85,6 +87,7 @@ export default function HanakPage() {
               aspect="aspect-[4/5] sm:aspect-[3/2]"
               src="/images/hanak/1ra-foto-suelta.webp"
               className="sm:col-span-7 sm:col-start-6 order-1 sm:order-2"
+              sizes="(min-width: 640px) 55vw, 100vw"
             />
           </div>
 
@@ -94,6 +97,7 @@ export default function HanakPage() {
               aspect="aspect-[4/5] sm:aspect-[3/2]"
               src="/images/hanak/lista5.webp"
               className="sm:col-span-7"
+              sizes="(min-width: 640px) 55vw, 100vw"
             />
             <p className="sm:col-span-4 sm:col-start-9 mt-5 sm:mt-0 text-charcoal/70 leading-relaxed text-lg sm:text-xl">
               a una comunidad y a una forma de entender el descanso que en

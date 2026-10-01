@@ -5,6 +5,8 @@ import Image from "next/image";
 
 type Photo = { src: string; alt: string; objectPosition?: string };
 
+const DEFAULT_SIZES = "100vw";
+
 const AUTOPLAY_MS = 6000;
 
 /**
@@ -40,12 +42,18 @@ export default function PhotoCarousel({
   className = "",
   frameClassName = "rounded-xl bg-charcoal/10",
   dots = true,
+  sizes = DEFAULT_SIZES,
 }: {
   photos: Photo[];
   aspect?: string;
   className?: string;
   frameClassName?: string;
   dots?: boolean;
+  // Igual criterio que MediaPlaceholder: por defecto asume pantalla
+  // completa (el uso más común — heroes y cierres a pantalla completa),
+  // pero el carrusel de "Propósito social" en Hanak vive dentro de un
+  // contenedor max-w-5xl, así que ahí conviene pasar un valor más ajustado.
+  sizes?: string;
 }) {
   const [index, setIndex] = useState(0);
 
@@ -90,7 +98,7 @@ export default function PhotoCarousel({
                   alt={photo.alt}
                   fill
                   priority
-                  sizes="100vw"
+                  sizes={sizes}
                   className="object-cover"
                   style={photo.objectPosition ? { objectPosition: photo.objectPosition } : undefined}
                 />
@@ -100,7 +108,7 @@ export default function PhotoCarousel({
                   alt={photo.alt}
                   fill
                   loading="eager"
-                  sizes="100vw"
+                  sizes={sizes}
                   className="object-cover"
                   style={photo.objectPosition ? { objectPosition: photo.objectPosition } : undefined}
                 />

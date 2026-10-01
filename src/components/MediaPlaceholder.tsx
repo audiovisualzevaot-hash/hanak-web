@@ -11,6 +11,12 @@ type Props = {
   // muestra la foto como fondo estático mientras tanto.
   src?: string;
   priority?: boolean;
+  // Para los pocos usos donde la foto NO ocupa el ancho completo de la
+  // pantalla (ej. collages en grilla) — por defecto asume "100vw" porque la
+  // gran mayoría de los usos de este componente son fondos a pantalla
+  // completa. Pasar un valor más ajustado evita que Next.js baje una
+  // imagen más grande de lo que realmente se renderiza.
+  sizes?: string;
 };
 
 // Placeholder visual consistente para espacios de foto/video pendientes.
@@ -23,6 +29,7 @@ export default function MediaPlaceholder({
   className = "",
   src,
   priority = false,
+  sizes = "100vw",
 }: Props) {
   // Tailwind genera las utilidades de "position" en el orden en que las
   // encuentra al escanear el código — no en el orden en que aparecen en el
@@ -42,7 +49,7 @@ export default function MediaPlaceholder({
           alt={label}
           fill
           priority={priority}
-          sizes="100vw"
+          sizes={sizes}
           className="object-cover"
         />
       </div>

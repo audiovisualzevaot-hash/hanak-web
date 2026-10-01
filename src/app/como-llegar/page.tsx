@@ -2,7 +2,7 @@ import MediaPlaceholder from "@/components/MediaPlaceholder";
 import ComoLlegarHero from "@/components/ComoLlegarHero";
 import RutaLimaHanak from "@/components/RutaLimaHanak";
 
-export const metadata = { title: "Cómo llegar — HANAK" };
+export const metadata = { title: "Cómo Llegar — HANAK" };
 
 // Reformulación completa según el export de Illustrator que mandó Bryan
 // (tercera vuelta de correcciones sobre esta misma hoja):
@@ -129,23 +129,29 @@ export default function ComoLlegarPage() {
             </div>
 
             <div className="absolute top-[23%] inset-x-0 grid grid-cols-3 gap-4 lg:gap-6">
+              {/* Solo se ven desde sm: (grid de 3 columnas), nunca al ancho
+                  completo — "sizes" ajustado para no bajar de Next.js una
+                  imagen 3 veces más grande de lo que realmente se pinta. */}
               <MediaPlaceholder
                 label="Vuelo LATAM Lima–Tarapoto"
                 aspect="aspect-[1440/543]"
                 className="!rounded-none"
                 src="/images/como-llegar/vuelo-latam.webp"
+                sizes="33vw"
               />
               <MediaPlaceholder
                 label="Vuelo SKY Lima–Tarapoto"
                 aspect="aspect-[1440/543]"
                 className="!rounded-none"
                 src="/images/como-llegar/vuelo-sky.webp"
+                sizes="33vw"
               />
               <MediaPlaceholder
                 label="Vuelo JetSMART Lima–Tarapoto"
                 aspect="aspect-[1440/543]"
                 className="!rounded-none"
                 src="/images/como-llegar/vuelo-jetsmart.webp"
+                sizes="33vw"
               />
             </div>
 

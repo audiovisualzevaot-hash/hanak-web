@@ -28,22 +28,22 @@ export default function Footer() {
               Descubre Hanak Sky Resort
             </p>
             <div className="flex items-center gap-4 text-cloud/80">
-              <a href={site.social.instagram} target="_blank" aria-label="Instagram" className="hover:text-white transition">
+              <a href={site.social.instagram} target="_blank" rel="noopener noreferrer" aria-label="Instagram" className="hover:text-white transition">
                 <InstagramIcon />
               </a>
-              <a href={site.social.facebook} target="_blank" aria-label="Facebook" className="hover:text-white transition">
+              <a href={site.social.facebook} target="_blank" rel="noopener noreferrer" aria-label="Facebook" className="hover:text-white transition">
                 <FacebookIcon />
               </a>
               <span aria-hidden className="opacity-50">
                 <YoutubeIcon />
               </span>
-              <a href={site.social.tiktok} target="_blank" aria-label="TikTok" className="hover:text-white transition">
+              <a href={site.social.tiktok} target="_blank" rel="noopener noreferrer" aria-label="TikTok" className="hover:text-white transition">
                 <TiktokIcon />
               </a>
               <span aria-hidden className="opacity-50">
                 <PinterestIcon />
               </span>
-              <a href={`https://wa.me/51${site.whatsapp}`} target="_blank" aria-label="WhatsApp" className="hover:text-white transition">
+              <a href={`https://wa.me/51${site.whatsapp}`} target="_blank" rel="noopener noreferrer" aria-label="WhatsApp" className="hover:text-white transition">
                 <WhatsappIcon />
               </a>
             </div>
