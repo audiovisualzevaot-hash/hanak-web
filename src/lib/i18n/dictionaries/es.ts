@@ -463,6 +463,22 @@ const es = {
       "El colchón de nubes, explicado: por qué Hanak tiene esta vista y qué la hace posible",
     ],
   },
+
+  // Botones de agenda sembrados en cada página (ver ReserveCta.tsx) — todos
+  // abren el mismo panel de contacto, solo cambia el texto según el punto
+  // exacto del recorrido en el que aparecen.
+  ctas: {
+    homeSocios: "Invierte en Hanak",
+    tarapotoHero: "Conoce el primer Sky Resort de Latinoamérica",
+    tarapotoClosing: "Descubre Hanak",
+    hanakClosing: "Conoce Hanak",
+    vistasClosing: "Vive las vistas de Hanak",
+    experienciaReveal: "Vive la experiencia Hanak",
+    experienciaSkyClub: "Conoce el Sky Club de Hanak",
+    comoLlegarFlights: "Planifica tu visita a Hanak",
+    comoLlegarClosing: "Conoce Hanak en persona",
+    masterplanBelowMap: "Descubre tu lugar en el masterplan",
+  },
 };
 
 export default es;

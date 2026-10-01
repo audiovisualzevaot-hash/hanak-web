@@ -3,6 +3,7 @@ import MediaPlaceholder from "@/components/MediaPlaceholder";
 import HeroSequence from "@/components/HeroSequence";
 import PriorizamosSelva from "@/components/PriorizamosSelva";
 import SociosFundadores from "@/components/SociosFundadores";
+import ReserveCta from "@/components/ReserveCta";
 import { getDictionary } from "@/lib/i18n/getDictionary";
 import { localeHref, type Locale } from "@/lib/i18n/locales";
 
@@ -124,6 +125,9 @@ export default async function InicioPage({ params }: { params: Promise<{ lang: L
             {h.sociosTitle}
           </h2>
           <SociosFundadores />
+          <div className="mt-14 flex justify-center lg:justify-start">
+            <ReserveCta label={dict.ctas.homeSocios} variant="light" />
+          </div>
         </div>
       </section>
 

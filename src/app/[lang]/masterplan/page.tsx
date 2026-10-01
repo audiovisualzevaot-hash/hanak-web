@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import MasterplanMap from "@/components/MasterplanMap";
+import ReserveCta from "@/components/ReserveCta";
 import { getDictionary } from "@/lib/i18n/getDictionary";
 import type { Locale } from "@/lib/i18n/locales";
 
@@ -29,7 +30,8 @@ export async function generateMetadata({ params }: { params: Promise<{ lang: Loc
 //   despliega dentro de la misma hoja, con foto según la experiencia.
 export default async function MasterplanPage({ params }: { params: Promise<{ lang: Locale }> }) {
   const { lang } = await params;
-  const mp = getDictionary(lang).masterplanPage;
+  const dict = getDictionary(lang);
+  const mp = dict.masterplanPage;
   return (
     <>
       {/* HANAK ESTÁ REGISTRADO ANTE SUNARP — collage + headline. Bryan pidió
@@ -153,6 +155,9 @@ export default async function MasterplanPage({ params }: { params: Promise<{ lan
           </p>
         </div>
         <MasterplanMap />
+        <div className="mt-10 sm:mt-14 flex justify-center">
+          <ReserveCta label={dict.ctas.masterplanBelowMap} variant="light" />
+        </div>
       </section>
     </>
   );

@@ -3,6 +3,7 @@ import MediaPlaceholder from "@/components/MediaPlaceholder";
 import LogoMark from "@/components/LogoMark";
 import VideoLightbox from "@/components/VideoLightbox";
 import ScrollingGallery from "@/components/ScrollingGallery";
+import ReserveCta from "@/components/ReserveCta";
 import { tarapotoStats } from "@/lib/content";
 import { getDictionary } from "@/lib/i18n/getDictionary";
 import { format } from "@/lib/i18n/format";
@@ -111,6 +112,9 @@ export default async function TarapotoPage({ params }: { params: Promise<{ lang:
           <p className="max-w-5xl mx-auto text-[11px] text-white/45 mt-6">
             {t.disclaimer}
           </p>
+          <div className="max-w-5xl mx-auto mt-8 flex justify-center">
+            <ReserveCta label={dict.ctas.tarapotoHero} variant="dark" />
+          </div>
         </div>
       </section>
 
@@ -187,6 +191,9 @@ export default async function TarapotoPage({ params }: { params: Promise<{ lang:
           <p className="mt-4 text-charcoal/60">
             {t.gatewayBody2}
           </p>
+          <div className="mt-8 flex justify-center">
+            <ReserveCta label={dict.ctas.tarapotoClosing} variant="light" />
+          </div>
         </div>
       </section>
     </>

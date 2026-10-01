@@ -4,6 +4,7 @@ import LogoMark from "@/components/LogoMark";
 import VideoLightbox from "@/components/VideoLightbox";
 import PhotoCarousel from "@/components/PhotoCarousel";
 import ExperienciaReveal from "@/components/ExperienciaReveal";
+import ReserveCta from "@/components/ReserveCta";
 import { getDictionary } from "@/lib/i18n/getDictionary";
 import type { Locale } from "@/lib/i18n/locales";
 
@@ -159,6 +160,9 @@ export default async function ExperienciaPage({ params }: { params: Promise<{ la
           <h2 className="font-display uppercase text-4xl sm:text-6xl lg:text-7xl tracking-wide text-forest">
             {e.skyClubTitle}
           </h2>
+          <div className="mt-8 flex justify-center">
+            <ReserveCta label={dict.ctas.experienciaReveal} variant="light" />
+          </div>
         </div>
       </section>
 
@@ -201,6 +205,10 @@ export default async function ExperienciaPage({ params }: { params: Promise<{ la
           ]}
         />
         <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent pointer-events-none" />
+      </section>
+
+      <section className="bg-forest-dark py-14 text-center">
+        <ReserveCta label={dict.ctas.experienciaSkyClub} variant="dark" />
       </section>
     </>
   );

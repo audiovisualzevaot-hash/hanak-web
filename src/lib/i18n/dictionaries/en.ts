@@ -458,6 +458,19 @@ const en: Dictionary = {
       "The sea of clouds, explained: why Hanak has this view and what makes it possible",
     ],
   },
+
+  ctas: {
+    homeSocios: "Invest in Hanak",
+    tarapotoHero: "Discover the First Sky Resort in Latin America",
+    tarapotoClosing: "Discover Hanak",
+    hanakClosing: "Meet Hanak",
+    vistasClosing: "Experience Hanak's Views",
+    experienciaReveal: "Experience Hanak",
+    experienciaSkyClub: "Discover Hanak's Sky Club",
+    comoLlegarFlights: "Plan Your Visit to Hanak",
+    comoLlegarClosing: "Meet Hanak in Person",
+    masterplanBelowMap: "Find Your Place in the Masterplan",
+  },
 };
 
 export default en;

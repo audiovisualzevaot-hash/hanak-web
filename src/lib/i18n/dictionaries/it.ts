@@ -457,6 +457,19 @@ const it: Dictionary = {
       "Il mare di nuvole, spiegato: perché Hanak ha questa vista e cosa la rende possibile",
     ],
   },
+
+  ctas: {
+    homeSocios: "Investi a Hanak",
+    tarapotoHero: "Scopri il primo Sky Resort dell'America Latina",
+    tarapotoClosing: "Scopri Hanak",
+    hanakClosing: "Conosci Hanak",
+    vistasClosing: "Vivi le viste di Hanak",
+    experienciaReveal: "Vivi l'esperienza Hanak",
+    experienciaSkyClub: "Scopri lo Sky Club di Hanak",
+    comoLlegarFlights: "Pianifica la tua visita a Hanak",
+    comoLlegarClosing: "Conosci Hanak di persona",
+    masterplanBelowMap: "Trova il tuo posto nel masterplan",
+  },
 };
 
 export default it;

@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import HanakHero from "@/components/HanakHero";
 import MediaPlaceholder from "@/components/MediaPlaceholder";
 import PhotoCarousel from "@/components/PhotoCarousel";
+import ReserveCta from "@/components/ReserveCta";
 import { getDictionary } from "@/lib/i18n/getDictionary";
 import type { Locale } from "@/lib/i18n/locales";
 
@@ -107,6 +108,9 @@ export default async function HanakPage({ params }: { params: Promise<{ lang: Lo
               {hk.sellPart3}
             </p>
           </div>
+        </div>
+        <div className="mt-16 sm:mt-24 flex justify-center">
+          <ReserveCta label={dict.ctas.hanakClosing} variant="light" />
         </div>
       </section>
     </>

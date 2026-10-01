@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import MediaPlaceholder from "@/components/MediaPlaceholder";
 import LogoMark from "@/components/LogoMark";
 import VideoLightbox from "@/components/VideoLightbox";
+import ReserveCta from "@/components/ReserveCta";
 import { getDictionary } from "@/lib/i18n/getDictionary";
 import type { Locale } from "@/lib/i18n/locales";
 
@@ -141,6 +142,9 @@ export default async function VistasPage({ params }: { params: Promise<{ lang: L
         <p className="font-display text-2xl sm:text-3xl max-w-2xl mx-auto px-5">
           {v.closingBanner}
         </p>
+        <div className="mt-8 flex justify-center">
+          <ReserveCta label={dict.ctas.vistasClosing} variant="dark" />
+        </div>
       </section>
     </>
   );

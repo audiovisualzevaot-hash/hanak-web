@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import MediaPlaceholder from "@/components/MediaPlaceholder";
 import ComoLlegarHero from "@/components/ComoLlegarHero";
 import RutaLimaHanak from "@/components/RutaLimaHanak";
+import ReserveCta from "@/components/ReserveCta";
 import { getDictionary } from "@/lib/i18n/getDictionary";
 import type { Locale } from "@/lib/i18n/locales";
 
@@ -177,12 +178,21 @@ export default async function ComoLlegarPage({ params }: { params: Promise<{ lan
         </div>
       </section>
 
+      {/* CTA — justo después de la logística de vuelos, el momento de
+          mayor intención: el usuario ya sabe cómo llegar. */}
+      <section className="bg-cloud py-14 text-center">
+        <ReserveCta label={dict.ctas.comoLlegarFlights} variant="light" />
+      </section>
+
       {/* CITA DE CIERRE */}
-      <section className="bg-cloud py-20 sm:py-28">
+      <section className="bg-cloud pt-6 pb-20 sm:pb-28">
         <div className="max-w-2xl mx-auto px-5 text-center">
           <p className="font-display italic text-2xl sm:text-3xl text-forest leading-relaxed">
             {cl.closingQuote}
           </p>
+          <div className="mt-8 flex justify-center">
+            <ReserveCta label={dict.ctas.comoLlegarClosing} variant="light" />
+          </div>
         </div>
       </section>
     </>
