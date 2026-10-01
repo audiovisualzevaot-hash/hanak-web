@@ -70,15 +70,27 @@ type Activo = { tipo: "manzana"; data: Manzana } | { tipo: "amenidad"; data: Ame
  * vivía "suelto" dentro del contenedor general de la página), con pines de
  * manzana MÁS los de amenidad (antes no existían — se ubicaron a ojo sobre
  * los elementos que el propio ilustrador de mapa.webp ya dibujó: canchas,
- * piscinas, palapas — ver amenidadesMapa en content.ts) y una anotación fija
- * tipo "Riachuelo" sobre el curso de agua, igual que en el export.
+ * piscinas, palapas — ver amenidadesMapa en content.ts) y anotaciones fijas
+ * tipo "Riachuelo"/"Ingreso" sobre esos puntos, igual que en el export.
  *
- * El popup dejó de ser un modal de pantalla completa con fondo gris (Bryan
- * fue explícito: "no como que se pone un cuadro y de fondo todo gris, sino
- * solo un cuadro") — ahora es una tarjeta que se despliega DENTRO de la
- * misma hoja, anclada sobre el mapa, con su propia foto según la
- * experiencia. Se anima con opacity+scale por CSS (sin librerías) para que
- * abrir/cerrar/cambiar de manzana se sienta instantáneo.
+ * Bryan reportó dos problemas sobre esta primera versión: (1) el mapa se
+ * veía chico y corrido "a un lado" — el archivo mapa.webp tenía un margen
+ * crema enorme y descentrado alrededor del dibujo real (mismo problema que
+ * tuvo antes mapa-lima-hanak.webp); se resolvió recortando el archivo al
+ * contenido real (ver nota en content.ts) en vez de solo agrandar el
+ * contenedor. (2) dos pines de amenidad (spa, degustación) caían fuera del
+ * dibujo, sobre el margen vacío; se reubicaron sobre elementos reales del
+ * ilustrador. También pidió que la ventana de detalle "se perciba" — antes
+ * era una tarjeta chica anclada en una esquina; ahora se despliega grande y
+ * centrada sobre el propio mapa, como en el Illustrator.
+ *
+ * El popup sigue sin ser un modal de pantalla completa con fondo gris
+ * (Bryan fue explícito: "no como que se pone un cuadro y de fondo todo
+ * gris, sino solo un cuadro") — es una tarjeta opaca que flota centrada
+ * sobre el mapa; el único "fondo" es una capa invisible (sin color) que
+ * permite cerrar tocando fuera de la tarjeta. Se anima con opacity+scale
+ * por CSS (sin librerías) para que abrir/cerrar/cambiar de manzana se
+ * sienta instantáneo.
  */
 export default function MasterplanMap() {
   const [activo, setActivo] = useState<Activo>(null);
@@ -90,30 +102,53 @@ export default function MasterplanMap() {
     setActivo((prev) => (prev?.tipo === "amenidad" && prev.data.id === a.id ? null : { tipo: "amenidad", data: a }));
 
   return (
-    <div className="relative rounded-[2rem] bg-cloud-soft border border-charcoal/10 p-4 sm:p-6 lg:p-8">
-      <div className="relative aspect-[2048/1271] rounded-2xl overflow-hidden bg-cloud">
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img
-          src="/images/masterplan/mapa.webp"
-          alt="Ilustración del Master Plan de HANAK"
-          className="absolute inset-0 w-full h-full object-cover"
-        />
+    <div className="relative rounded-[2rem] bg-cloud-soft border border-charcoal/10 p-3 sm:p-5 lg:p-6">
+      {/* OJO: este contenedor NO recorta overflow (a propósito). El mapa es
+          una caja corta y ancha (aspect-[1343/838]) — en mobile apenas mide
+          ~210px de alto, menos de lo que necesita la tarjeta de detalle con
+          foto. Si este div recortara overflow, la tarjeta quedaba cortada
+          arriba/abajo (el mismo problema de "no se percibe" que reportó
+          Bryan, por otra causa). Por eso el recorte redondeado se aplica
+          solo a la imagen de fondo (capa de abajo), y pines/anotaciones/
+          tarjeta viven en este contenedor sin overflow-hidden, libres de
+          "desbordar" verticalmente el recuadro del mapa cuando hace falta. */}
+      <div className="relative aspect-[1343/838]">
+        <div className="absolute inset-0 rounded-2xl overflow-hidden bg-cloud">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src="/images/masterplan/mapa.webp"
+            alt="Ilustración del Master Plan de HANAK"
+            className="absolute inset-0 w-full h-full object-cover"
+          />
+        </div>
 
         {/* Anotación fija sobre el riachuelo — no interactiva, igual que en
-            el export de Illustrator. Al estar tan a la derecha (left: 84%),
-            en pantallas angostas la píldora centrada se salía del mapa
-            (overflow-hidden la recortaba a mitad de palabra) — se acota su
-            ancho y se corre el anclaje hacia la izquierda del punto en vez
-            de centrarlo, y el texto puede envolver en dos líneas en mobile. */}
+            el export de Illustrator. Con el mapa ya tan compacto en mobile,
+            esta etiqueta terminaba tapando los pines de las manzanas G/H/I
+            (más que ayudar, estorbaba) — se reserva para sm: en adelante,
+            donde el mapa tiene aire de sobra para mostrarla sin chocar con
+            nada. Las manzanas y amenidades siguen siendo el contenido
+            interactivo principal y están visibles en todos los tamaños. */}
         <div
-          className="absolute z-10 -translate-x-[85%] sm:-translate-x-1/2 -translate-y-1/2 bg-cloud/95 backdrop-blur-sm rounded-2xl sm:rounded-full pl-2 pr-2.5 sm:pr-3 py-1.5 shadow-md border border-charcoal/10 flex items-center gap-1.5 pointer-events-none max-w-[8.5rem] sm:max-w-none sm:whitespace-nowrap"
-          style={{ left: "84%", top: "16%" }}
+          className="hidden sm:flex absolute z-10 -translate-x-1/2 -translate-y-1/2 bg-cloud/95 backdrop-blur-sm rounded-full pr-3 pl-2 py-1.5 shadow-md border border-charcoal/10 items-center gap-1.5 pointer-events-none whitespace-nowrap"
+          style={{ left: "67%", top: "23%" }}
         >
           <IconLeaf />
           <div className="leading-tight min-w-0">
             <p className="text-[10px] font-medium text-forest whitespace-nowrap">Riachuelo</p>
             <p className="text-[8px] text-charcoal/50 -mt-0.5">Área de amortiguación natural</p>
           </div>
+        </div>
+
+        {/* Anotación fija sobre el ingreso al resort — mismo criterio que
+            Riachuelo arriba: solo de sm: en adelante, para no tapar las
+            manzanas A/B en el mapa compacto de mobile. */}
+        <div
+          className="hidden sm:flex absolute z-10 -translate-y-1/2 bg-cloud/95 backdrop-blur-sm rounded-full pl-2 pr-3 py-1.5 shadow-md border border-charcoal/10 items-center gap-1.5 whitespace-nowrap pointer-events-none"
+          style={{ left: "3%", top: "23%" }}
+        >
+          <span className="text-forest/80 text-xs leading-none">→</span>
+          <p className="text-[10px] font-medium text-forest">Ingreso</p>
         </div>
 
         {manzanas.map((m) => (
@@ -146,18 +181,33 @@ export default function MasterplanMap() {
           </button>
         ))}
 
-        {/* Tarjeta de detalle — se despliega DENTRO de la hoja, sobre el
-            mapa, sin fondo gris. Queda montada siempre (nunca se
-            desmonta) para que abrir/cerrar/cambiar de selección anime por
-            transición de CSS en vez de aparecer de golpe. */}
+        {/* Capa de cierre — totalmente transparente (ningún color, ningún
+            "fondo gris"), solo captura el click/tap fuera de la tarjeta
+            para cerrarla. Va POR DEBAJO de los pines (z-10) para que,
+            con una tarjeta abierta, se pueda tocar directamente otro pin
+            y cambiar de selección sin tener que cerrar primero. */}
+        <button
+          type="button"
+          aria-label="Cerrar detalle"
+          onClick={() => setActivo(null)}
+          className={`absolute inset-0 z-[5] cursor-default ${activo ? "" : "pointer-events-none"}`}
+          tabIndex={activo ? 0 : -1}
+        />
+
+        {/* Tarjeta de detalle — se despliega DENTRO de la hoja, centrada
+            sobre el propio mapa (grande, "que se perciba", como en el
+            Illustrator), nunca como modal de pantalla completa con fondo
+            gris. Queda montada siempre (nunca se desmonta) para que abrir/
+            cerrar/cambiar de selección anime por transición de CSS en vez
+            de aparecer de golpe. */}
         <div
-          className={`absolute z-20 left-3 right-3 bottom-3 sm:left-5 sm:bottom-5 sm:right-auto sm:w-[22rem] origin-bottom-left transition-all duration-200 ease-out ${
-            activo ? "opacity-100 scale-100 translate-y-0" : "opacity-0 scale-95 translate-y-2 pointer-events-none"
+          className={`absolute z-30 inset-0 flex items-center justify-center p-3 sm:p-6 transition-all duration-200 ease-out ${
+            activo ? "opacity-100 scale-100" : "opacity-0 scale-95 pointer-events-none"
           }`}
         >
           {activo?.tipo === "manzana" && (
-            <div className="bg-white rounded-2xl shadow-2xl overflow-hidden flex">
-              <div className="w-28 sm:w-32 shrink-0 relative">
+            <div className="bg-white rounded-2xl sm:rounded-3xl shadow-2xl overflow-hidden flex w-full max-w-[26rem] sm:max-w-xl lg:max-w-2xl">
+              <div className="w-28 sm:w-48 lg:w-56 shrink-0 relative">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
                   src={experienciaFoto[activo.data.experiencia]}
@@ -165,46 +215,57 @@ export default function MasterplanMap() {
                   className="absolute inset-0 w-full h-full object-cover"
                 />
               </div>
-              <div className="flex-1 p-4 sm:p-5 min-w-0">
+              <div className="flex-1 p-3 sm:p-7 lg:p-8 min-w-0">
                 <div className="flex items-start justify-between gap-2">
-                  <div>
-                    <h3 className="font-display text-xl text-forest leading-none">Manzana {activo.data.id}</h3>
-                    <p className="text-[10px] uppercase tracking-[0.15em] text-charcoal/45 mt-1.5">
-                      {activo.data.experiencia}
-                    </p>
-                  </div>
+                  <p className="text-[10px] sm:text-xs uppercase tracking-[0.2em] text-charcoal/45">
+                    Manzana {activo.data.id}
+                  </p>
                   <button
                     onClick={() => setActivo(null)}
-                    className="text-charcoal/30 hover:text-charcoal text-lg leading-none -mt-1 -mr-1 p-1"
+                    className="text-charcoal/30 hover:text-charcoal text-xl leading-none -mt-1 -mr-1 p-1 shrink-0"
                     aria-label="Cerrar"
                   >
                     ×
                   </button>
                 </div>
-                <dl className="mt-3 space-y-2 text-xs text-charcoal/75">
-                  <div className="flex items-start gap-2">
-                    <span className="text-forest/70 mt-0.5"><IconGrid /></span>
-                    <span>{activo.data.lotes} lotes</span>
+                <h3 className="font-display uppercase text-lg sm:text-3xl lg:text-4xl text-forest leading-tight mt-0.5 sm:mt-1">
+                  {activo.data.experiencia}
+                </h3>
+
+                <dl className="mt-1.5 sm:mt-5 divide-y divide-charcoal/10 border-t border-charcoal/10 text-xs sm:text-sm">
+                  <div className="flex items-center gap-2 sm:gap-3 py-1.5 sm:py-2.5">
+                    <span className="text-forest/70 shrink-0"><IconGrid /></span>
+                    <span className="font-medium text-charcoal">{activo.data.lotes} lotes</span>
                   </div>
-                  <div className="flex items-start gap-2">
-                    <span className="text-forest/70 mt-0.5"><IconMountain /></span>
-                    <span>{activo.data.vista}</span>
+                  <div className="flex items-start gap-2 sm:gap-3 py-1.5 sm:py-2.5">
+                    <span className="text-forest/70 shrink-0 mt-0.5"><IconMountain /></span>
+                    <div className="min-w-0">
+                      <dt className="text-[9px] sm:text-[10px] uppercase tracking-[0.15em] text-charcoal/45">Vistas</dt>
+                      <dd className="text-charcoal/80 mt-0.5">{activo.data.vista}</dd>
+                    </div>
                   </div>
-                  <div className="flex items-start gap-2">
-                    <span className="text-forest/70 mt-0.5"><IconCompass /></span>
-                    <span>{activo.data.experiencia}</span>
+                  <div className="flex items-start gap-2 sm:gap-3 py-1.5 sm:py-2.5">
+                    <span className="text-forest/70 shrink-0 mt-0.5"><IconCompass /></span>
+                    <div className="min-w-0">
+                      <dt className="text-[9px] sm:text-[10px] uppercase tracking-[0.15em] text-charcoal/45">Experiencia</dt>
+                      <dd className="text-charcoal/80 mt-0.5">{activo.data.experiencia}</dd>
+                    </div>
                   </div>
-                  <div className="flex items-start gap-2">
-                    <span className="text-forest/70 mt-0.5"><IconPin /></span>
-                    <span>{activo.data.cercania}</span>
+                  <div className="flex items-start gap-2 sm:gap-3 py-1.5 sm:py-2.5">
+                    <span className="text-forest/70 shrink-0 mt-0.5"><IconPin /></span>
+                    <div className="min-w-0">
+                      <dt className="text-[9px] sm:text-[10px] uppercase tracking-[0.15em] text-charcoal/45">Cercanía</dt>
+                      <dd className="text-charcoal/80 mt-0.5">{activo.data.cercania}</dd>
+                    </div>
                   </div>
                 </dl>
+
                 <button
                   onClick={() => {
                     setActivo(null);
                     window.dispatchEvent(new CustomEvent("hanak:open-reserve"));
                   }}
-                  className="w-full mt-4 bg-forest text-white rounded-full py-2.5 text-xs font-medium hover:bg-forest-dark transition"
+                  className="w-full mt-2.5 sm:mt-6 bg-forest text-white rounded-full py-2 sm:py-3 text-xs sm:text-sm font-medium hover:bg-forest-dark transition"
                 >
                   Conocer disponibilidad
                 </button>
@@ -213,23 +274,23 @@ export default function MasterplanMap() {
           )}
 
           {activo?.tipo === "amenidad" && (
-            <div className="bg-white rounded-2xl shadow-2xl p-5">
+            <div className="bg-white rounded-2xl sm:rounded-3xl shadow-2xl p-5 sm:p-7 w-full max-w-[22rem] sm:max-w-sm">
               <div className="flex items-start justify-between gap-2">
-                <div className="flex items-center gap-2">
-                  <span className="w-8 h-8 rounded-full bg-forest/10 text-forest flex items-center justify-center shrink-0">
+                <div className="flex items-center gap-3">
+                  <span className="w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-forest/10 text-forest flex items-center justify-center shrink-0">
                     <IconLeaf />
                   </span>
-                  <h3 className="font-display text-lg text-forest leading-tight">{activo.data.label}</h3>
+                  <h3 className="font-display text-lg sm:text-xl text-forest leading-tight">{activo.data.label}</h3>
                 </div>
                 <button
                   onClick={() => setActivo(null)}
-                  className="text-charcoal/30 hover:text-charcoal text-lg leading-none -mt-1 -mr-1 p-1"
+                  className="text-charcoal/30 hover:text-charcoal text-xl leading-none -mt-1 -mr-1 p-1 shrink-0"
                   aria-label="Cerrar"
                 >
                   ×
                 </button>
               </div>
-              <p className="mt-2 text-xs text-charcoal/70 leading-relaxed">{activo.data.descripcion}</p>
+              <p className="mt-3 text-sm text-charcoal/70 leading-relaxed">{activo.data.descripcion}</p>
             </div>
           )}
         </div>
