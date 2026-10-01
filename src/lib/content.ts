@@ -18,6 +18,9 @@ export const site = {
       "https://www.tiktok.com/@hanak_skyresort?is_from_webapp=1&sender_device=pc",
     facebook:
       "https://www.facebook.com/people/Hanak-Sky-Resort-Villas-Club/61585347721515/",
+    // Canal de la desarrolladora (Grupo Zevaot Inversiones), no uno propio
+    // de HANAK — así lo pidió Bryan explícitamente.
+    youtube: "https://www.youtube.com/@GrupoZevaotInversiones",
   },
   mapUrl: "https://maps.app.goo.gl/3dEeA3fffKtygAZv7",
 };

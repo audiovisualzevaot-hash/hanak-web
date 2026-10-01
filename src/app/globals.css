@@ -49,7 +49,12 @@ body {
   mask-image: linear-gradient(to top, transparent, black 12%);
 }
 
-/* Loop continuo de la banda marquee (Marquee.tsx) */
+/* Loop continuo de la banda marquee (Marquee.tsx) — la duración está
+   multiplicada x4 (32s → 128s) porque Marquee.tsx ahora repite el texto 4
+   veces por mitad (HALF_REPEAT) para evitar el hueco vacío que veía Bryan;
+   sin este ajuste el cintillo recorrería 4 veces más distancia en el mismo
+   tiempo y se vería mucho más rápido que antes. Si se cambia HALF_REPEAT
+   allá, hay que multiplicar esta duración en la misma proporción. */
 @keyframes marquee {
   from {
     transform: translateX(0);
@@ -59,7 +64,7 @@ body {
   }
 }
 .animate-marquee {
-  animation: marquee 32s linear infinite;
+  animation: marquee 128s linear infinite;
 }
 
 /* Animación de entrada del titular "Presentando a HANAK" al cargar

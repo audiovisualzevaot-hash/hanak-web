@@ -7,7 +7,6 @@ import {
   FacebookIcon,
   YoutubeIcon,
   TiktokIcon,
-  PinterestIcon,
   WhatsappIcon,
 } from "./SocialIcons";
 
@@ -34,15 +33,12 @@ export default function Footer() {
               <a href={site.social.facebook} target="_blank" rel="noopener noreferrer" aria-label="Facebook" className="hover:text-white transition">
                 <FacebookIcon />
               </a>
-              <span aria-hidden className="opacity-50">
+              <a href={site.social.youtube} target="_blank" rel="noopener noreferrer" aria-label="YouTube" className="hover:text-white transition">
                 <YoutubeIcon />
-              </span>
+              </a>
               <a href={site.social.tiktok} target="_blank" rel="noopener noreferrer" aria-label="TikTok" className="hover:text-white transition">
                 <TiktokIcon />
               </a>
-              <span aria-hidden className="opacity-50">
-                <PinterestIcon />
-              </span>
               <a href={`https://wa.me/51${site.whatsapp}`} target="_blank" rel="noopener noreferrer" aria-label="WhatsApp" className="hover:text-white transition">
                 <WhatsappIcon />
               </a>
