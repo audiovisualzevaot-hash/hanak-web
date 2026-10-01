@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
+import { useDictionary } from "@/lib/i18n/I18nProvider";
 
 const clamp01 = (v: number) => Math.min(Math.max(v, 0), 1);
 const mix = (a: number, b: number, t: number) => a + (b - a) * clamp01(t);
@@ -41,6 +42,8 @@ const pulse = (p: number, inStart: number, inEnd: number, outStart: number, outE
 export default function ExperienciaReveal() {
   const trackRef = useRef<HTMLDivElement>(null);
   const [progress, setProgress] = useState(0);
+  const dict = useDictionary();
+  const er = dict.experienciaReveal;
 
   useEffect(() => {
     const onScroll = () => {
@@ -116,7 +119,7 @@ export default function ExperienciaReveal() {
                 un bloque aparte — pedido explícito de Bryan. */}
             <Image
               src="/images/experiencia/1ra-foto-suelta.webp"
-              alt="Sobre las nubes — colchón de nubes sobre el valle"
+              alt={er.cloudsAlt}
               fill
               sizes="100vw"
               className="object-cover"
@@ -127,11 +130,11 @@ export default function ExperienciaReveal() {
                 claro para leerse sin necesitar ningún velo detrás. */}
             <div className="absolute inset-x-0 top-[14%] sm:top-[18%] flex justify-center px-6 sm:px-10">
               <p className="text-forest text-xl sm:text-3xl leading-snug text-center max-w-xl sm:max-w-2xl">
-                Vistas abiertas hacia el{" "}
-                <span className="font-semibold">colchón de nubes</span>, el
-                valle y la ciudad de Tarapoto — el momento que le da{" "}
-                <span className="font-semibold">nombre a todo el proyecto</span>
-                .
+                {er.quotePart1}{" "}
+                <span className="font-semibold">{er.quoteBold1}</span>
+                {er.quotePart2}{" "}
+                <span className="font-semibold">{er.quoteBold2}</span>
+                {er.quoteEnd}
               </p>
             </div>
           </div>
@@ -141,7 +144,7 @@ export default function ExperienciaReveal() {
         <div className="absolute inset-0" style={{ opacity: selvaOpacity }}>
           <Image
             src="/images/experiencia/foto-grande-de-fondo.webp"
-            alt="Inmersión en la selva — sendero entre la vegetación nativa de Hanak"
+            alt={er.jungleAlt}
             fill
             sizes="100vw"
             className="object-cover"
@@ -160,11 +163,11 @@ export default function ExperienciaReveal() {
             style={{ opacity: titleOpacity, transform: `translateY(${titleY}px)` }}
           >
             <p className="text-xs sm:text-sm uppercase tracking-[0.2em] text-white/70 mb-3">
-              Inmersión en selva
+              {er.eyebrow}
             </p>
             <h2 className="font-display text-4xl sm:text-6xl text-cloud leading-none">
-              Conectando
-              <br /> con la selva
+              {er.titleLine1}
+              <br /> {er.titleLine2}
             </h2>
           </div>
 
@@ -174,8 +177,7 @@ export default function ExperienciaReveal() {
             style={{ opacity: caption1Opacity, transform: `translateY(${caption1Y}px)` }}
           >
             <p className="text-white text-lg sm:text-2xl leading-snug drop-shadow-[0_2px_10px_rgba(0,0,0,0.65)]">
-              Para quienes eligen las manzanas más cercanas a la vegetación
-              nativa.
+              {er.caption1}
             </p>
           </div>
 
@@ -185,7 +187,7 @@ export default function ExperienciaReveal() {
             style={{ opacity: caption2Opacity, transform: `translateY(${caption2Y}px)` }}
           >
             <p className="text-white text-lg sm:text-2xl leading-snug drop-shadow-[0_2px_10px_rgba(0,0,0,0.65)]">
-              Rodeados de flora y fauna, con la selva como vecina directa.
+              {er.caption2}
             </p>
           </div>
         </div>

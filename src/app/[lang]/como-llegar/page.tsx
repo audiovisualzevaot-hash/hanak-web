@@ -1,8 +1,14 @@
+import type { Metadata } from "next";
 import MediaPlaceholder from "@/components/MediaPlaceholder";
 import ComoLlegarHero from "@/components/ComoLlegarHero";
 import RutaLimaHanak from "@/components/RutaLimaHanak";
+import { getDictionary } from "@/lib/i18n/getDictionary";
+import type { Locale } from "@/lib/i18n/locales";
 
-export const metadata = { title: "Cómo Llegar — HANAK" };
+export async function generateMetadata({ params }: { params: Promise<{ lang: Locale }> }): Promise<Metadata> {
+  const { lang } = await params;
+  return { title: getDictionary(lang).pageTitles.comoLlegar };
+}
 
 // Reformulación completa según el export de Illustrator que mandó Bryan
 // (tercera vuelta de correcciones sobre esta misma hoja):
@@ -35,7 +41,10 @@ export const metadata = { title: "Cómo Llegar — HANAK" };
 // - Cierra con la cita suelta sobre crema, tal como en el export. La
 //   sección de "Ubicación" con el mapa de Google que tenía la versión
 //   anterior sigue fuera (no está en el export; Bryan pidió quitarla).
-export default function ComoLlegarPage() {
+export default async function ComoLlegarPage({ params }: { params: Promise<{ lang: Locale }> }) {
+  const { lang } = await params;
+  const dict = getDictionary(lang);
+  const cl = dict.comoLlegar;
   return (
     <>
       {/* HERO — foto larga con paneo por scroll, igual mecanismo que
@@ -46,13 +55,13 @@ export default function ComoLlegarPage() {
       <section className="bg-cloud pt-16 sm:pt-24 pb-10 sm:pb-14">
         <div className="max-w-3xl mx-auto px-5 text-center mb-8 sm:mb-12">
           <p className="uppercase tracking-[0.2em] text-sm text-charcoal/50 mb-3">
-            Conecta desde
+            {cl.conectaDesde}
           </p>
           <h2 className="font-display text-4xl sm:text-6xl lg:text-7xl text-forest leading-tight">
-            LIMA a HANAK
+            {cl.limaAHanak}
           </h2>
         </div>
-        <RutaLimaHanak />
+        <RutaLimaHanak ariaLabel={dict.maps.rutaLimaHanakAria} />
       </section>
 
       {/* VUELOS + DE TARAPOTO A HANAK — una sola foto continua de fondo.
@@ -66,7 +75,7 @@ export default function ComoLlegarPage() {
           apilada normal. */}
       <section className="relative w-full overflow-hidden bg-forest sm:aspect-[2048/1271]">
         <MediaPlaceholder
-          label="Vuelos directos desde Lima"
+          label={cl.flightsBgLabel}
           aspect="aspect-auto"
           className="absolute inset-0 !rounded-none"
           src="/images/como-llegar/2da-foto.webp"
@@ -80,27 +89,27 @@ export default function ComoLlegarPage() {
         {/* Mobile — apilado normal, nada de posiciones absolutas */}
         <div className="relative z-10 flex flex-col gap-8 px-5 py-14 sm:hidden">
           <h2 className="font-display text-3xl text-white leading-tight">
-            Vuelos directos y diarios desde Lima
+            {cl.flightsTitle}
           </h2>
           <p className="text-white/80 leading-relaxed -mt-4">
-            Con 5 aerolíneas operando distintos horarios a lo largo del día.
+            {cl.flightsBody}
           </p>
 
           <div className="grid grid-cols-1 gap-4">
             <MediaPlaceholder
-              label="Vuelo LATAM Lima–Tarapoto"
+              label={cl.flightLatamAlt}
               aspect="aspect-[1440/543]"
               className="!rounded-none"
               src="/images/como-llegar/vuelo-latam.webp"
             />
             <MediaPlaceholder
-              label="Vuelo SKY Lima–Tarapoto"
+              label={cl.flightSkyAlt}
               aspect="aspect-[1440/543]"
               className="!rounded-none"
               src="/images/como-llegar/vuelo-sky.webp"
             />
             <MediaPlaceholder
-              label="Vuelo JetSMART Lima–Tarapoto"
+              label={cl.flightJetsmartAlt}
               aspect="aspect-[1440/543]"
               className="!rounded-none"
               src="/images/como-llegar/vuelo-jetsmart.webp"
@@ -108,10 +117,10 @@ export default function ComoLlegarPage() {
           </div>
 
           <h2 className="font-display text-3xl text-white leading-tight mt-6">
-            De Tarapoto a Hanak
+            {cl.tarapotoHanakMobile}
           </h2>
           <p className="text-white/80 leading-relaxed -mt-4">
-            A solo 30 minutos del aeropuerto de Tarapoto.
+            {cl.tarapotoHanakBody}
           </p>
         </div>
 
@@ -121,10 +130,10 @@ export default function ComoLlegarPage() {
           <div className="relative w-full h-full">
             <div className="absolute top-[7%] inset-x-0 flex items-start justify-between gap-6">
               <h2 className="font-display text-4xl lg:text-5xl text-white leading-tight max-w-md">
-                Vuelos directos y diarios desde Lima
+                {cl.flightsTitle}
               </h2>
               <p className="text-white/80 text-sm lg:text-base leading-relaxed text-right max-w-[15rem] pt-2">
-                Con 5 aerolíneas operando distintos horarios a lo largo del día.
+                {cl.flightsBody}
               </p>
             </div>
 
@@ -133,21 +142,21 @@ export default function ComoLlegarPage() {
                   completo — "sizes" ajustado para no bajar de Next.js una
                   imagen 3 veces más grande de lo que realmente se pinta. */}
               <MediaPlaceholder
-                label="Vuelo LATAM Lima–Tarapoto"
+                label={cl.flightLatamAlt}
                 aspect="aspect-[1440/543]"
                 className="!rounded-none"
                 src="/images/como-llegar/vuelo-latam.webp"
                 sizes="33vw"
               />
               <MediaPlaceholder
-                label="Vuelo SKY Lima–Tarapoto"
+                label={cl.flightSkyAlt}
                 aspect="aspect-[1440/543]"
                 className="!rounded-none"
                 src="/images/como-llegar/vuelo-sky.webp"
                 sizes="33vw"
               />
               <MediaPlaceholder
-                label="Vuelo JetSMART Lima–Tarapoto"
+                label={cl.flightJetsmartAlt}
                 aspect="aspect-[1440/543]"
                 className="!rounded-none"
                 src="/images/como-llegar/vuelo-jetsmart.webp"
@@ -157,11 +166,11 @@ export default function ComoLlegarPage() {
 
             <div className="absolute top-[68%] inset-x-0 flex items-end justify-between gap-6">
               <h2 className="font-display text-4xl lg:text-5xl text-white leading-tight">
-                De Tarapoto
-                <br />a Hanak
+                {cl.tarapotoHanakLine1}
+                <br />{cl.tarapotoHanakLine2}
               </h2>
               <p className="text-white/80 text-sm lg:text-base leading-relaxed text-right max-w-[15rem]">
-                A solo 30 minutos del aeropuerto de Tarapoto.
+                {cl.tarapotoHanakBody}
               </p>
             </div>
           </div>
@@ -172,8 +181,7 @@ export default function ComoLlegarPage() {
       <section className="bg-cloud py-20 sm:py-28">
         <div className="max-w-2xl mx-auto px-5 text-center">
           <p className="font-display italic text-2xl sm:text-3xl text-forest leading-relaxed">
-            Un breve trayecto que va dejando atrás la ciudad para acercarte,
-            poco a poco, a las nubes.
+            {cl.closingQuote}
           </p>
         </div>
       </section>

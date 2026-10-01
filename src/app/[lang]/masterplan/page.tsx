@@ -1,7 +1,13 @@
+import type { Metadata } from "next";
 import Image from "next/image";
 import MasterplanMap from "@/components/MasterplanMap";
+import { getDictionary } from "@/lib/i18n/getDictionary";
+import type { Locale } from "@/lib/i18n/locales";
 
-export const metadata = { title: "Masterplan — HANAK" };
+export async function generateMetadata({ params }: { params: Promise<{ lang: Locale }> }): Promise<Metadata> {
+  const { lang } = await params;
+  return { title: getDictionary(lang).pageTitles.masterplan };
+}
 
 // Reformulación completa según el export de Illustrator que mandó Bryan —
 // lo que había antes (header de 45vh + dos párrafos sueltos + el mapa) era
@@ -21,7 +27,9 @@ export const metadata = { title: "Masterplan — HANAK" };
 //   detalle dejó de ser un modal de pantalla completa con fondo gris — pidió
 //   expresamente "solo un cuadro", así que ahora es una tarjeta que se
 //   despliega dentro de la misma hoja, con foto según la experiencia.
-export default function MasterplanPage() {
+export default async function MasterplanPage({ params }: { params: Promise<{ lang: Locale }> }) {
+  const { lang } = await params;
+  const mp = getDictionary(lang).masterplanPage;
   return (
     <>
       {/* HANAK ESTÁ REGISTRADO ANTE SUNARP — collage + headline. Bryan pidió
@@ -34,7 +42,7 @@ export default function MasterplanPage() {
             <div className="relative row-span-2 rounded-2xl overflow-hidden shadow-sm">
               <Image
                 src="/images/masterplan/1ra-foto-grande.webp"
-                alt="Vista aérea del terreno de HANAK"
+                alt={mp.aerialAlt}
                 fill
                 sizes="(min-width: 1024px) 32vw, 55vw"
                 className="object-cover"
@@ -43,7 +51,7 @@ export default function MasterplanPage() {
             <div className="relative rounded-2xl overflow-hidden shadow-sm">
               <Image
                 src="/images/masterplan/foto-pequena-2.webp"
-                alt="Acceso al terreno de HANAK"
+                alt={mp.accessAlt}
                 fill
                 sizes="(min-width: 1024px) 22vw, 40vw"
                 className="object-cover"
@@ -52,7 +60,7 @@ export default function MasterplanPage() {
             <div className="relative rounded-2xl overflow-hidden shadow-sm">
               <Image
                 src="/images/masterplan/foto-pequena-1.webp"
-                alt="Vista aérea de la selva alta"
+                alt={mp.jungleAerialAlt}
                 fill
                 sizes="(min-width: 1024px) 22vw, 40vw"
                 className="object-cover"
@@ -62,14 +70,14 @@ export default function MasterplanPage() {
 
           <div>
             <h1 className="font-display text-4xl sm:text-5xl lg:text-6xl text-forest leading-tight">
-              HANAK está registrado ante SUNARP
+              {mp.sunarpTitle}
             </h1>
             <p className="mt-5 text-charcoal/70 leading-relaxed text-base sm:text-lg sm:whitespace-nowrap">
-              Con partida registral a nombre de{" "}
+              {mp.sunarpLeadIn}{" "}
               <span className="font-medium text-charcoal">Grupo Zevaot Inversiones S.A.C.</span>
             </p>
             <p className="mt-1 text-charcoal/70 leading-relaxed text-base sm:text-lg">
-              Un proyecto respaldado desde su origen.
+              {mp.sunarpClosing}
             </p>
           </div>
         </div>
@@ -80,13 +88,10 @@ export default function MasterplanPage() {
         <div className="relative max-w-7xl mx-auto px-5 sm:px-8 grid lg:grid-cols-[1fr_1.15fr] gap-12 lg:gap-20 items-center">
           <div className="order-2 lg:order-1">
             <h2 className="font-display text-3xl sm:text-5xl text-forest leading-tight mb-5">
-              La arquitectura de HANAK no compite con el paisaje
+              {mp.architectureTitle}
             </h2>
             <p className="text-charcoal/70 leading-relaxed text-lg max-w-md">
-              Materiales que dialogan con el entorno, ventilación cruzada que
-              aprovecha el clima de altura, luz natural como protagonista, y
-              una relación constante entre interior y exterior. Cada vivienda
-              está pensada para que el paisaje entre, no para taparlo.
+              {mp.architectureBody}
             </p>
           </div>
 
@@ -95,7 +100,7 @@ export default function MasterplanPage() {
               <div className="relative rounded-2xl overflow-hidden shadow-sm">
                 <Image
                   src="/images/masterplan/foto-pequena-3.webp"
-                  alt="Palapa de bienvenida HANAK"
+                  alt={mp.palapaAlt}
                   fill
                   sizes="(min-width: 1024px) 22vw, 40vw"
                   className="object-cover"
@@ -104,7 +109,7 @@ export default function MasterplanPage() {
               <div className="relative row-span-2 rounded-2xl overflow-hidden shadow-sm">
                 <Image
                   src="/images/masterplan/2da-foto-grande.webp"
-                  alt="Campanario de acceso a HANAK"
+                  alt={mp.campanarioAlt}
                   fill
                   sizes="(min-width: 1024px) 28vw, 50vw"
                   className="object-cover"
@@ -113,7 +118,7 @@ export default function MasterplanPage() {
               <div className="relative rounded-2xl overflow-hidden shadow-sm">
                 <Image
                   src="/images/masterplan/foto-pequena-4.webp"
-                  alt="Palapa al atardecer"
+                  alt={mp.palapaAtardecerAlt}
                   fill
                   sizes="(min-width: 1024px) 22vw, 40vw"
                   className="object-cover"
@@ -126,7 +131,7 @@ export default function MasterplanPage() {
             <div className="hidden sm:block absolute -bottom-6 -left-6 w-24 lg:w-28 aspect-[3/4] rounded-xl overflow-hidden shadow-lg ring-4 ring-cloud-soft">
               <Image
                 src="/images/masterplan/foto-pequena-5.webp"
-                alt="Pérgola y jardín de HANAK"
+                alt={mp.pergolaAlt}
                 fill
                 sizes="10vw"
                 className="object-cover"
@@ -139,13 +144,12 @@ export default function MasterplanPage() {
       {/* EL MASTERPLAN — mapa grande e interactivo */}
       <section className="max-w-[90rem] mx-auto px-5 sm:px-8 py-16 sm:py-24">
         <div className="max-w-2xl mx-auto text-center mb-10 sm:mb-14">
-          <p className="uppercase tracking-[0.2em] text-xs text-charcoal/50 mb-3">Encuentra tu lugar</p>
+          <p className="uppercase tracking-[0.2em] text-xs text-charcoal/50 mb-3">{mp.findPlaceEyebrow}</p>
           <h2 className="font-display text-3xl sm:text-5xl lg:text-6xl text-forest leading-tight">
-            El Masterplan
+            {mp.theMasterplanTitle}
           </h2>
           <p className="mt-3 text-charcoal/70 text-lg">
-            Veinte manzanas, cada una con su propia relación con el paisaje.
-            Toca un punto del mapa para conocerlo.
+            {mp.theMasterplanBody}
           </p>
         </div>
         <MasterplanMap />

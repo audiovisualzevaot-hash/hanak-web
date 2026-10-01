@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
+import { useDictionary } from "@/lib/i18n/I18nProvider";
 
 const clamp01 = (v: number) => Math.min(Math.max(v, 0), 1);
 const mix = (a: number, b: number, t: number) => a + (b - a) * clamp01(t);
@@ -22,6 +23,8 @@ const local = (p: number, from: number, to: number) => clamp01((p - from) / (to 
 export default function HanakHero() {
   const trackRef = useRef<HTMLDivElement>(null);
   const [progress, setProgress] = useState(0);
+  const dict = useDictionary();
+  const hh = dict.hanakHero;
 
   useEffect(() => {
     const onScroll = () => {
@@ -67,7 +70,7 @@ export default function HanakHero() {
         <div className="absolute inset-0">
           <Image
             src="/images/hanak/header.webp"
-            alt="Hanak — paisaje y concepto de marca"
+            alt={hh.imgAlt}
             fill
             priority
             sizes="100vw"
@@ -84,7 +87,7 @@ export default function HanakHero() {
         >
           <Image
             src="/images/brand/lockup-grid-forest.png"
-            alt="HANAK — Sky Resort & Villas Club"
+            alt={hh.logoAlt}
             width={1440}
             height={1440}
             priority
@@ -99,11 +102,10 @@ export default function HanakHero() {
         >
           <div className="max-w-md sm:max-w-lg text-center bg-cloud/95 rounded-2xl px-7 py-8 sm:px-12 sm:py-10 shadow-xl">
             <h2 className="font-display text-2xl sm:text-4xl text-forest leading-snug">
-              Propone una forma de vida
+              {hh.title}
             </h2>
             <p className="mt-3 text-sm sm:text-base text-charcoal/70 leading-relaxed">
-              Donde el bienestar, la naturaleza y la comunidad conviven de
-              manera armoniosa.
+              {hh.body}
             </p>
           </div>
         </div>

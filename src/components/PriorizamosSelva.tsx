@@ -3,6 +3,8 @@
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import LogoMark from "./LogoMark";
+import { useDictionary, useLocale } from "@/lib/i18n/I18nProvider";
+import { localeHref } from "@/lib/i18n/locales";
 
 /**
  * Sección "Priorizamos la experiencia de la selva peruana" — Inicio.
@@ -32,6 +34,9 @@ export default function PriorizamosSelva() {
   const trackRef = useRef<HTMLDivElement>(null);
   const [progress, setProgress] = useState(0);
   const [windowWidth, setWindowWidth] = useState(1280);
+  const dict = useDictionary();
+  const locale = useLocale();
+  const ps = dict.priorizamosSelva;
 
   useEffect(() => {
     const onScroll = () => {
@@ -86,27 +91,27 @@ export default function PriorizamosSelva() {
         >
           <LogoMark size={22} tone="forest" className="mb-3 opacity-80" />
           <p className="uppercase tracking-[0.2em] text-xs sm:text-sm text-olive mb-4">
-            Descubre Hanak
+            {ps.discover}
           </p>
           <h2 className="font-display text-3xl sm:text-5xl lg:text-6xl text-forest leading-tight">
-            Priorizamos la experiencia de la selva peruana
+            {ps.title}
           </h2>
           <p className="mt-3 text-xs sm:text-sm uppercase tracking-[0.2em] text-charcoal/50">
-            Desde las alturas
+            {ps.fromHeights}
           </p>
           <Link
-            href="/experiencia"
+            href={localeHref(locale, "/experiencia")}
             className="mt-8 pointer-events-auto inline-flex items-center gap-1.5 bg-forest-dark text-white text-xs uppercase tracking-[0.12em] rounded-full px-6 py-3 transition-opacity"
             style={{ opacity: ctaOpacity, transitionDuration: "300ms" }}
           >
-            Explora la experiencia
+            {ps.exploreCta}
             <span aria-hidden>↗</span>
           </Link>
         </div>
 
         {/* Tarjeta izquierda — Sobre las nubes (link a Experiencia) */}
         <Link
-          href="/experiencia"
+          href={localeHref(locale, "/experiencia")}
           className="absolute top-1/2 left-1/2 z-20 aspect-[3/4] rounded-xl overflow-hidden shadow-xl"
           style={{
             width: cardWidth,
@@ -116,20 +121,20 @@ export default function PriorizamosSelva() {
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             src="/images/inicio/elemento-izquierda.webp"
-            alt="Sobre las nubes"
+            alt={ps.nubesLabel}
             className="w-full h-full object-cover"
           />
           <div
             className="absolute inset-x-0 bottom-0 p-3 sm:p-4 bg-gradient-to-t from-black/70 to-transparent transition-opacity duration-300"
             style={{ opacity: labelOpacity }}
           >
-            <p className="text-white font-display text-sm sm:text-lg">Sobre las nubes</p>
+            <p className="text-white font-display text-sm sm:text-lg">{ps.nubesLabel}</p>
           </div>
         </Link>
 
         {/* Tarjeta derecha — Dentro de la selva (link a Experiencia) */}
         <Link
-          href="/experiencia"
+          href={localeHref(locale, "/experiencia")}
           className="absolute top-1/2 left-1/2 z-20 aspect-[3/4] rounded-xl overflow-hidden shadow-xl"
           style={{
             width: cardWidth,
@@ -139,14 +144,14 @@ export default function PriorizamosSelva() {
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             src="/images/inicio/elemento-derecha.webp"
-            alt="Dentro de la selva"
+            alt={ps.selvaLabel}
             className="w-full h-full object-cover"
           />
           <div
             className="absolute inset-x-0 bottom-0 p-3 sm:p-4 bg-gradient-to-t from-black/70 to-transparent transition-opacity duration-300"
             style={{ opacity: labelOpacity }}
           >
-            <p className="text-white font-display text-sm sm:text-lg">Dentro de la selva</p>
+            <p className="text-white font-display text-sm sm:text-lg">{ps.selvaLabel}</p>
           </div>
         </Link>
       </div>

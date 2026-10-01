@@ -19,9 +19,13 @@
 export default function RutaLimaHanak({
   className = "",
   maxWidthClassName = "max-w-[760px] sm:max-w-[980px] lg:max-w-[1160px]",
+  ariaLabel = "Mapa de Lima a Hanak: vuelo directo a Tarapoto y 30 minutos por tierra hasta el resort",
 }: {
   className?: string;
   maxWidthClassName?: string;
+  /** Server Component: no lee el contexto de i18n — quien lo usa le pasa
+   *  la traducción vía dict.maps.rutaLimaHanakAria. */
+  ariaLabel?: string;
 }) {
   return (
     <div className={`w-full mx-auto ${maxWidthClassName} ${className}`}>
@@ -35,7 +39,7 @@ export default function RutaLimaHanak({
         viewBox="0 0 1188 897"
         className="w-full h-auto"
         role="img"
-        aria-label="Mapa de Lima a Hanak: vuelo directo a Tarapoto y 30 minutos por tierra hasta el resort"
+        aria-label={ariaLabel}
       >
         <image href="/images/como-llegar/mapa-lima-hanak.webp" width={1188} height={897} />
 

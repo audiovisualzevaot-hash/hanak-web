@@ -17,12 +17,17 @@
 export default function PeruMiniMap({
   className = "",
   maxWidthClassName = "max-w-[280px] sm:max-w-[560px] lg:max-w-[640px] xl:max-w-[720px]",
+  ariaLabel = "Ubicación de Hanak, entre Lamas, Tarapoto y el aeropuerto",
 }: {
   className?: string;
   /** Ancho máximo del mapa — se pasa aparte para no chocar con la clase
    *  base w-full/mx-auto (dos utilidades max-w-* en el mismo elemento
    *  compiten de forma impredecible en Tailwind). */
   maxWidthClassName?: string;
+  /** Texto del aria-label — este componente es un Server Component y no
+   *  lee el contexto de i18n directamente; el que lo usa (HeroSequence)
+   *  le pasa la traducción vía dict.maps.peruMiniMapAria. */
+  ariaLabel?: string;
 }) {
   return (
     <div className={`w-full mx-auto ${maxWidthClassName} ${className}`}>
@@ -30,7 +35,7 @@ export default function PeruMiniMap({
         viewBox="0 0 1292 867"
         className="w-full h-auto"
         role="img"
-        aria-label="Ubicación de Hanak, entre Lamas, Tarapoto y el aeropuerto"
+        aria-label={ariaLabel}
       >
         <image href="/images/inicio/mapa-ubicacion.webp" width={1292} height={867} />
         {/* El avioncito arranca centrado en su propio origen (x/y negativos

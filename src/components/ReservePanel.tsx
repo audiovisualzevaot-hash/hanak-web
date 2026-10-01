@@ -2,11 +2,14 @@
 
 import { useState } from "react";
 import { useReserve } from "./ReserveContext";
+import { useDictionary } from "@/lib/i18n/I18nProvider";
 
 type Status = "idle" | "submitting" | "success" | "error";
 
 export default function ReservePanel() {
   const { isOpen, close } = useReserve();
+  const dict = useDictionary();
+  const r = dict.reserve;
   const [status, setStatus] = useState<Status>("idle");
   const [continuar, setContinuar] = useState<"videollamada" | "visita" | "whatsapp">(
     "videollamada"
@@ -60,24 +63,24 @@ export default function ReservePanel() {
         }`}
       >
         <div className="flex items-start justify-between mb-1">
-          <h2 className="font-display text-2xl text-forest">Agenda tu cita</h2>
+          <h2 className="font-display text-2xl text-forest">{r.title}</h2>
           <button
             onClick={close}
-            aria-label="Cerrar"
+            aria-label={r.close}
             className="text-charcoal/50 hover:text-charcoal text-xl leading-none px-2"
           >
             ×
           </button>
         </div>
         <p className="text-sm text-charcoal/60 mb-6">
-          Sin compromiso — un asesor te acompaña en todo el proceso.
+          {r.subtitle}
         </p>
 
         {status === "success" ? (
           <div className="py-8 text-center">
-            <p className="font-display text-lg text-forest mb-2">¡Listo!</p>
+            <p className="font-display text-lg text-forest mb-2">{r.successTitle}</p>
             <p className="text-sm text-charcoal/70">
-              Un asesor de HANAK se pondrá en contacto contigo muy pronto.
+              {r.successBody}
             </p>
           </div>
         ) : (
@@ -85,9 +88,9 @@ export default function ReservePanel() {
             <div className="grid grid-cols-3 gap-2">
               {(
                 [
-                  { id: "videollamada", label: "Videollamada" },
-                  { id: "visita", label: "Visita guiada" },
-                  { id: "whatsapp", label: "WhatsApp" },
+                  { id: "videollamada", label: r.optionVideocall },
+                  { id: "visita", label: r.optionVisit },
+                  { id: "whatsapp", label: r.optionWhatsapp },
                 ] as const
               ).map((opt) => (
                 <button
@@ -108,13 +111,13 @@ export default function ReservePanel() {
             <input
               name="nombre"
               required
-              placeholder="Nombre completo"
+              placeholder={r.namePlaceholder}
               className="w-full rounded-lg border border-charcoal/20 bg-white px-4 py-3 text-sm focus:outline-none focus:border-forest"
             />
             <input
               name="contacto"
               required
-              placeholder="Teléfono / WhatsApp"
+              placeholder={r.contactPlaceholder}
               className="w-full rounded-lg border border-charcoal/20 bg-white px-4 py-3 text-sm focus:outline-none focus:border-forest"
             />
 
@@ -123,12 +126,12 @@ export default function ReservePanel() {
               disabled={status === "submitting"}
               className="w-full bg-forest text-white rounded-full py-3 text-sm font-medium tracking-wide hover:bg-forest-dark transition disabled:opacity-60"
             >
-              {status === "submitting" ? "Enviando..." : "Quiero que me contacten"}
+              {status === "submitting" ? r.submitting : r.submit}
             </button>
 
             {status === "error" && (
               <p className="text-xs text-red-600">
-                Algo falló al enviar. Intenta nuevamente o escríbenos por WhatsApp.
+                {r.errorBody}
               </p>
             )}
           </form>

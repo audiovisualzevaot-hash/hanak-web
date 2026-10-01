@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import PeruMiniMap from "./PeruMiniMap";
+import { useDictionary } from "@/lib/i18n/I18nProvider";
 
 const clamp01 = (v: number) => Math.min(Math.max(v, 0), 1);
 const mix = (a: number, b: number, t: number) => a + (b - a) * clamp01(t);
@@ -50,6 +51,8 @@ const pulse = (p: number, inStart: number, inEnd: number, outStart: number, outE
 export default function HeroSequence() {
   const trackRef = useRef<HTMLDivElement>(null);
   const [progress, setProgress] = useState(0);
+  const dict = useDictionary();
+  const hs = dict.heroSequence;
 
   useEffect(() => {
     const onScroll = () => {
@@ -126,7 +129,7 @@ export default function HeroSequence() {
         <div className="absolute inset-0">
           <Image
             src="/images/inicio/header.webp"
-            alt="Vista aérea de los cerros de Tarapoto al atardecer"
+            alt={hs.heroImgAlt}
             fill
             priority
             sizes="100vw"
@@ -148,11 +151,11 @@ export default function HeroSequence() {
             className="uppercase tracking-[0.25em] text-xs sm:text-sm text-cloud/80 mb-7 animate-hero-intro"
             style={{ animationDelay: "0.1s" }}
           >
-            Presentando a
+            {hs.presenting}
           </p>
           <Image
             src="/images/brand/lockup-cream.png"
-            alt="HANAK — Sky Resort & Villas Club"
+            alt={hs.logoAlt}
             width={280}
             height={176}
             priority
@@ -176,7 +179,7 @@ export default function HeroSequence() {
         >
           <Image
             src="/images/inicio/nubes.webp"
-            alt="Mar de nubes descendiendo hacia el valle de Tarapoto"
+            alt={hs.cloudsImgAlt}
             fill
             sizes="100vw"
             className="object-cover"
@@ -193,17 +196,16 @@ export default function HeroSequence() {
             style={{ opacity: introOpacity, transform: `translateY(${introY}px)` }}
           >
             <h2 className="font-display uppercase text-2xl sm:text-4xl lg:text-5xl xl:text-6xl text-forest leading-tight drop-shadow-sm">
-              El primer Sky Resort
-              <br /> de Latinoamérica
+              {hs.titleLine1}
+              <br /> {hs.titleLine2}
             </h2>
 
             <div className="max-w-sm sm:max-w-lg">
               <p className="text-sm sm:text-base lg:text-lg text-charcoal font-medium leading-snug">
-                Sobre las nubes de la Amazonía peruana nace un nuevo concepto
-                de vivir:
+                {hs.bodyLine1}
               </p>
               <p className="text-xs sm:text-base lg:text-lg text-charcoal/55 leading-snug">
-                Un resort donde cada momento del día es un privilegio.
+                {hs.bodyLine2}
               </p>
             </div>
 
@@ -216,10 +218,10 @@ export default function HeroSequence() {
               <span className="mt-1 h-7 w-px shrink-0 bg-charcoal/25 sm:h-8" />
               <p className="text-xs leading-snug sm:text-sm">
                 <span className="text-charcoal font-medium">
-                  HANAK no es un condominio,
+                  {hs.closingBold}
                 </span>{" "}
                 <span className="text-charcoal/60">
-                  Es una forma distinta de estar en el mundo.
+                  {hs.closingRest}
                 </span>
               </p>
             </div>
@@ -227,6 +229,7 @@ export default function HeroSequence() {
             <PeruMiniMap
               className="mt-1 sm:mt-2"
               maxWidthClassName="max-w-[220px] sm:max-w-[380px] lg:max-w-[460px] xl:max-w-[540px]"
+              ariaLabel={dict.maps.peruMiniMapAria}
             />
           </div>
         </div>

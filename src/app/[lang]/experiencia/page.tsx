@@ -1,10 +1,16 @@
+import type { Metadata } from "next";
 import MediaPlaceholder from "@/components/MediaPlaceholder";
 import LogoMark from "@/components/LogoMark";
 import VideoLightbox from "@/components/VideoLightbox";
 import PhotoCarousel from "@/components/PhotoCarousel";
 import ExperienciaReveal from "@/components/ExperienciaReveal";
+import { getDictionary } from "@/lib/i18n/getDictionary";
+import type { Locale } from "@/lib/i18n/locales";
 
-export const metadata = { title: "Experiencia — HANAK" };
+export async function generateMetadata({ params }: { params: Promise<{ lang: Locale }> }): Promise<Metadata> {
+  const { lang } = await params;
+  return { title: getDictionary(lang).pageTitles.experiencia };
+}
 
 // Bryan mandó el export de Illustrator de esta hoja (05-Experiencias_4.png):
 // el hero deja de ser una franja de 50vh para pasar a foto a pantalla
@@ -30,19 +36,23 @@ export const metadata = { title: "Experiencia — HANAK" };
 //   que por ahora se reusan las 9 fotos que ya estaban en /experiencia,
 //   reacomodadas a los roles nuevos del export. En cuanto Bryan mande fotos
 //   específicas, solo hay que cambiar los `src`.
-const tabs = [
-  { id: "sobre-las-nubes", label: "Sobre las nubes" },
-  { id: "inmersion-en-selva", label: "Inmersión en selva" },
-  { id: "sky-club", label: "Sky Club" },
-];
+const tabIds = ["sobre-las-nubes", "inmersion-en-selva", "sky-club"] as const;
 
-export default function ExperienciaPage() {
+export default async function ExperienciaPage({ params }: { params: Promise<{ lang: Locale }> }) {
+  const { lang } = await params;
+  const dict = getDictionary(lang);
+  const e = dict.experiencia;
+  const tabs = [
+    { id: tabIds[0], label: e.tabNubes },
+    { id: tabIds[1], label: e.tabSelva },
+    { id: tabIds[2], label: e.tabSkyClub },
+  ];
   return (
     <>
       {/* HERO — foto a pantalla completa (antes franja de 50vh) */}
       <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-forest-dark">
         <MediaPlaceholder
-          label="Experiencia — HANAK"
+          label={dict.pageTitles.experiencia}
           aspect="aspect-auto"
           className="absolute inset-0 !rounded-none"
           src="/images/experiencia/header.webp"
@@ -52,13 +62,13 @@ export default function ExperienciaPage() {
 
         <div className="relative z-10 flex flex-col items-center text-center px-5">
           <p className="text-xs sm:text-sm uppercase tracking-[0.25em] text-white/75 mb-4">
-            HANAK se vive en tres tiempos
+            {e.heroEyebrow}
           </p>
           <h1
             className="font-display text-cloud text-5xl sm:text-8xl lg:text-9xl tracking-wide"
-            aria-label="EXPERIENCIA"
+            aria-label={e.heroWord}
           >
-            {"EXPERIENCIA".split("").map((letra, i) => (
+            {e.heroWord.split("").map((letra, i) => (
               <span
                 key={i}
                 aria-hidden="true"
@@ -85,14 +95,14 @@ export default function ExperienciaPage() {
       <section className="bg-cloud py-8 sm:py-10 border-b border-charcoal/10">
         <div className="max-w-3xl mx-auto px-5">
           <nav className="flex flex-wrap items-center justify-center gap-3 sm:gap-4">
-            {tabs.map((t) => (
+            {tabs.map((tab) => (
               <a
-                key={t.id}
-                href={`#${t.id}`}
+                key={tab.id}
+                href={`#${tab.id}`}
                 className="inline-flex items-center gap-2 rounded-full border border-forest/25 hover:border-forest hover:bg-forest/5 px-4 sm:px-5 py-2.5 text-[11px] sm:text-xs uppercase tracking-wider text-forest transition"
               >
                 <LogoMark size={12} tone="forest" />
-                {t.label}
+                {tab.label}
               </a>
             ))}
           </nav>
@@ -106,7 +116,7 @@ export default function ExperienciaPage() {
         className="relative min-h-[85vh] sm:min-h-screen overflow-hidden bg-forest scroll-mt-20 sm:scroll-mt-24"
       >
         <MediaPlaceholder
-          label="Sobre las nubes — la experiencia insignia"
+          label={e.nubesHeroLabel}
           aspect="aspect-auto"
           className="absolute inset-0 !rounded-none"
           src="/images/experiencia/header.webp"
@@ -115,18 +125,18 @@ export default function ExperienciaPage() {
 
         <div className="relative z-10 min-h-[85vh] sm:min-h-screen flex flex-col justify-between px-5 sm:px-10 py-14 sm:py-20">
           <p className="text-right text-xs sm:text-sm uppercase tracking-[0.2em] text-white/70">
-            Sobre las nubes
+            {e.nubesEyebrow}
           </p>
           <div className="flex items-end justify-between gap-6">
             <h2 className="font-display text-4xl sm:text-6xl text-white leading-none">
-              La experiencia
-              <br /> insignia
+              {e.nubesTitleLine1}
+              <br /> {e.nubesTitleLine2}
             </h2>
             <div className="relative w-20 h-20 sm:w-28 sm:h-28 shrink-0 flex items-center justify-center mb-2">
               <div className="absolute inset-0 rounded-full border border-dashed border-white/40" />
               <VideoLightbox
                 overlay={false}
-                label="Reproducir video — La experiencia insignia"
+                label={e.nubesVideoLabel}
               />
             </div>
           </div>
@@ -147,14 +157,14 @@ export default function ExperienciaPage() {
         <div className="max-w-3xl mx-auto px-5 text-center">
           <LogoMark size={28} tone="forest" className="mx-auto mb-4" />
           <h2 className="font-display uppercase text-4xl sm:text-6xl lg:text-7xl tracking-wide text-forest">
-            Sky Club
+            {e.skyClubTitle}
           </h2>
         </div>
       </section>
 
       <section className="relative min-h-[70vh] sm:min-h-screen overflow-hidden bg-forest">
         <MediaPlaceholder
-          label="Sky Club — amenidades de Hanak"
+          label={e.skyClubHeroLabel}
           aspect="aspect-auto"
           className="absolute inset-0 !rounded-none"
           src="/images/experiencia/campanario.webp"
@@ -163,12 +173,11 @@ export default function ExperienciaPage() {
         <div className="relative z-10 min-h-[70vh] sm:min-h-screen flex items-end px-5 sm:px-10 pb-14 sm:pb-20">
           <div className="grid sm:grid-cols-2 gap-6 sm:gap-10 items-end w-full">
             <h3 className="font-display text-3xl sm:text-5xl text-white leading-tight">
-              El sistema completo de{" "}
-              <span className="italic">Amenidades de HANAK</span>
+              {e.amenidadesIntro}{" "}
+              <span className="italic">{e.amenidadesItalic}</span>
             </h3>
             <p className="text-white/80 leading-relaxed sm:text-right sm:justify-self-end sm:max-w-sm">
-              El conjunto de espacios y servicios pensados para que cada
-              propietario viva en un resort de categoría.
+              {e.amenidadesBody}
             </p>
           </div>
         </div>
@@ -184,11 +193,11 @@ export default function ExperienciaPage() {
           frameClassName=""
           dots={false}
           photos={[
-            { src: "/images/experiencia/amenidades-de-hanak.webp", alt: "Sky Club — alameda y jardines de Hanak" },
-            { src: "/images/experiencia/columpios.webp", alt: "Sky Club — columpios en la pérgola", objectPosition: "50% 62%" },
-            { src: "/images/experiencia/maloca1.webp", alt: "Sky Club — recepción de la maloca" },
-            { src: "/images/experiencia/maloca2.webp", alt: "Sky Club — maloca al atardecer" },
-            { src: "/images/experiencia/parque-central.webp", alt: "Sky Club — zona de pérgolas y parque central" },
+            { src: "/images/experiencia/amenidades-de-hanak.webp", alt: e.photoAlts.alameda },
+            { src: "/images/experiencia/columpios.webp", alt: e.photoAlts.columpios, objectPosition: "50% 62%" },
+            { src: "/images/experiencia/maloca1.webp", alt: e.photoAlts.maloca1 },
+            { src: "/images/experiencia/maloca2.webp", alt: e.photoAlts.maloca2 },
+            { src: "/images/experiencia/parque-central.webp", alt: e.photoAlts.parqueCentral },
           ]}
         />
         <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent pointer-events-none" />

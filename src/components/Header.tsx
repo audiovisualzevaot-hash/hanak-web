@@ -6,18 +6,27 @@ import { useEffect, useState } from "react";
 import { nav, site } from "@/lib/content";
 import { useReserve } from "./ReserveContext";
 import LogoMark from "./LogoMark";
+import { useDictionary, useLocale } from "@/lib/i18n/I18nProvider";
+import { stripLocale, localeHref } from "@/lib/i18n/locales";
 
 // Páginas cuya sección superior es una foto/video a pantalla completa: en
 // estas el header nace transparente con texto claro y se convierte en un
 // fondo sólido al hacer scroll (igual que en ayana.com). El resto (Masterplan,
 // News) no tiene hero fotográfico arriba, así que el header nace ya sólido.
+// Siempre rutas CANÓNICAS (sin prefijo de idioma) — se comparan contra
+// stripLocale(pathname), nunca contra el pathname real.
 const HERO_PAGES = ["/", "/tarapoto", "/hanak", "/vistas", "/experiencia", "/como-llegar"];
 
 export default function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const { open } = useReserve();
-  const pathname = usePathname();
+  const rawPathname = usePathname();
+  const dict = useDictionary();
+  const locale = useLocale();
+  // Ruta canónica (sin prefijo de idioma) — así HERO_PAGES y el estado
+  // "activo" del nav funcionan igual en /, /en y /it.
+  const pathname = stripLocale(rawPathname);
 
   const hasHero = HERO_PAGES.includes(pathname);
   // Transparente solo si la página tiene hero Y todavía no se hizo scroll.
@@ -60,7 +69,7 @@ export default function Header() {
       >
         {/* Solo el isotipo en el header, en todas las páginas — sin el
             wordmark "HANAK" al lado (pedido explícito de Bryan). */}
-        <Link href="/" aria-label={site.name} className="flex items-center">
+        <Link href={localeHref(locale, "/")} aria-label={site.name} className="flex items-center">
           <LogoMark size={34} tone={transparent ? "cream" : "forest"} />
         </Link>
 
@@ -71,10 +80,10 @@ export default function Header() {
             return (
               <>
                 <Link
-                  href={first.href}
+                  href={localeHref(locale, first.href)}
                   className="italic opacity-70 hover:opacity-100 transition-opacity"
                 >
-                  {first.label}
+                  {dict.nav[first.key]}
                 </Link>
                 <div className="flex items-center gap-7">
                   {rest.map((item) => {
@@ -82,21 +91,21 @@ export default function Header() {
                     return (
                       <Link
                         key={item.href}
-                        href={item.href}
+                        href={localeHref(locale, item.href)}
                         className={`transition-colors hover:opacity-100 ${
                           active ? "underline underline-offset-4 opacity-100" : "opacity-80"
                         }`}
                       >
-                        {item.label}
+                        {dict.nav[item.key]}
                       </Link>
                     );
                   })}
                 </div>
                 <Link
-                  href={last.href}
+                  href={localeHref(locale, last.href)}
                   className="italic opacity-70 hover:opacity-100 transition-opacity"
                 >
-                  {last.label}
+                  {dict.nav[last.key]}
                 </Link>
               </>
             );
@@ -112,11 +121,11 @@ export default function Header() {
                 : "bg-forest-dark text-white hover:bg-forest"
             }`}
           >
-            Agendar una cita
+            {dict.header.scheduleCta}
             <span aria-hidden>↗</span>
           </button>
           <button
-            aria-label="Abrir menú"
+            aria-label={dict.header.openMenu}
             className="lg:hidden"
             onClick={() => setMenuOpen((v) => !v)}
           >
@@ -134,11 +143,15 @@ export default function Header() {
         }`}
       >
         <div className="flex items-center justify-between px-5 h-16 border-b border-charcoal/10">
-          <Link href="/" className="flex items-center gap-2.5 font-display text-lg text-forest" onClick={() => setMenuOpen(false)}>
+          <Link
+            href={localeHref(locale, "/")}
+            className="flex items-center gap-2.5 font-display text-lg text-forest"
+            onClick={() => setMenuOpen(false)}
+          >
             <LogoMark />
             {site.name}
           </Link>
-          <button aria-label="Cerrar menú" onClick={() => setMenuOpen(false)} className="text-forest">
+          <button aria-label={dict.header.closeMenu} onClick={() => setMenuOpen(false)} className="text-forest">
             <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
               <path d="M6 6l12 12M6 18L18 6" />
             </svg>
@@ -148,14 +161,14 @@ export default function Header() {
           {nav.map((item, i) => (
             <Link
               key={item.href}
-              href={item.href}
+              href={localeHref(locale, item.href)}
               onClick={() => setMenuOpen(false)}
               style={{ transitionDelay: menuOpen ? `${i * 40}ms` : "0ms" }}
               className={`text-charcoal/80 hover:text-forest transition-all duration-300 ${
                 menuOpen ? "translate-y-0 opacity-100" : "translate-y-2 opacity-0"
               } ${pathname === item.href ? "italic text-forest" : ""}`}
             >
-              {item.label}
+              {dict.nav[item.key]}
             </Link>
           ))}
           <button
@@ -165,7 +178,7 @@ export default function Header() {
             }}
             className="mt-4 bg-forest-dark text-white text-sm uppercase tracking-[0.12em] rounded-full px-6 py-3.5 inline-flex items-center justify-center gap-1.5 w-fit"
           >
-            Agendar una cita <span aria-hidden>↗</span>
+            {dict.header.scheduleCta} <span aria-hidden>↗</span>
           </button>
         </nav>
       </div>

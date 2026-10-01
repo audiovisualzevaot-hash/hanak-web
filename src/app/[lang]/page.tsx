@@ -3,9 +3,13 @@ import MediaPlaceholder from "@/components/MediaPlaceholder";
 import HeroSequence from "@/components/HeroSequence";
 import PriorizamosSelva from "@/components/PriorizamosSelva";
 import SociosFundadores from "@/components/SociosFundadores";
-import { newsCalendario } from "@/lib/content";
+import { getDictionary } from "@/lib/i18n/getDictionary";
+import { localeHref, type Locale } from "@/lib/i18n/locales";
 
-export default function InicioPage() {
+export default async function InicioPage({ params }: { params: Promise<{ lang: Locale }> }) {
+  const { lang } = await params;
+  const dict = getDictionary(lang);
+  const h = dict.home;
   return (
     <>
       {/* HERO — atardecer → mar de nubes que sube, panea hacia el valle y
@@ -26,22 +30,22 @@ export default function InicioPage() {
           título ya estaba bien, solo el mapa estaba mal colocado). El
           botón de ir a "Cómo llegar" sigue abajo a la derecha. */}
       <Link
-        href="/como-llegar"
+        href={localeHref(lang, "/como-llegar")}
         className="group relative flex min-h-[85vh] sm:min-h-[95vh] flex-col overflow-hidden bg-forest"
       >
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
           src="/images/inicio/llegar-a-hanak.webp"
-          alt="Grupo llegando a Hanak entre las nubes"
+          alt={h.arriveAlt}
           className="absolute inset-0 h-full w-full object-cover"
         />
 
         <div className="relative z-10 flex justify-end px-5 pt-16 sm:px-10 sm:pt-20 lg:px-14 lg:pt-24">
           <div className="text-right text-forest-dark">
             <h2 className="font-display text-3xl sm:text-5xl lg:text-6xl xl:text-7xl leading-tight">
-              Llegar a HANAK
+              {h.arriveTitle}
             </h2>
-            <p className="mt-1 text-lg sm:text-2xl lg:text-3xl text-forest-dark/70">es muy sencillo</p>
+            <p className="mt-1 text-lg sm:text-2xl lg:text-3xl text-forest-dark/70">{h.arriveSubtitle}</p>
           </div>
         </div>
 
@@ -58,7 +62,7 @@ export default function InicioPage() {
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
           src="/images/inicio/mapa-llegar-hanak.webp"
-          alt="Silueta del distrito de Hanak y lockup Hanak Sky Resort & Villas Club"
+          alt={h.siluetaAlt}
           className="absolute z-10 top-[24%] sm:top-[7%] left-[8%] sm:left-[10%] lg:left-[14%] xl:left-[16%] w-[30%] sm:w-[27%] lg:w-[23%] xl:w-[20%] h-auto drop-shadow-sm"
         />
 
@@ -82,30 +86,29 @@ export default function InicioPage() {
       <section className="w-full py-20 sm:py-28 grid lg:grid-cols-[minmax(0,26rem)_1fr] gap-10 lg:gap-12 items-center">
         <div className="order-1 px-5 sm:px-8 lg:pl-10 xl:pl-16">
           <p className="uppercase tracking-[0.2em] text-xs text-charcoal/50 mb-3">
-            Encuentra tu lugar
+            {h.findPlaceEyebrow}
           </p>
           <h2 className="font-display text-3xl sm:text-5xl text-forest leading-tight mb-4">
-            Dentro de HANAK
+            {h.insideTitle}
           </h2>
           <p className="text-charcoal/70 leading-relaxed max-w-md mb-6">
-            Veinte manzanas, cada una con su propia relación con el paisaje.
-            Recorre el masterplan y encuentra la tuya.
+            {h.insideBody}
           </p>
           <Link
-            href="/masterplan"
+            href={localeHref(lang, "/masterplan")}
             className="inline-flex items-center gap-1.5 text-sm uppercase tracking-[0.12em] text-forest hover:underline"
           >
-            Explora el masterplan <span aria-hidden>↗</span>
+            {h.exploreMasterplanCta} <span aria-hidden>↗</span>
           </Link>
         </div>
         <Link
-          href="/masterplan"
+          href={localeHref(lang, "/masterplan")}
           className="group block order-2 px-5 sm:px-8 lg:px-0"
         >
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             src="/images/inicio/mapa.webp"
-            alt="Masterplan de Hanak"
+            alt={h.masterplanAlt}
             className="w-full transition-transform duration-500 group-hover:scale-[1.02]"
           />
         </Link>
@@ -115,10 +118,10 @@ export default function InicioPage() {
       <section className="bg-cloud-soft py-20 sm:py-28">
         <div className="max-w-6xl mx-auto px-5 sm:px-8">
           <p className="uppercase tracking-[0.2em] text-xs text-charcoal/50 mb-3 text-center lg:text-left">
-            Experiencias de
+            {h.experienciasEyebrow}
           </p>
           <h2 className="font-display text-3xl sm:text-5xl text-forest mb-12 text-center lg:text-left">
-            Socios Fundadores
+            {h.sociosTitle}
           </h2>
           <SociosFundadores />
         </div>
@@ -129,26 +132,26 @@ export default function InicioPage() {
         <div className="max-w-7xl mx-auto px-5 sm:px-8">
           <div className="flex items-end justify-between mb-10">
             <div>
-              <h2 className="font-display text-3xl sm:text-4xl">Historias, novedades</h2>
+              <h2 className="font-display text-3xl sm:text-4xl">{h.newsTitle}</h2>
               <p className="italic text-cloud/60 mt-1">
-                y todo lo que va sucediendo en HANAK
+                {h.newsSubtitle}
               </p>
             </div>
-            <Link href="/news" className="text-sm text-cloud/80 hover:text-white hidden sm:block">
-              Ver todo →
+            <Link href={localeHref(lang, "/news")} className="text-sm text-cloud/80 hover:text-white hidden sm:block">
+              {h.viewAll}
             </Link>
           </div>
           <div className="grid sm:grid-cols-3 gap-6">
-            {newsCalendario.slice(0, 3).map((title) => (
+            {dict.news.calendario.slice(0, 3).map((title) => (
               <Link
                 key={title}
-                href="/news"
+                href={localeHref(lang, "/news")}
                 className="group block rounded-xl overflow-hidden border border-cloud/15 hover:border-cloud/40 transition"
               >
                 <MediaPlaceholder label={title} aspect="aspect-[4/3]" className="!rounded-none" />
                 <div className="p-4">
                   <p className="text-[11px] uppercase tracking-wider text-cloud/50 mb-1">
-                    Próximamente
+                    {dict.news.comingSoon}
                   </p>
                   <p className="font-display text-base leading-snug">{title}</p>
                 </div>

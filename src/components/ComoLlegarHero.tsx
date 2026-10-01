@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import LogoMark from "./LogoMark";
+import { useDictionary } from "@/lib/i18n/I18nProvider";
 
 const clamp01 = (v: number) => Math.min(Math.max(v, 0), 1);
 const mix = (a: number, b: number, t: number) => a + (b - a) * clamp01(t);
@@ -25,6 +26,8 @@ const mix = (a: number, b: number, t: number) => a + (b - a) * clamp01(t);
 export default function ComoLlegarHero() {
   const trackRef = useRef<HTMLDivElement>(null);
   const [progress, setProgress] = useState(0);
+  const dict = useDictionary();
+  const clh = dict.comoLlegarHero;
 
   useEffect(() => {
     const onScroll = () => {
@@ -61,7 +64,7 @@ export default function ComoLlegarHero() {
         <div className="absolute inset-0">
           <Image
             src="/images/como-llegar/header.webp"
-            alt="Vista aérea de la selva y la neblina camino a Hanak"
+            alt={clh.imgAlt}
             fill
             priority
             sizes="100vw"
@@ -73,16 +76,16 @@ export default function ComoLlegarHero() {
 
         <div className="relative z-10 flex flex-col flex-1 items-center justify-center text-center px-5 gap-5 sm:gap-6">
           <h1 className="font-display uppercase text-cloud text-5xl sm:text-7xl lg:text-8xl tracking-wide leading-tight drop-shadow-sm animate-como-llegar-title">
-            Llegar a HANAK
+            {clh.title}
           </h1>
 
           <div className="flex flex-col items-center gap-3">
             <LogoMark size={28} tone="cream" />
             <p className="text-sm sm:text-base uppercase tracking-[0.3em] text-white/85">
-              Es parte de la experiencia
+              {clh.subtitle1}
             </p>
             <p className="font-display italic text-teal text-5xl sm:text-7xl">
-              Parte del viaje
+              {clh.subtitle2}
             </p>
           </div>
         </div>

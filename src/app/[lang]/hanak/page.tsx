@@ -1,10 +1,19 @@
+import type { Metadata } from "next";
 import HanakHero from "@/components/HanakHero";
 import MediaPlaceholder from "@/components/MediaPlaceholder";
 import PhotoCarousel from "@/components/PhotoCarousel";
+import { getDictionary } from "@/lib/i18n/getDictionary";
+import type { Locale } from "@/lib/i18n/locales";
 
-export const metadata = { title: "Concepto de marca — HANAK" };
+export async function generateMetadata({ params }: { params: Promise<{ lang: Locale }> }): Promise<Metadata> {
+  const { lang } = await params;
+  return { title: getDictionary(lang).pageTitles.hanak };
+}
 
-export default function HanakPage() {
+export default async function HanakPage({ params }: { params: Promise<{ lang: Locale }> }) {
+  const { lang } = await params;
+  const dict = getDictionary(lang);
+  const hk = dict.hanak;
   return (
     <>
       <HanakHero />
@@ -13,9 +22,8 @@ export default function HanakPage() {
           "Concepto de marca" en el copy aprobado. */}
       <section className="bg-forest-dark py-6 sm:py-7">
         <p className="max-w-3xl sm:max-w-none mx-auto px-5 sm:px-8 text-center text-cloud text-sm sm:text-base leading-relaxed sm:whitespace-nowrap">
-          <span className="font-semibold">Es Wellness Real Estate:</span>{" "}
-          bienes raíces pensados desde la salud física, mental y del
-          entorno.
+          <span className="font-semibold">{hk.quoteBold}</span>{" "}
+          {hk.quoteRest}
         </p>
       </section>
 
@@ -24,11 +32,11 @@ export default function HanakPage() {
       <section className="bg-cloud pt-20 sm:pt-28 pb-16 sm:pb-20">
         <h2 className="font-display uppercase text-2xl sm:text-4xl lg:text-5xl text-center leading-tight max-w-4xl mx-auto px-5 sm:px-8">
           <span className="text-forest">
-            Creemos que desarrollar un lugar
+            {hk.h2Forest}
           </span>
           <br />
           <span className="text-olive">
-            no significa transformarlo en algo ajeno a sí mismo
+            {hk.h2Olive}
           </span>
         </h2>
 
@@ -37,25 +45,21 @@ export default function HanakPage() {
             aspect="aspect-[16/10]"
             sizes="(min-width: 1024px) 1024px, 100vw"
             photos={[
-              { src: "/images/hanak/lista1.webp", alt: "Hanak — picnic al atardecer" },
-              { src: "/images/hanak/lista2.webp", alt: "Hanak — mesa de picnic" },
-              { src: "/images/hanak/lista3.webp", alt: "Hanak — trabajo en el terreno" },
-              { src: "/images/hanak/lista4.webp", alt: "Hanak — preparación del terreno" },
-              { src: "/images/hanak/lista5.webp", alt: "Hanak — equipo en el terreno" },
+              { src: "/images/hanak/lista1.webp", alt: hk.picnicAlt1 },
+              { src: "/images/hanak/lista2.webp", alt: hk.picnicAlt2 },
+              { src: "/images/hanak/lista3.webp", alt: hk.picnicAlt3 },
+              { src: "/images/hanak/lista4.webp", alt: hk.picnicAlt4 },
+              { src: "/images/hanak/lista5.webp", alt: hk.picnicAlt5 },
             ]}
           />
         </div>
 
         <div className="max-w-2xl mx-auto px-5 sm:px-8 mt-10 sm:mt-12 text-center">
           <p className="text-charcoal/70 leading-relaxed text-lg">
-            Estamos comprometidos con reforestar las zonas del terreno que
-            antes tenían vegetación degradada, integrar la flora nativa a
-            cada rincón del proyecto, y avanzar hacia una operación libre de
-            plástico y neutra en carbono.
+            {hk.sustainBody1}
           </p>
           <p className="mt-4 text-charcoal/50 text-sm">
-            No lo llamamos un logro — lo llamamos una dirección hacia la que
-            trabajamos todos los días.
+            {hk.sustainBody2}
           </p>
         </div>
       </section>
@@ -67,23 +71,23 @@ export default function HanakPage() {
         <div className="max-w-6xl mx-auto px-5 sm:px-8 space-y-16 sm:space-y-0">
           <div className="sm:grid sm:grid-cols-12 sm:gap-8 sm:items-end">
             <MediaPlaceholder
-              label="Hanak — el terreno como paisaje"
+              label={hk.terrenoLabel}
               aspect="aspect-[4/5] sm:aspect-[3/2]"
               src="/images/hanak/2da-foto-suelta.webp"
               className="sm:col-span-7"
               sizes="(min-width: 640px) 55vw, 100vw"
             />
             <p className="sm:col-span-4 sm:col-start-9 mt-5 sm:mt-0 text-charcoal/70 leading-relaxed text-lg sm:text-xl">
-              En un sector donde muchos venden metros cuadrados,
+              {hk.sellPart1}
             </p>
           </div>
 
           <div className="sm:grid sm:grid-cols-12 sm:gap-8 sm:items-end sm:mt-20">
             <p className="sm:col-span-4 order-2 sm:order-1 mt-5 sm:mt-0 text-charcoal/70 leading-relaxed text-lg sm:text-xl text-left sm:text-right">
-              HANAK eligió vender pertenencia: a un paisaje,
+              {hk.sellPart2}
             </p>
             <MediaPlaceholder
-              label="Hanak — un paisaje propio"
+              label={hk.paisajeLabel}
               aspect="aspect-[4/5] sm:aspect-[3/2]"
               src="/images/hanak/1ra-foto-suelta.webp"
               className="sm:col-span-7 sm:col-start-6 order-1 sm:order-2"
@@ -93,15 +97,14 @@ export default function HanakPage() {
 
           <div className="sm:grid sm:grid-cols-12 sm:gap-8 sm:items-end sm:mt-20">
             <MediaPlaceholder
-              label="Hanak — comunidad de socios fundadores"
+              label={hk.comunidadLabel}
               aspect="aspect-[4/5] sm:aspect-[3/2]"
               src="/images/hanak/lista5.webp"
               className="sm:col-span-7"
               sizes="(min-width: 640px) 55vw, 100vw"
             />
             <p className="sm:col-span-4 sm:col-start-9 mt-5 sm:mt-0 text-charcoal/70 leading-relaxed text-lg sm:text-xl">
-              a una comunidad y a una forma de entender el descanso que en
-              Latinoamérica todavía no tenía nombre propio — hasta ahora.
+              {hk.sellPart3}
             </p>
           </div>
         </div>

@@ -1,18 +1,20 @@
 "use client";
 
 import { useState } from "react";
-import { manzanas, amenidadesMapa, type Manzana, type AmenidadMapa } from "@/lib/content";
+import { manzanas, amenidadesMapa, type Manzana, type AmenidadMapa, type ExperienciaKey } from "@/lib/content";
+import { useDictionary } from "@/lib/i18n/I18nProvider";
+import { format } from "@/lib/i18n/format";
 
-const experienciaColor: Record<Manzana["experiencia"], string> = {
-  "Sobre las nubes": "bg-sky",
-  "Dentro de la selva": "bg-forest",
-  Mixta: "bg-gold",
+const experienciaColor: Record<ExperienciaKey, string> = {
+  nubes: "bg-sky",
+  selva: "bg-forest",
+  mixta: "bg-gold",
 };
 
-const experienciaFoto: Record<Manzana["experiencia"], string> = {
-  "Sobre las nubes": "/images/masterplan/sobre-las-nubes.webp",
-  "Dentro de la selva": "/images/masterplan/dentro-de-la-selva.webp",
-  Mixta: "/images/masterplan/sobre-las-nubes.webp",
+const experienciaFoto: Record<ExperienciaKey, string> = {
+  nubes: "/images/masterplan/sobre-las-nubes.webp",
+  selva: "/images/masterplan/dentro-de-la-selva.webp",
+  mixta: "/images/masterplan/sobre-las-nubes.webp",
 };
 
 // Pequeños iconos de línea, mismo trazo (stroke, sin relleno) para que
@@ -94,6 +96,8 @@ type Activo = { tipo: "manzana"; data: Manzana } | { tipo: "amenidad"; data: Ame
  */
 export default function MasterplanMap() {
   const [activo, setActivo] = useState<Activo>(null);
+  const dict = useDictionary();
+  const mp = dict.masterplanMap;
 
   const toggleManzana = (m: Manzana) =>
     setActivo((prev) => (prev?.tipo === "manzana" && prev.data.id === m.id ? null : { tipo: "manzana", data: m }));
@@ -117,7 +121,7 @@ export default function MasterplanMap() {
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             src="/images/masterplan/mapa.webp"
-            alt="Ilustración del Master Plan de HANAK"
+            alt={mp.illustrationAlt}
             className="absolute inset-0 w-full h-full object-cover"
           />
         </div>
@@ -135,8 +139,8 @@ export default function MasterplanMap() {
         >
           <IconLeaf />
           <div className="leading-tight min-w-0">
-            <p className="text-[10px] font-medium text-forest whitespace-nowrap">Riachuelo</p>
-            <p className="text-[8px] text-charcoal/50 -mt-0.5">Área de amortiguación natural</p>
+            <p className="text-[10px] font-medium text-forest whitespace-nowrap">{mp.riachuelo}</p>
+            <p className="text-[8px] text-charcoal/50 -mt-0.5">{mp.riachueloSub}</p>
           </div>
         </div>
 
@@ -148,7 +152,7 @@ export default function MasterplanMap() {
           style={{ left: "3%", top: "23%" }}
         >
           <span className="text-forest/80 text-xs leading-none">→</span>
-          <p className="text-[10px] font-medium text-forest">Ingreso</p>
+          <p className="text-[10px] font-medium text-forest">{mp.ingreso}</p>
         </div>
 
         {manzanas.map((m) => (
@@ -157,11 +161,11 @@ export default function MasterplanMap() {
             onClick={() => toggleManzana(m)}
             style={{ left: `${m.x}%`, top: `${m.y}%` }}
             className={`absolute z-10 -translate-x-1/2 -translate-y-1/2 w-7 h-7 sm:w-8 sm:h-8 rounded-full ${
-              experienciaColor[m.experiencia]
+              experienciaColor[m.experienciaKey]
             } text-white text-[11px] sm:text-xs font-medium flex items-center justify-center shadow-md ring-2 ring-white/90 hover:scale-110 hover:shadow-lg transition-all ${
               activo?.tipo === "manzana" && activo.data.id === m.id ? "scale-110 ring-white" : ""
             }`}
-            aria-label={`Manzana ${m.id}`}
+            aria-label={format(mp.manzanaLabelTemplate, { id: m.id })}
           >
             {m.id}
           </button>
@@ -175,7 +179,7 @@ export default function MasterplanMap() {
             className={`absolute z-10 -translate-x-1/2 -translate-y-1/2 w-6 h-6 sm:w-7 sm:h-7 rounded-full bg-white/95 text-forest flex items-center justify-center shadow-md ring-2 ring-forest/25 hover:scale-110 hover:ring-forest/50 transition-all ${
               activo?.tipo === "amenidad" && activo.data.id === a.id ? "scale-110 ring-forest/60" : ""
             }`}
-            aria-label={a.label}
+            aria-label={mp.amenidades[a.id].label}
           >
             <IconLeaf />
           </button>
@@ -188,7 +192,7 @@ export default function MasterplanMap() {
             y cambiar de selección sin tener que cerrar primero. */}
         <button
           type="button"
-          aria-label="Cerrar detalle"
+          aria-label={mp.closeDetailAria}
           onClick={() => setActivo(null)}
           className={`absolute inset-0 z-[5] cursor-default ${activo ? "" : "pointer-events-none"}`}
           tabIndex={activo ? 0 : -1}
@@ -210,52 +214,54 @@ export default function MasterplanMap() {
               <div className="w-28 sm:w-48 lg:w-56 shrink-0 relative">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
-                  src={experienciaFoto[activo.data.experiencia]}
-                  alt={activo.data.experiencia}
+                  src={experienciaFoto[activo.data.experienciaKey]}
+                  alt={mp.experienciaLabel[activo.data.experienciaKey]}
                   className="absolute inset-0 w-full h-full object-cover"
                 />
               </div>
               <div className="flex-1 p-3 sm:p-7 lg:p-8 min-w-0">
                 <div className="flex items-start justify-between gap-2">
                   <p className="text-[10px] sm:text-xs uppercase tracking-[0.2em] text-charcoal/45">
-                    Manzana {activo.data.id}
+                    {format(mp.manzanaLabelTemplate, { id: activo.data.id })}
                   </p>
                   <button
                     onClick={() => setActivo(null)}
                     className="text-charcoal/30 hover:text-charcoal text-xl leading-none -mt-1 -mr-1 p-1 shrink-0"
-                    aria-label="Cerrar"
+                    aria-label={mp.closeAria}
                   >
                     ×
                   </button>
                 </div>
                 <h3 className="font-display uppercase text-lg sm:text-3xl lg:text-4xl text-forest leading-tight mt-0.5 sm:mt-1">
-                  {activo.data.experiencia}
+                  {mp.experienciaLabel[activo.data.experienciaKey]}
                 </h3>
 
                 <dl className="mt-1.5 sm:mt-5 divide-y divide-charcoal/10 border-t border-charcoal/10 text-xs sm:text-sm">
                   <div className="flex items-center gap-2 sm:gap-3 py-1.5 sm:py-2.5">
                     <span className="text-forest/70 shrink-0"><IconGrid /></span>
-                    <span className="font-medium text-charcoal">{activo.data.lotes} lotes</span>
+                    <span className="font-medium text-charcoal">
+                      {format(mp.loteCountTemplate, { n: activo.data.lotes })}
+                    </span>
                   </div>
                   <div className="flex items-start gap-2 sm:gap-3 py-1.5 sm:py-2.5">
                     <span className="text-forest/70 shrink-0 mt-0.5"><IconMountain /></span>
                     <div className="min-w-0">
-                      <dt className="text-[9px] sm:text-[10px] uppercase tracking-[0.15em] text-charcoal/45">Vistas</dt>
-                      <dd className="text-charcoal/80 mt-0.5">{activo.data.vista}</dd>
+                      <dt className="text-[9px] sm:text-[10px] uppercase tracking-[0.15em] text-charcoal/45">{mp.dtVista}</dt>
+                      <dd className="text-charcoal/80 mt-0.5">{mp.manzanas[activo.data.id].vista}</dd>
                     </div>
                   </div>
                   <div className="flex items-start gap-2 sm:gap-3 py-1.5 sm:py-2.5">
                     <span className="text-forest/70 shrink-0 mt-0.5"><IconCompass /></span>
                     <div className="min-w-0">
-                      <dt className="text-[9px] sm:text-[10px] uppercase tracking-[0.15em] text-charcoal/45">Experiencia</dt>
-                      <dd className="text-charcoal/80 mt-0.5">{activo.data.experiencia}</dd>
+                      <dt className="text-[9px] sm:text-[10px] uppercase tracking-[0.15em] text-charcoal/45">{mp.dtExperiencia}</dt>
+                      <dd className="text-charcoal/80 mt-0.5">{mp.experienciaLabel[activo.data.experienciaKey]}</dd>
                     </div>
                   </div>
                   <div className="flex items-start gap-2 sm:gap-3 py-1.5 sm:py-2.5">
                     <span className="text-forest/70 shrink-0 mt-0.5"><IconPin /></span>
                     <div className="min-w-0">
-                      <dt className="text-[9px] sm:text-[10px] uppercase tracking-[0.15em] text-charcoal/45">Cercanía</dt>
-                      <dd className="text-charcoal/80 mt-0.5">{activo.data.cercania}</dd>
+                      <dt className="text-[9px] sm:text-[10px] uppercase tracking-[0.15em] text-charcoal/45">{mp.dtCercania}</dt>
+                      <dd className="text-charcoal/80 mt-0.5">{mp.manzanas[activo.data.id].cercania}</dd>
                     </div>
                   </div>
                 </dl>
@@ -267,7 +273,7 @@ export default function MasterplanMap() {
                   }}
                   className="w-full mt-2.5 sm:mt-6 bg-forest text-white rounded-full py-2 sm:py-3 text-xs sm:text-sm font-medium hover:bg-forest-dark transition"
                 >
-                  Conocer disponibilidad
+                  {mp.ctaDisponibilidad}
                 </button>
               </div>
             </div>
@@ -280,17 +286,17 @@ export default function MasterplanMap() {
                   <span className="w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-forest/10 text-forest flex items-center justify-center shrink-0">
                     <IconLeaf />
                   </span>
-                  <h3 className="font-display text-lg sm:text-xl text-forest leading-tight">{activo.data.label}</h3>
+                  <h3 className="font-display text-lg sm:text-xl text-forest leading-tight">{mp.amenidades[activo.data.id].label}</h3>
                 </div>
                 <button
                   onClick={() => setActivo(null)}
                   className="text-charcoal/30 hover:text-charcoal text-xl leading-none -mt-1 -mr-1 p-1 shrink-0"
-                  aria-label="Cerrar"
+                  aria-label={mp.closeAria}
                 >
                   ×
                 </button>
               </div>
-              <p className="mt-3 text-sm text-charcoal/70 leading-relaxed">{activo.data.descripcion}</p>
+              <p className="mt-3 text-sm text-charcoal/70 leading-relaxed">{mp.amenidades[activo.data.id].descripcion}</p>
             </div>
           )}
         </div>
@@ -298,16 +304,16 @@ export default function MasterplanMap() {
 
       <div className="flex flex-wrap items-center gap-x-5 gap-y-2 mt-5 px-1 text-xs text-charcoal/60">
         <span className="flex items-center gap-1.5">
-          <span className="w-3 h-3 rounded-full bg-sky inline-block" /> Sobre las nubes
+          <span className="w-3 h-3 rounded-full bg-sky inline-block" /> {mp.experienciaLabel.nubes}
         </span>
         <span className="flex items-center gap-1.5">
-          <span className="w-3 h-3 rounded-full bg-forest inline-block" /> Dentro de la selva
+          <span className="w-3 h-3 rounded-full bg-forest inline-block" /> {mp.experienciaLabel.selva}
         </span>
         <span className="flex items-center gap-1.5">
-          <span className="w-3 h-3 rounded-full bg-gold inline-block" /> Mixta
+          <span className="w-3 h-3 rounded-full bg-gold inline-block" /> {mp.experienciaLabel.mixta}
         </span>
         <span className="flex items-center gap-1.5 ml-auto">
-          <span className="w-3 h-3 rounded-full bg-white ring-1 ring-forest/40 inline-block" /> Amenidad
+          <span className="w-3 h-3 rounded-full bg-white ring-1 ring-forest/40 inline-block" /> {mp.legendAmenidad}
         </span>
       </div>
     </div>

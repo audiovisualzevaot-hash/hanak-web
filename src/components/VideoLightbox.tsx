@@ -2,6 +2,7 @@
 
 import { useEffect, useState, useSyncExternalStore } from "react";
 import { createPortal } from "react-dom";
+import { useDictionary } from "@/lib/i18n/I18nProvider";
 
 const noopSubscribe = () => () => {};
 /** true solo tras hidratar en el cliente — evita el mismatch de SSR sin
@@ -26,7 +27,7 @@ function useMounted() {
 export default function VideoLightbox({
   videoSrc,
   poster,
-  label = "Reproducir video",
+  label: labelProp,
   overlay = true,
   className = "",
 }: {
@@ -42,6 +43,11 @@ export default function VideoLightbox({
 }) {
   const [open, setOpen] = useState(false);
   const mounted = useMounted();
+  const dict = useDictionary();
+  // El prop `label` es opcional — cuando quien lo usa no pasa uno propio
+  // (p.ej. Tarapoto/Experiencia), cae en el genérico traducido del
+  // diccionario en vez de quedar fijo en español.
+  const label = labelProp ?? dict.videoLightbox.defaultLabel;
 
   useEffect(() => {
     if (!open) return;
@@ -91,7 +97,7 @@ export default function VideoLightbox({
             <button
               type="button"
               onClick={() => setOpen(false)}
-              aria-label="Cerrar video"
+              aria-label={dict.videoLightbox.close}
               className="absolute top-5 right-5 sm:top-8 sm:right-8 w-10 h-10 rounded-full bg-white/10 hover:bg-white/20 text-white text-xl flex items-center justify-center transition"
             >
               ×
@@ -112,10 +118,9 @@ export default function VideoLightbox({
                 />
               ) : (
                 <div className="w-full h-full flex flex-col items-center justify-center text-center text-cloud px-8 gap-2">
-                  <p className="font-display text-lg sm:text-xl">Video en producción</p>
+                  <p className="font-display text-lg sm:text-xl">{dict.videoLightbox.comingSoonTitle}</p>
                   <p className="text-sm text-cloud/60 max-w-xs">
-                    Estamos preparando el video oficial de Tarapoto. Muy
-                    pronto estará disponible aquí.
+                    {dict.videoLightbox.comingSoonBody}
                   </p>
                 </div>
               )}
