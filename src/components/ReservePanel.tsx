@@ -35,16 +35,29 @@ export default function ReservePanel() {
     }
   }
 
-  if (!isOpen) return null;
-
+  // Bryan pidió que esto deje de ser un modal centrado con fondo gris y pase
+  // a ser un panel que se desliza desde el borde derecho, cubriendo solo una
+  // franja de la pantalla (ancho fijo en desktop, pantalla completa en
+  // mobile por falta de espacio). Se mantiene siempre montado — nunca
+  // "if (!isOpen) return null" — y se anima vía transform/opacity, igual
+  // criterio que el popup del Masterplan: así la salida también se ve
+  // deslizarse en vez de desaparecer de golpe.
   return (
     <div
-      className="fixed inset-0 z-[100] flex items-end sm:items-center justify-center bg-charcoal/50 backdrop-blur-sm"
-      onClick={close}
+      className={`fixed inset-0 z-[100] transition-opacity duration-300 ${
+        isOpen ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"
+      }`}
+      aria-hidden={!isOpen}
     >
+      {/* Capa de click-afuera-cierra — casi transparente a propósito, nunca
+          el fondo gris pesado de antes. Da una leve sensación de panel
+          activo sin tapar el resto de la pantalla. */}
+      <div className="absolute inset-0 bg-charcoal/10" onClick={close} />
+
       <div
-        className="w-full sm:max-w-md bg-cloud rounded-t-2xl sm:rounded-2xl p-6 sm:p-8 shadow-2xl"
-        onClick={(e) => e.stopPropagation()}
+        className={`absolute top-0 right-0 h-full w-full sm:w-[440px] bg-cloud shadow-2xl overflow-y-auto p-6 sm:p-8 transition-transform duration-500 [transition-timing-function:cubic-bezier(0.16,1,0.3,1)] ${
+          isOpen ? "translate-x-0" : "translate-x-full"
+        }`}
       >
         <div className="flex items-start justify-between mb-1">
           <h2 className="font-display text-2xl text-forest">Agenda tu cita</h2>
