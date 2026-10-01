@@ -24,16 +24,11 @@ export const metadata = { title: "Masterplan — HANAK" };
 export default function MasterplanPage() {
   return (
     <>
-      {/* HANAK ESTÁ REGISTRADO ANTE SUNARP — collage + headline */}
+      {/* HANAK ESTÁ REGISTRADO ANTE SUNARP — collage + headline. Bryan pidió
+          quitar la marca de agua del mapa de fondo (quedaba de la primera
+          vuelta del collage) y que la frase de la partida registral vaya en
+          una sola línea en vez de cortarse a mitad. */}
       <section className="relative overflow-hidden bg-cloud pt-28 sm:pt-36 pb-16 sm:pb-24">
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img
-          src="/images/masterplan/mapa.webp"
-          alt=""
-          aria-hidden
-          className="pointer-events-none select-none absolute -right-[15%] top-[0%] w-[75%] max-w-4xl opacity-[0.07] grayscale contrast-125"
-        />
-
         <div className="relative max-w-7xl mx-auto px-5 sm:px-8 grid lg:grid-cols-[1.1fr_1fr] gap-10 lg:gap-20 items-center">
           <div className="grid grid-cols-[1.3fr_1fr] grid-rows-2 gap-3 sm:gap-4 h-[300px] sm:h-[400px] lg:h-[460px]">
             <div className="relative row-span-2 rounded-2xl overflow-hidden shadow-sm">
@@ -69,10 +64,11 @@ export default function MasterplanPage() {
             <h1 className="font-display text-4xl sm:text-5xl lg:text-6xl text-forest leading-tight">
               HANAK está registrado ante SUNARP
             </h1>
-            <p className="mt-5 text-charcoal/70 leading-relaxed text-lg">
+            <p className="mt-5 text-charcoal/70 leading-relaxed text-base sm:text-lg sm:whitespace-nowrap">
               Con partida registral a nombre de{" "}
               <span className="font-medium text-charcoal">Grupo Zevaot Inversiones S.A.C.</span>
-              <br />
+            </p>
+            <p className="mt-1 text-charcoal/70 leading-relaxed text-base sm:text-lg">
               Un proyecto respaldado desde su origen.
             </p>
           </div>
