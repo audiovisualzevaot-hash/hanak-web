@@ -471,6 +471,10 @@ const en: Dictionary = {
     comoLlegarClosing: "Meet Hanak in Person",
     masterplanBelowMap: "Find Your Place in the Masterplan",
   },
+
+  whatsappButton: {
+    ariaLabel: "Message us on WhatsApp",
+  },
 };
 
 export default en;

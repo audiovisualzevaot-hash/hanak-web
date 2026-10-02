@@ -479,6 +479,12 @@ const es = {
     comoLlegarClosing: "Conoce Hanak en persona",
     masterplanBelowMap: "Descubre tu lugar en el masterplan",
   },
+
+  // Botón flotante de WhatsApp (WhatsAppButton.tsx) — canal de contacto
+  // directo, en paralelo al panel "Agenda tu cita".
+  whatsappButton: {
+    ariaLabel: "Escríbenos por WhatsApp",
+  },
 };
 
 export default es;

@@ -84,6 +84,24 @@ body {
   animation: hero-intro 1.4s cubic-bezier(0.16, 1, 0.3, 1) both;
 }
 
+/* Anillo del botón flotante de WhatsApp (WhatsAppButton.tsx) — un pulso
+   lento y sutil que llama la atención sin ser agresivo, a tono con el resto
+   del sitio. Deliberadamente más lento que el animate-ping por defecto de
+   Tailwind (que es muy rápido/brusco para el tono refinado de HANAK). */
+@keyframes whatsapp-pulse {
+  0% {
+    transform: scale(1);
+    opacity: 0.55;
+  }
+  100% {
+    transform: scale(1.9);
+    opacity: 0;
+  }
+}
+.animate-whatsapp-pulse {
+  animation: whatsapp-pulse 2.2s cubic-bezier(0.16, 1, 0.3, 1) infinite;
+}
+
 /* El avioncito del mini mapa de ubicación (PeruMiniMap) ya no flota en el
    lugar: ahora recorre de verdad la línea punteada del aeropuerto hasta
    HANAK con <animateMotion> dentro del propio SVG (ver ese componente),

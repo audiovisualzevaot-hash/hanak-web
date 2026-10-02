@@ -470,6 +470,10 @@ const it: Dictionary = {
     comoLlegarClosing: "Conosci Hanak di persona",
     masterplanBelowMap: "Trova il tuo posto nel masterplan",
   },
+
+  whatsappButton: {
+    ariaLabel: "Scrivici su WhatsApp",
+  },
 };
 
 export default it;

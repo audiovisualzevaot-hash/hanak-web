@@ -20,6 +20,7 @@ const gealova = localFont({
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import ReservePanel from "@/components/ReservePanel";
+import WhatsAppButton from "@/components/WhatsAppButton";
 import { ReserveProvider } from "@/components/ReserveContext";
 import { I18nProvider } from "@/lib/i18n/I18nProvider";
 import { getDictionary } from "@/lib/i18n/getDictionary";
@@ -74,6 +75,7 @@ export default async function RootLayout({
             <main className="flex-1">{children}</main>
             <Footer />
             <ReservePanel />
+            <WhatsAppButton />
           </ReserveProvider>
         </I18nProvider>
       </body>
