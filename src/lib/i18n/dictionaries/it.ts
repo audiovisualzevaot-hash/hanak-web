@@ -471,6 +471,13 @@ const it: Dictionary = {
     masterplanBelowMap: "Trova il tuo posto nel masterplan",
   },
 
+  // Textos de los elementos de dinamismo (botón circular, contador) — ver
+  // src/components/graphics.
+  motion: {
+    explore: "Esplora",
+    blocksLabel: "isolati",
+  },
+
   whatsappButton: {
     ariaLabel: "Scrivici su WhatsApp",
   },

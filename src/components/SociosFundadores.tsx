@@ -3,6 +3,8 @@
 import { useState } from "react";
 import { testimonios } from "@/lib/content";
 import MediaPlaceholder from "./MediaPlaceholder";
+import RevealImage from "./motion/RevealImage";
+import ScrollReveal from "./ScrollReveal";
 import { useDictionary } from "@/lib/i18n/I18nProvider";
 import { format } from "@/lib/i18n/format";
 
@@ -24,6 +26,7 @@ export default function SociosFundadores() {
   return (
     <div>
       <div className="grid lg:grid-cols-2 gap-8 sm:gap-12 items-center">
+        <RevealImage variant="arch" radius={14} className="max-w-md mx-auto lg:mx-0 w-full">
         {t.video ? (
           // key=t.video fuerza remount al cambiar de testimonio, así el
           // <video> anterior se descarta (y se detiene) en vez de quedar
@@ -46,7 +49,8 @@ export default function SociosFundadores() {
             className="max-w-md mx-auto lg:mx-0"
           />
         )}
-        <div>
+        </RevealImage>
+        <ScrollReveal variant="right" delayMs={250} y={30}>
           <p className="font-display text-2xl sm:text-3xl text-forest leading-snug mb-6">
             &ldquo;{tDict.cita}&rdquo;
           </p>
@@ -86,7 +90,7 @@ export default function SociosFundadores() {
               ))}
             </div>
           </div>
-        </div>
+        </ScrollReveal>
       </div>
     </div>
   );

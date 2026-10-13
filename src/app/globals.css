@@ -233,3 +233,98 @@ body {
 .animate-como-llegar-title {
   animation: como-llegar-title-arrive 1.3s cubic-bezier(0.16, 1, 0.3, 1) both;
 }
+
+/* ───────────────────────────────────────────────────────────────────────
+   DINAMISMO (referencia ayana.com, pedido de Bryan) — movimientos de las
+   ondas entre bloques y de los gráficos nuevos. Todos son bucles lentos y
+   sutiles; la entrada/salida ligada al scroll vive en los componentes
+   (src/components/motion), no acá. Con prefers-reduced-motion se apagan
+   todos (bloque al final).
+   ─────────────────────────────────────────────────────────────────────── */
+
+/* Onda en S (WaveDivider "wave"): el svg mide 200% de ancho y contiene 4
+   periodos; desplazarlo -50% recorre exactamente 2 periodos, por eso el
+   bucle no tiene salto. Dos capas a distinta velocidad y sentido. */
+@keyframes wave-drift {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+@keyframes wave-drift-rev {
+  from { transform: translateX(-50%); }
+  to { transform: translateX(0); }
+}
+.animate-wave-drift { animation: wave-drift 30s linear infinite; }
+.animate-wave-drift-slow { animation: wave-drift-rev 46s linear infinite; }
+
+/* Capa trasera del festón de nubes: se mece de lado a lado. */
+@keyframes cloud-bob {
+  from { transform: translateX(-18px); }
+  to { transform: translateX(18px); }
+}
+.animate-cloud-bob { animation: cloud-bob 11s ease-in-out infinite alternate; }
+
+/* Neblina (WaveDivider "mist"). */
+@keyframes mist-drift {
+  from { transform: translateX(-3%); opacity: 0.75; }
+  to { transform: translateX(3%); opacity: 1; }
+}
+.animate-mist-drift { animation: mist-drift 14s ease-in-out infinite alternate; }
+
+/* Nubes monolínea (CloudLines): cruzan el bloque de izquierda a derecha.
+   El desfase de cada nube se pone inline con animation-delay NEGATIVO, así
+   ya vienen repartidas por el recorrido desde el primer cuadro. */
+@keyframes cloud-cross {
+  from { transform: translateX(-30vw); }
+  to { transform: translateX(130vw); }
+}
+.animate-cloud-cross {
+  animation-name: cloud-cross;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+}
+
+/* Isotipo gigante de marca de agua: gira muy lento. */
+@keyframes watermark-spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+.animate-watermark-spin { animation: watermark-spin 160s linear infinite; }
+
+/* Texto circular del botón "Explora" (CircleCta). */
+@keyframes circle-text-spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+.animate-circle-text { animation: circle-text-spin 16s linear infinite; }
+
+/* Subrayado que se dibuja de izquierda a derecha cuando su bloque
+   (ScrollReveal, data-state="in") entra en pantalla; en hover vuelve a
+   dibujarse completo. */
+.draw-underline {
+  background-image: linear-gradient(currentColor, currentColor);
+  background-repeat: no-repeat;
+  background-position: 0 100%;
+  background-size: 0% 1px;
+  padding-bottom: 3px;
+  transition: background-size 0.9s cubic-bezier(0.16, 1, 0.3, 1) 0.35s;
+}
+[data-state="in"] .draw-underline,
+.draw-underline:hover {
+  background-size: 100% 1px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-wave-drift,
+  .animate-wave-drift-slow,
+  .animate-cloud-bob,
+  .animate-mist-drift,
+  .animate-cloud-cross,
+  .animate-watermark-spin,
+  .animate-circle-text {
+    animation: none;
+  }
+  .draw-underline {
+    background-size: 100% 1px;
+    transition: none;
+  }
+}

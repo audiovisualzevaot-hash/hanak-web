@@ -43,6 +43,12 @@ export const config = {
     // Excluye API routes, internals de Next, y cualquier archivo estático
     // servido desde /public (todos tienen punto en el nombre: .webp, .mp4,
     // .ico, .png, etc.) — el proxy solo debe tocar rutas de página reales.
-    "/((?!api/|_next/static/|_next/image/|.*\\..*).*)",
+    //
+    // OJO: "_next/image" va SIN barra final. El optimizador de imágenes de
+    // Next se pide como "/_next/image?url=…" (la ruta no termina en "/"),
+    // así que con "_next/image/" no quedaba excluido: el rewrite lo mandaba
+    // a "/es/_next/image" → 404, y TODAS las imágenes servidas con
+    // next/image (isotipo del header, fotos del hero, lockup) salían rotas.
+    "/((?!api/|_next/static|_next/image|.*\\..*).*)",
   ],
 };

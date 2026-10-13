@@ -1,93 +1,99 @@
 "use client";
 
-import { useEffect, useRef, useState, type ReactNode } from "react";
+import type { CSSProperties, ReactNode } from "react";
+import { useViewState } from "./motion/useViewState";
+
+export type RevealVariant = "rise" | "fade" | "blur" | "left" | "right" | "track";
 
 interface ScrollRevealProps {
   children: ReactNode;
   className?: string;
-  /** Retraso en ms antes de animar — para escalonar varios elementos del mismo bloque (cards, líneas de texto). */
+  /** Cómo entra: sube (rise), solo fundido (fade), de borroso a nítido (blur), desde un costado (left/right), o con el espaciado de letras cerrándose (track). */
+  variant?: RevealVariant;
+  /** Retraso en ms antes de animar — para escalonar varios elementos del mismo bloque. */
   delayMs?: number;
-  /** Desplazamiento inicial en px (sube desde abajo). */
+  /** Desplazamiento en px (rise/left/right). */
   y?: number;
   durationMs?: number;
-  /** Qué tan metido en pantalla debe estar el elemento antes de animar (0-1). */
-  threshold?: number;
+  /** false = solo anima la entrada; true (default) = también anima la salida al pasar de largo. */
+  exit?: boolean;
+  /** Solo variant="track": el espaciado de letras final (el wrapper lo fija inline, así que NO ponerlo también como clase tracking-*). */
+  tracking?: string;
 }
 
+const EASE = "cubic-bezier(0.16,1,0.3,1)";
+
 /**
- * Revela su contenido con un fundido + leve subida cuando entra en el
- * viewport — el mismo lenguaje visual que ya usan HeroSequence y
- * PriorizamosSelva (fundido/disolve, nunca escala), aplicado acá a bloques
- * que hoy aparecen de golpe al cargar (teaser "Llegar a Hanak", masterplan,
- * socios fundadores, novedades).
+ * Revela su contenido cuando entra en pantalla y lo retira al salir — todo
+ * ligado al scroll y reversible (si subes, vuelve a entrar). Pedido de
+ * Bryan: "todos los textos deben tener animación de entrada y salida de
+ * acuerdo al scroll", como ayana.com.
  *
- * A diferencia de esos dos componentes, acá no hace falta progreso continuo
- * ligado al scroll (no hay pin ni parallax) — solo "ya entró o no entró a
- * pantalla" — así que usa IntersectionObserver en vez de escuchar el scroll
- * a mano: más liviano, y no agrega ninguna dependencia nueva al proyecto.
+ * Seis variantes (ver RevealVariant) para que no se sienta monótono: cada
+ * bloque usa una distinta. Solo opacity/transform/filter/letter-spacing,
+ * nunca scale() (regla de Bryan: el único zoom prohibido es el scale()).
  *
- * Respeta prefers-reduced-motion: si el visitante lo pidió a nivel sistema,
- * el contenido aparece directo, sin animar.
+ * Expone data-state="pre|in|post" en el wrapper — el CSS lo usa para cosas
+ * como el subrayado que se dibuja (.draw-underline en globals.css).
  *
- * OJO al envolver elementos con posición absoluta: el translateY de esta
- * animación convierte a su wrapper en contenedor de posicionamiento para
- * hijos "absolute" (lo hace cualquier elemento con transform ≠ none). Si el
- * contenido envuelto depende de posicionarse respecto de un ancestro MÁS
- * ARRIBA (no de este wrapper), hay que mover las clases de posición/tamaño
- * al propio <ScrollReveal className="..."> en vez de dejarlas en el hijo.
+ * OJO al envolver elementos con posición absoluta: el transform de este
+ * wrapper lo convierte en contenedor de posicionamiento para hijos
+ * "absolute". Si el contenido depende de un ancestro MÁS ARRIBA, hay que
+ * mover las clases de posición/tamaño al propio <ScrollReveal className>.
  */
 export default function ScrollReveal({
   children,
   className = "",
+  variant = "rise",
   delayMs = 0,
-  y = 24,
-  durationMs = 700,
-  threshold = 0.2,
+  y = 28,
+  durationMs = 900,
+  exit = true,
+  tracking = "0.2em",
 }: ScrollRevealProps) {
-  const ref = useRef<HTMLDivElement>(null);
-  const [visible, setVisible] = useState(false);
-  // Lazy initializer (no un setState dentro de un efecto) — evita el salto
-  // de "aparece animado y después se corrige" si el visitante ya tenía
-  // reduced-motion activado desde antes de montar.
-  const [reduceMotion, setReduceMotion] = useState(
-    () => typeof window !== "undefined" && window.matchMedia("(prefers-reduced-motion: reduce)").matches
-  );
+  const { ref, state, reduce } = useViewState<HTMLDivElement>();
+  const shown = state === "in" || (!exit && state === "post");
 
-  useEffect(() => {
-    const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
-    const onChange = () => setReduceMotion(mq.matches);
-    mq.addEventListener("change", onChange);
-    return () => mq.removeEventListener("change", onChange);
-  }, []);
+  const hidden: CSSProperties = (() => {
+    const out = state === "post" && exit;
+    switch (variant) {
+      case "fade":
+        return { opacity: 0 };
+      case "blur":
+        return { opacity: 0, filter: "blur(10px)", transform: `translateY(${out ? -y / 2 : y / 2}px)` };
+      case "left":
+        return { opacity: 0, transform: `translateX(${out ? y : -y * 2}px)` };
+      case "right":
+        return { opacity: 0, transform: `translateX(${out ? -y : y * 2}px)` };
+      case "track":
+        return { opacity: 0, letterSpacing: "0.5em" };
+      default:
+        return { opacity: 0, transform: `translateY(${out ? -y / 2 : y}px)` };
+    }
+  })();
 
-  useEffect(() => {
-    const el = ref.current;
-    if (!el || reduceMotion) return;
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setVisible(true);
-          observer.unobserve(el);
-        }
-      },
-      { threshold }
-    );
-    observer.observe(el);
-    return () => observer.disconnect();
-  }, [reduceMotion, threshold]);
+  const visible: CSSProperties = {
+    opacity: 1,
+    transform: "none",
+    filter: "none",
+    ...(variant === "track" ? { letterSpacing: tracking } : {}),
+  };
 
-  const shown = reduceMotion || visible;
+  const props = variant === "track" ? "opacity, letter-spacing" : "opacity, transform, filter";
 
   return (
     <div
       ref={ref}
       className={className}
+      data-state={state}
       style={{
-        opacity: shown ? 1 : 0,
-        transform: shown ? "translateY(0)" : `translateY(${y}px)`,
-        transition: `opacity ${durationMs}ms cubic-bezier(0.16,1,0.3,1), transform ${durationMs}ms cubic-bezier(0.16,1,0.3,1)`,
+        ...(shown ? visible : hidden),
+        transitionProperty: reduce ? "none" : props,
+        // La salida es más corta que la entrada: se va rápido, llega despacio.
+        transitionDuration: `${shown ? durationMs : Math.round(durationMs * 0.55)}ms`,
+        transitionTimingFunction: EASE,
         transitionDelay: shown ? `${delayMs}ms` : "0ms",
-        willChange: "opacity, transform",
+        willChange: reduce ? undefined : "opacity, transform",
       }}
     >
       {children}

@@ -36,7 +36,12 @@ export function getLocaleFromPathname(pathname: string): Locale {
 // "/en/tarapoto" -> "/tarapoto", "/it" -> "/", "/tarapoto" -> "/tarapoto".
 export function stripLocale(pathname: string): string {
   const first = pathname.split("/")[1];
-  if (isLocale(first) && first !== defaultLocale) {
+  // También quita "/es": el visitante nunca lo ve en la barra, pero el HTML
+  // pre-generado en el servidor SÍ se renderiza con la ruta interna "/es/..."
+  // (resultado del rewrite de proxy.ts), y sin quitarlo el Header no
+  // reconocía "/es" como página con hero y nacía en crema sólido en vez de
+  // transparente (bug reportado por Bryan en Inicio).
+  if (isLocale(first)) {
     const rest = pathname.slice(first.length + 1);
     return rest === "" ? "/" : rest;
   }

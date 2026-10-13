@@ -3,6 +3,8 @@
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import LogoMark from "./LogoMark";
+import WaveDivider from "./motion/WaveDivider";
+import LeafLines from "./graphics/LeafLines";
 import { useDictionary, useLocale } from "@/lib/i18n/I18nProvider";
 import { localeHref } from "@/lib/i18n/locales";
 
@@ -82,8 +84,20 @@ export default function PriorizamosSelva() {
     // (el primer 100vh de este track), así que ya no hace falta un tramo
     // fijo tan largo después de eso — solo una pausa breve (50vh) para leer
     // el texto y el botón antes de pasar a la siguiente sección.
-    <section ref={trackRef} className="relative h-[150vh] bg-cloud">
+    <section ref={trackRef} className="relative z-10 h-[150vh] bg-cloud">
+      {/* Dueño de dos bordes curvos: arco que sube sobre el final del hero, y
+          onda en S que ondula sobre el comienzo de la foto de "Llegar a
+          HANAK". Por eso la sección es z-10 y no lleva overflow-hidden (el
+          recorte vive en el contenedor sticky de abajo). */}
+      <WaveDivider variant="arc" fill="var(--hanak-cloud)" edge="top" />
+      <WaveDivider variant="wave" fill="var(--hanak-cloud)" edge="bottom" />
       <div className="sticky top-0 h-screen overflow-hidden flex items-center justify-center">
+        {/* Ramas de selva en trazo fino, una a cada costado: se dibujan con
+            el MISMO progreso de scroll que separa las tarjetas — a medida
+            que las fotos se abren, la selva crece alrededor del titular. */}
+        <LeafLines progress={progress} className="absolute -left-4 bottom-0 h-[62%] max-h-[480px] text-forest/30" />
+        <LeafLines progress={progress} flip className="absolute -right-4 top-16 h-[56%] max-h-[420px] text-forest/25" />
+
         {/* Titular central — fondo crema plano, como en el export */}
         <div
           className="relative z-10 text-center px-6 max-w-2xl pointer-events-none flex flex-col items-center"

@@ -482,6 +482,13 @@ const es = {
 
   // Botón flotante de WhatsApp (WhatsAppButton.tsx) — canal de contacto
   // directo, en paralelo al panel "Agenda tu cita".
+  // Textos de los elementos de dinamismo (botón circular, contador) — ver
+  // src/components/graphics.
+  motion: {
+    explore: "Explora",
+    blocksLabel: "manzanas",
+  },
+
   whatsappButton: {
     ariaLabel: "Escríbenos por WhatsApp",
   },
